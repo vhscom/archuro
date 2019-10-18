@@ -22,7 +22,7 @@
 set -e
 
 #
-# Archuro - Automate development environment setup, configuration and upgrades.
+# Archuro - Portable Arch Linux development workflow for macOS Catalina.
 #
 # Archuro is a command line utility and configuration managmenet system that
 # allows you to set-up and maintain a virtualized Arch Linux dev environment
@@ -35,6 +35,7 @@ set -e
 #
 
 # COMMIT TO MEMORY
+# 
 # caffeinate -u -t 5400 - keeps mac awake for an hour and a half
 # curl -s https://api.github.com/repos/atom/atom/releases | grep browser_download_url | grep '64[.]deb' | head -n 1 | cut -d '"' -f 4
 # sudo scutil --set HostName [NewHostNameHere] (priveledged on macOS, w/o sudo pops an auth dialog with touch id support)
@@ -54,15 +55,18 @@ set -e
 # DevOps: Packer
 
 # Mac App Store apps
+#
 # - VPN: WireGuard
 # - Secrets: Bitwarden
+# ... see stow/dot-Brewfile for more
 
 # Other apps
 # - Telegram (Messenger)
-# - GitHub Desktop <https://github.com/desktop/desktop>
-# - Spectacle (Window Manager)
-# - Sketch (Graphics)
-# - Avocode
+# - GitHub Desktop (plebs need some luv too)
+# - Spectacle (Window Manager) (replace with Rectangle)
+# - Sketch (Graphics) (maybe...)
+# - Avocode (maybe...)
+# ... see stow/dot-Brewfile for more
 
 # CLI tools
 #
@@ -71,6 +75,7 @@ set -e
 # SysAdmin: mas, brew, stow, htop
 # DevOps: packer
 # Productivity: z, tldr
+# ... see stow/dot-Brewfile for more
 
 # INSPIRATION / RESOURCES
 # 
@@ -96,35 +101,35 @@ set -e
 
 # TODO
 #
-# BASH COMPLETIONS (INCLUDING DOCKER)
-
-# AURman <https://github.com/polygamma/aurman> (or youart)
-# 
-# Add packer to makefile
-# - https://www.packer.io
-# - https://stackoverflow.com/a/33594470/712334
-# Set p10k configuration at login/prompt for Zsh
-# - Create docker volume and mount
-# - Run configuration after Arch is up and running
-# - Script the config setup
-# Automatically set Homebrew as the default Terminal theme
-# Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
-# Install Powerlevel10k
-# ? Install Retro groove color scheme for Vim <https://github.com/morhetz/gruvbox>
-# Install neovim <https://thoughtbot.com/blog/my-life-with-neovim>
-# - Configure One Dark theme with with https://github.com/rakr/vim-one
-# Install Nerd Fonts <https://github.com/ryanoasis/nerd-fonts>
-# Add VS Code plugins:
-# - https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format for working with .zsh file extension used in archuro
-# - https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
-# - https://github.com/prettier/prettier-vscode
-# Enable "sane defaults" for VSCode (e.g. "files.insertFinalNewline": true) https://github.com/Microsoft/vscode/issues/12076#issuecomment-340037747
-# Colorize output <https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux>
-# Consider XDG configuration files standard <https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html>
-# ...above mentioned on Managing dotfiles with stow article
-# Automate VS Code extension setup
-# Automatically hide dock
-# UPdate Terminal to remove zsh call (consider bash for archlinux)
+# - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
+# - [ ] Touchbar buttons for man (and tldr) similar to Terminal
+# - [x] Bash completions
+# - [ ] Docker completions
+# - [ ] Zsh completions
+# - [ ] Integrate [Packer] ([Example `Makefile`](https://stackoverflow.com/a/33594470/712334))
+# - [ ] [Pamac] (install using [Yay]) ([instructions](https://switchedtolinux.com/installing-pamac-on-arch-with-yay/))
+# - [ ] Consider how to meld with [Linux Brew](https://docs.brew.sh/Homebrew-on-Linux) manifest
+# - [ ] Set p10k configuration at login/prompt for Zsh (whatever that meant)
+# - [ ] Create docker volume and mount
+# - [ ] Run configuration after Arch is up and running
+# - [ ] Script the config setup
+# - [x] Automatically set Archuro as the default Terminal theme
+# - [x] Install Powerlevel10k
+# - [ ] Install Retro groove color scheme for Vim <https://github.com/morhetz/gruvbox>
+# - [x] Install neovim ([Thoughtbot on Neovim](https://thoughtbot.com/blog/my-life-with-neovim))
+# - [ ] Configure One Dark theme with <https://github.com/rakr/vim-one>
+# - [x] Install [Nerd Fonts]
+# - [ ] Add VS Code plugins:
+#   - https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format for working with .zsh file extension used in archuro
+#   - https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+#   - https://github.com/prettier/prettier-vscode
+# - [ ] Automate VS Code extension setup
+# - [ ] Enable "sane defaults" for VSCode (e.g. "files.insertFinalNewline": true) https://github.com/Microsoft/vscode/issues/12076#issuecomment-340037747
+# - [ ] Colorize output (some done, more needed. here's a [breadcrumb from SO](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux))
+# - [ ] Consider [XDG configuration files standard](https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html)
+#   *Note:* ...above mentioned on [Managing dotfiles with stow](https://alexpearce.me/2016/02/managing-dotfiles-with-stow/) article
+# - [ ] Automatically hide dock (there's a full config-driven lib for this)
+# - [ ] Update Terminal Profile to remove zsh call (consider bash for archlinux)
 
 # FAQ
 #
@@ -136,8 +141,8 @@ set -e
 # 
 # Isn't one tty enough? Depends where you're using it. Hyper is intended to
 # for zen coding with zsh and arch linux running in a container with an all
-# black display suitable for Archuro coding. iTerm2 provides a pull-down
-# terminal display via hotkey valuable for more general purpose tasks.
+# black display suitable for Archuro coding. Kitty provides a cross-platform
+# terminal experience.
 #
 
 # =========================================================================== #
@@ -696,29 +701,35 @@ fi
 
 # <<- MARKDOWN
 #
-# [FiraCode]: https://github.com/tonsky/FiraCode "Monospaced font with programming ligatures."
-# [Terminal]: https://support.apple.com/guide/terminal/welcome/mac "Terminal on Mac."
-# [Bash 5]: https://www.gnu.org/software/bash/ "Bash is the Bourne Again SHell."
-# [iTerm2]: https://gitlab.com/gnachman/iterm2/ "Issues site for iTerm2. Mirrored from https://github.com/gnachman/iTerm2."
-# [Toybox]: https://github.com/landley/toybox "An all-in-one Linux command line."
-# [Hyper]: https://github.com/zeit/hyper "Terminal built on web technologies."
 # [Arch Linux]: https://www.archlinux.org "A simple, lightweight distribution."
+# [Bash 5]: https://www.gnu.org/software/bash/ "Bash is the Bourne Again SHell."
+# [Docker Desktop for Mac]: https://docs.docker.com/docker-for-mac/ "Docker is a full development platform for creating containerized applications. Docker Desktop is the best way to get started with Docker on Mac."
+# [ffmpeg]: https://ffmpeg.org/ "A command line-only program that allows you to convert videos and audio into different formats, as well as record live audio and video."
+# [FiraCode]: https://github.com/tonsky/FiraCode "Monospaced font with programming ligatures."
+# [GitHub Desktop]: https://github.com/desktop/desktop "Simple collaboration from your desktop."
+# [GNU Stow]: https://www.gnu.org/software/stow/ "GNU Stow is a symlink farm manager."
+# [Homebrew]: https://github.com/Homebrew/brew "The missing package manager for macOS."
+# [Hyper]: https://github.com/zeit/hyper "Terminal built on web technologies."
+# [Podman]: https://github.com/containers/libpod "A library used to create container pods."
 # [Powerlevel10k]: https://github.com/romkatv/powerlevel10k "A fast reimplementation of Powerlevel9k ZSH theme."
-# [Vim]: https://github.com/vim/vim "A highly configurable text editor"
+# [Terminal]: https://support.apple.com/guide/terminal/welcome/mac "Terminal on Mac."
+# [tmux]: https://github.com/tmux/tmux "Terminal multiplexer."
+# [Toybox]: https://github.com/landley/toybox "An all-in-one Linux command line."
 # [gruvbox]: https://github.com/morhetz/gruvbox "Retro groove color scheme for Vim."
 # [NeoVim]: https://github.com/neovim/neovim "Vim-fork focused on extensibility and usability."
-# [Verminal]: https://github.com/defringe/verminal "A Hyper theme."
-# [tmux]: https://github.com/tmux/tmux "Terminal multiplexer."
-# [xhyve]: https://github.com/machyve/xhyve "A lightweight OS X virtualization solution."
-# [VS Code]: https://code.visualstudio.com/ "A code editor redefined and optimized for building and debugging modern web and cloud applications."
-# [Homebrew]: https://github.com/Homebrew/brew "The missing package manager for macOS."
+# [Nerd Fonts]: https://github.com/ryanoasis/nerd-fonts "Iconic font aggregator, collection, and patcher."
+# [Packer]: https://www.packer.io "Build Automated Machine Images"
+# [Pamac]: https://gitlab.manjaro.org/applications/pamac "Graphical Package Manager for Manjaro Linux (based on libalpm)."
 # [Rectangle]: https://github.com/rxhanson/Rectangle
+# [Ranger]: https://github.com/ranger/ranger "A VIM-inspired filemanager for the console."
 # [Spectacle]: https://github.com/eczarny/spectacle "Spectacle allows you to organize your windows without using a mouse."
 # [Slate]: https://github.com/jigish/slate "A window management application."
 # [ShiftIt]: https://github.com/fikovnik/ShiftIt "Managing windows size and position in macOS with Hammerscript and Lua."
-# [Podman]: https://github.com/containers/libpod "A library used to create container pods."
-# [Docker Desktop for Mac]: https://docs.docker.com/docker-for-mac/ "Docker is a full development platform for creating containerized applications. Docker Desktop is the best way to get started with Docker on Mac."
-# [ffmpeg]: https://ffmpeg.org/ "A command line-only program that allows you to convert videos and audio into different formats, as well as record live audio and video."
 # [tldr]: https://tldr.sh "Simplified and community-driven man pages"
+# [Vim]: https://github.com/vim/vim "A highly configurable text editor"
+# [VS Code]: https://code.visualstudio.com/ "A code editor redefined and optimized for building and debugging modern web and cloud applications."
+# [Verminal]: https://github.com/defringe/verminal "A Hyper theme with beautiful translucency on macOS."
+# [xhyve]: https://github.com/machyve/xhyve "A lightweight OS X virtualization solution."
+# [Yay]: https://github.com/Jguer/yay "Yet another Yogurt - An AUR Helper written in Go."
 # 
 # EOF
