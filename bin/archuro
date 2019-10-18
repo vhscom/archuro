@@ -1,0 +1,724 @@
+#!/usr/bin/env sh
+
+#
+# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+#
+# This file is part of Archuro.
+#
+# Archuro is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Archuro is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+set -e
+
+#
+# Archuro - Automate development environment setup, configuration and upgrades.
+#
+# Archuro is a command line utility and configuration managmenet system that
+# allows you to set-up and maintain a virtualized Arch Linux dev environment
+# on the macOS operating system in a sane way.
+#
+# - Streamline machine setup and maintenance with a single command.
+# - Achieve coding zen with Hyper running Arch Linux with Powerlevel10k.
+# - Share dotfiles configuration between macOS and Arch Linux.
+# - Designed for use with GNU Stow.
+#
+
+# COMMIT TO MEMORY
+# caffeinate -u -t 5400 - keeps mac awake for an hour and a half
+# curl -s https://api.github.com/repos/atom/atom/releases | grep browser_download_url | grep '64[.]deb' | head -n 1 | cut -d '"' -f 4
+# sudo scutil --set HostName [NewHostNameHere] (priveledged on macOS, w/o sudo pops an auth dialog with touch id support)
+
+# DESIGN
+#
+# Font: [FiraCode] | Source Code Pro | Anonymous Pro | Consolas | Menlo | Meslo LG
+# TTY: [Terminal] ([Bash 5] for sysadmin) | [Hyper] ([Arch Linux] + [Powerlevel10k] statusline)
+# Editor: [Vim] ([Gruvbox]) | [NeoVim] | [Atom]
+# Multiplexer: [tmux]
+# Theme: [Verminal] (Hyper) | Atom One Dark (VS Code)
+# IDE: [VS Code] | Eclipse | PhpStorm
+# Package Manager: [Homebrew]
+# Window Manager: [Rectangle] | [Spectacle] | [Slate] | [ShiftIt]
+# Hypervisor: [xhyve] | VirtualBox
+# Virtualization: [Podman] | [Docker Desktop]
+# DevOps: Packer
+
+# Mac App Store apps
+# - VPN: WireGuard
+# - Secrets: Bitwarden
+
+# Other apps
+# - Telegram (Messenger)
+# - GitHub Desktop <https://github.com/desktop/desktop>
+# - Spectacle (Window Manager)
+# - Sketch (Graphics)
+# - Avocode
+
+# CLI tools
+#
+# Generators: hugo
+# Graphics: [ffmpeg], pngquant
+# SysAdmin: mas, brew, stow, htop
+# DevOps: packer
+# Productivity: z, tldr
+
+# INSPIRATION / RESOURCES
+# 
+# - https://openfolder.sh/macos-migrations-with-brewfile for backup and restore
+# - https://github.com/lmammino/dotfiles/blob/master/.bash_profile snippets
+# - https://scriptingosx.com/2019/07/install-bash-5-on-macos-with-patches/
+# - https://unix.stackexchange.com/a/71258/111911 describes zsh dotfiles
+# - https://loige.co/random-emoji-in-your-prompt-how-and-why/
+# - https://github.com/idcrook/i-dotfiles portable solution
+# - https://github.com/scop/bash-completion for Linux and macOS
+# - https://github.com/paulmillr/dotfiles once upon a fork
+# - https://github.com/tiiiecherle/osx_install_config
+# - https://github.com/monfresh/laptop
+# - https://github.com/AleksanderPopov/.dotfiles
+# - https://github.com/reedia/dotfiles
+# - https://gist.github.com/PashCracken/b6070359486ea651eed66a5e86567ebb p10k with k8s
+# - https://thoughtbot.com/blog/my-life-with-neovim 8 months after the move from vim
+# - https://github.com/AlexanderWillner/runMacOSinVirtualBox for make-based setup
+
+# OTHER TOOLS
+# - https://github.com/bkuhlmann/mac_os automation scripts for macOS
+# - https://github.com/bkuhlmann/mac_os-config
+
+# TODO
+#
+# BASH COMPLETIONS (INCLUDING DOCKER)
+
+# AURman <https://github.com/polygamma/aurman> (or youart)
+# 
+# Add packer to makefile
+# - https://www.packer.io
+# - https://stackoverflow.com/a/33594470/712334
+# Set p10k configuration at login/prompt for Zsh
+# - Create docker volume and mount
+# - Run configuration after Arch is up and running
+# - Script the config setup
+# Automatically set Homebrew as the default Terminal theme
+# Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
+# Install Powerlevel10k
+# ? Install Retro groove color scheme for Vim <https://github.com/morhetz/gruvbox>
+# Install neovim <https://thoughtbot.com/blog/my-life-with-neovim>
+# - Configure One Dark theme with with https://github.com/rakr/vim-one
+# Install Nerd Fonts <https://github.com/ryanoasis/nerd-fonts>
+# Add VS Code plugins:
+# - https://marketplace.visualstudio.com/items?itemName=foxundermoon.shell-format for working with .zsh file extension used in archuro
+# - https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+# - https://github.com/prettier/prettier-vscode
+# Enable "sane defaults" for VSCode (e.g. "files.insertFinalNewline": true) https://github.com/Microsoft/vscode/issues/12076#issuecomment-340037747
+# Colorize output <https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux>
+# Consider XDG configuration files standard <https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html>
+# ...above mentioned on Managing dotfiles with stow article
+# Automate VS Code extension setup
+# Automatically hide dock
+# UPdate Terminal to remove zsh call (consider bash for archlinux)
+
+# FAQ
+#
+# How do I install Xcode? Run `mas install 497799835` from a terminal window
+# following installation. Mas is made available during Homebrew installation.
+# 
+# Why Bash 5? Portability and consistency with Linux. Apple decided to switch
+# to Zsh during Catalina but that doesn't stop us from using Bash 5 ourselves.
+# 
+# Isn't one tty enough? Depends where you're using it. Hyper is intended to
+# for zen coding with zsh and arch linux running in a container with an all
+# black display suitable for Archuro coding. iTerm2 provides a pull-down
+# terminal display via hotkey valuable for more general purpose tasks.
+#
+
+# =========================================================================== #
+# =================================================================== #
+
+BINDIR=/usr/local/bin
+TMPDIR="${TMPDIR:-"/var/tmp"}"
+ETCDIR=/usr/local/etc
+ARTDIR="$HOME/archuro/artifacts"
+
+UARG_FORCED_INSTALL=
+UARG_STOW_DOTFILES=
+
+# =========================================================================== #
+# 000 >>- BUILD ESSENTIALS
+# =================================================================== #
+
+# Install Xcode Command Line Tools (CLT) if not installed
+# @requires [command] sudo
+# @expects $OSTYPE == darwin*
+function install_xcode_clt {
+    if ! xcode-select --install 2>/dev/null; then
+        echo "Xcode Command Line Tools found. Skipping setup ..."
+    else
+        echo "Beginning setup of Xcode Command Line Tools ..."
+        xcode-select --install
+        # xcodebuild -license # accept Xcode and SDK agreements manually
+        xcodebuild -runFirstLaunch # accept Xcode and SDK agreements automatically
+        echo "Completed setup of Xcode Command Line Tools ..."
+    fi
+}
+
+# Install Homebrew
+# @expects $OSTYPE == darwin*
+# @requires [command] ruby, sudo
+function install_homebrew {
+    if hash brew 2>/dev/null; then
+        echo "Homebrew found. Skipping installation ..."
+    else
+        echo "Beginning installation of Homebrew ..."
+        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+        echo "Homebrew installation completed ..."
+    fi
+}
+
+# Install Linux Brew
+function install_linuxbrew {
+    if hash brew 2>/dev/null; then
+        echo "Linuxbrew found. Skipping installation ..."
+    else
+        echo "Beginning installation of Linuxbrew ..."
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+        echo "Linuxbrew installation completed ..."
+    fi
+}
+
+# Install Mac App Store command line interface
+# @expects $OSTYPE == darwin*
+# @requires [command] brew
+function install_store_cli {
+    if hash mas 2>/dev/null; then
+        echo "Mac App Store CLI found. Skipping installation ..."
+    else
+        echo "Beginning installation of Mac App Store command line interface ..."
+        brew install mas
+        brew install mas-cli/tap/mas
+        echo "Mac App Store command line interface installation completed ..."
+    fi
+}
+
+# Install Docker Desktop for macOS
+function install_docker_desktop_for_macos {
+    if [[ -n "$(docker info --format '{{.OperatingSystem}}' | grep 'Docker Desktop')" ]]; then
+        echo "Docker Desktop found. Skipping installation ..."
+    else
+        echo "WARNING! Docker Desktop not installed:"
+        echo "  * Install docker desktop from <https://docs.docker.com/docker-for-mac/install/>"
+    fi
+}
+
+# Install build essentials for macOS
+function install_build_essentials_macos {
+    install_xcode_clt
+    install_homebrew
+    install_store_cli
+}
+
+# Install build essentials
+function install_build_essentials {
+    if [[ "$OSTYPE" == darwin* ]]; then
+        install_build_essentials_macos
+        install_docker_desktop_for_macos
+    else
+        install_linuxbrew
+    fi
+}
+
+# Stow dotfiles using GNU stow
+# @requires [command] stow version 2.3.1+
+function stow_dotfiles {
+    local re="version [3-9]\.[3-9]\d?\.[1-9]\d?|version \d{2}.*|version [2-9]\.\d\.\d"
+    if hash stow 2>/dev/null && stow -h | head -n 1 | grep -qE "$re"; then
+        echo "Creating symlink farm using 'dot-' files in 'stow' directory ..."
+        stow --dotfiles -S stow
+        echo "Completed creation of symlinks to $HOME ..."
+    else
+        echo "WARNING! Cannot stow dotfiles:"
+        echo "  * Install GNU Stow version 2.3.1 or higher to use this option"
+    fi
+}
+
+# =========================================================================== #
+# 010 >>- SHELL ENVIRONMENT
+# =================================================================== #
+
+# Install Bash 5 and known patches if not installed
+# 
+# Bash is the default shell environment on most Linux distributions. Version
+# 5 is not available on macOS Catalina so install and use for env portability.
+# 
+# @requires [command] sudo, curl, tar, make, tee, patch
+# @expects [[ -f /etc/shells ]]
+# @see https://www.gnu.org/software/bash/ "about"
+# @see https://ftp.gnu.org/gnu/bash/bash-5.0-patches/ "patch downloads"
+# @see https://www.gnu.org/software/bash/manual/ "manual"
+# @see https://ftp.gnu.org/gnu/bash/ "downloads"
+# @see http://ftpmirror.gnu.org/bash/ "download mirror"
+# @see https://scriptingosx.com/2019/02/install-bash-5-on-macos/ "instructions"
+function install_bash_5 {
+    if bash --version | grep -qE "5.0.11\(1\)-release"; then
+        echo "Bash 5.0.11(1) found. Skipping installation ..."
+    else
+        echo "Beginning installation of GNU Bash, version 5 ..."
+        echo "Downloading version 5.0 release ..."
+        mkdir -p $TMPDIR && cd "$_"
+        curl -#Lo - https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz | tar xz
+        cd bash-5.0
+        echo "<<- Downloading patches 1 thru 11 ..." # XXX: remove hardcoding
+        curl -#L "https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-[001-011]" | patch -p0
+        echo "<<- Beginning configuration ..."
+        ./configure -q &>1
+        echo "<<- Beginning build ..."
+        make -s &>1
+        echo "<<- Beginning installation ..."
+        make install -s &>1
+        echo "$BINDIR/bash" | sudo tee -a /etc/shells # XXX: do not append if shell exists
+        echo "Bash 5 installation completed ..."
+        /usr/local/bin/bash
+        echo "<<- The  interactive shell is now bash Bash 5.0.11(1)."
+        if [[ "${SHELL##/*/}" == "zsh" ]]; then
+            echo "<<- To set Bash 5.0.11(1) as the default shell for $(whoami) run `chsh -u $whoami -s /usr/local/bin/bash`."
+        fi
+    fi
+}
+
+# Install bash completions
+# install_bash_completions () {
+    # XXX
+# }
+
+function configure_shell_environment {
+    install_bash_5
+    # install_bash_completions
+}
+
+# =========================================================================== #
+# 020 >>- SYSADMIN TOOLS
+# =================================================================== #
+
+# Install TLDR bash client if not installed
+# @requires curl, chmod, tar
+# @env $TMPDIR temporary directory
+# @env $BINDIR destination directory
+function install_tldr {
+    if hash tldr 2>/dev/null; then
+        echo "TLDR found. Skipping installation ..."
+    else
+        echo "Beginning installation of TLDR ..."
+        mkdir -p "$TMPDIR/tldr" && cd "$_"
+        curl -#Lo - https://github.com/pepa65/tldr-bash-client/archive/v0.44.tar.gz | tar xz --strip-components=1
+        chmod +x tldr
+        mv tldr "$BINDIR/tldr"
+        echo "Completed installation of TLDR at v0.44 ..."
+    fi
+}
+
+# Install GNU Stow for managing dotfiles if not installed
+# @env $TMPDIR temporary directory
+# @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
+# @see https://github.com/idcrook/i-dotfiles/tree/master/stow
+function install_stow {
+    echo "GNU Stow installation script unavailable. Skipping installation ..."
+    # if hash stow 2>/dev/null; then
+    #     echo "GNU Stow found. Skipping installation ..."
+    # else
+    #     echo "Beginning installation of Stow ..."
+    #     mkdir -p "$TMPDIR/stow" && cd "$_"
+    #     curl -#Lo - https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz --strip-components=1
+    #     [ ./configure 1>/dev/null ] && make install
+    #     echo "Completed installation of GNU Stow ..."
+    # fi
+}
+
+# Install lynx text mode web browser
+# install_lynx () {
+#     if hash lynx 2>/dev/null; then
+#         echo "Lynx found. Skipping instalation ..."
+#     else
+#         echo "Beginning installation of Lynx ..."
+#         mkdir -p "$TMPDIR/lynx" && cd "$_"
+#         curl -#Lo - https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.gz | tar xz --strip-components=1
+#         ./configure && make
+#         make install && make install-help
+#         echo "Completed installation of Lynx at v2.8.9 (2018-07-08) ..."
+#     fi
+# }
+
+# Install tmux for terminal multiplexing
+# install_tmux () {
+#     if hash tmux 2>/dev/null; then
+#         echo "tmux found. Skipping installation ..."
+#     else
+#         echo "Beginning installation of tmux ..."
+#         mkdir -p "$TMPDIR/tmux" && cd "$_"
+#         url=curl -s https://api.github.com/repos/tmux/tmux/releases/latest | grep browser_download_url | grep 'tar[.]gz' | cut -d '"' -f 4
+#         curl -#Lo - "$url" | tar xz --strip-components=1
+#         ./configure && make
+#         make install
+#         echo "Completed installation of tmux ..."
+#     fi
+# }
+
+# Install system administration tools
+function install_sysadmin_tools {
+    install_tldr
+    install_stow
+    # install_lynx
+    # install_tmux
+}
+
+# =========================================================================== #
+# 030 >>- DEVELOPER TOOLS
+# =================================================================== #
+
+# Install Powerlevel10k for Zsh
+# @requires git
+# @assumes dotfiles symlinked
+function install_powerlevel10k {
+    if [ -d "$ETCDIR/powerlevel10k" ]; then
+        echo "Powerlevel10k already installed. Skipping installation ..."
+    else
+        echo "Beginning installation of Powerlevel10k ..."
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ETCDIR/powerlevel10k"
+        echo "source $ETCDIR/powerlevel10k/powerlevel10k.zsh-theme" >>- ~/.zshrc
+        echo "Completed installation of Powerlevel10k ..."
+    fi
+}
+
+# Install Profile for macOS Terminal
+function install_terminal_profile_macos {
+    all_themes=$(defaults read com.apple.Terminal 'Window Settings')
+    # terminal_theme=$(defaults read com.apple.Terminal 'Default Window Settings')
+    if [[ $all_themes == *"Archuro"* ]]; then
+        echo "Terminal profile found. Skipping installation ..."; return
+    else
+        echo "Beginning installation of Terminal profile ..."
+        open "$ARTDIR/Archuro.terminal" # XXX: opens a terminal window
+        defaults write com.apple.Terminal 'Default Window Settings' -string 'Archuro'
+        defaults write com.apple.Terminal 'Startup Window Settings' -string 'Archuro'
+        osascript -e 'tell application "Terminal" to close first window'
+        echo "Completed installation of Terminal profile ..."
+        echo "Changes will take effect after all Terminal windows are closed."
+    fi
+}
+
+# Install development tools
+function install_development_tools {
+    if [[ "$OSTYPE" == darwin* ]]; then
+        install_terminal_profile_macos
+    fi
+    install_powerlevel10k
+}
+
+# Install Docker Desktop and Terminal Completions
+#
+# @requires A 64-bit Intel CPU
+# @requires macOS High Sierra (10.13) (or higher)
+# @requires Command Line Tools (CLT) for Xcode: xcode-select --install, developer.apple.com/downloads or Xcode
+# @requires A Bourne-compatible shell for installation (e.g. bash or zsh)
+# @todo Improve speed
+
+# =========================================================================== #
+# 040 >>- SECURITY TOOLS
+# =================================================================== #
+
+# Install WireGuard for macOS
+# @expects $OSTYPE == darwin*
+# @requires mas
+function install_wireguard_macos {
+    if [ -z "$(mas info 1451685025)" ]; then
+        echo "Beginning installation of WireGuard for macOS ..."
+        mas install 1451685025 # Installs directly from Mac App Store
+        echo "Completed installation of WireGuard for macOS ..."
+    else
+        echo "WireGuard found. Skipping installation ..."
+    fi
+}
+
+# Install Bitwarden for macOS
+# @expects $OSTYPE == darwin*
+# @requires mas
+function install_bitwarden_macos {
+    if [ -z "$(mas info 1352778147)" ]; then
+        echo "Beginning installation of Bitwarden for macOS ..."
+        mas install 1352778147 # Installs directly from Mac App Store
+        echo "Completed installation of Bitwarden for macOS ..."
+    else
+        echo "Bitwarden found. Skipping installation ..."
+    fi
+}
+
+# Install security tools for macOS
+# @expects $OSTYPE == darwin*
+# @requires mas
+function install_security_tools_macos {
+    install_bitwarden_macos
+    install_wireguard_macos
+}
+
+# Install security tools
+function install_security_tools {
+    [[ "$OSTYPE" == darwin* ]] && install_security_tools_macos
+}
+
+# =========================================================================== #
+# 050 >>- PRODUCTIVITY TOOLS
+# =================================================================== #
+
+# Install Z for quickly changing directories
+# @requires chmod, curl, tar
+function install_z {
+    if test -f "$BINDIR/z.sh"; then
+        echo "Z found. Skipping installation ..."
+    else
+        echo "Beginning installation of Z ..."
+        mkdir -p "$TMPDIR/z" && cd "$_"
+        curl -#Lo - https://github.com/rupa/z/archive/v1.9.tar.gz | tar xz --strip-components=1
+        chmod +x z.sh
+        mv z.sh "$BINDIR" # must be sourced subsequently
+        echo "Completed installation of Z ..."
+    fi
+}
+
+# Install FFmpeg from latest snapshot <https://evermeet.cx/ffmpeg/>
+# @requires chmod, curl, tar
+function install_ffmpeg {
+    if hash ffmpeg 2>/dev/null; then
+        echo "FFmpeg found. Skipping installation ..."
+    else
+        echo "Beginning installation of FFmpeg ..."
+        mkdir -p "$TMPDIR" && cd "$_"
+        curl -#Lo - https://evermeet.cx/pub/ffmpeg/snapshots/ffmpeg-95291-g5345965b3f.zip | tar xz
+        chmod +x ffmpeg
+        mv ffmpeg "$BINDIR"
+        echo "Completed installation of FFmpeg at 2019-10-09 snapshot ..."
+    fi
+}
+
+# Install pngquant from gzipped release tarball in git repository
+# install_pngquant () {
+#     if hash pngquant 2>/dev/null; then
+#         echo "PNGQuant found. Skipping installation ..."
+#     else
+#         echo "Beginning installation of PNGQuant ..."
+#         mkdir -p "$TMPDIR/pngquant" && cd "$_"
+#         curl -#Lo - https://github.com/kornelski/pngquant/archive/2.12.5.tar.gz | tar xz --strip-components=1
+#         chmod +x pngquant
+#         mv pngquant "$BINDIR"
+#         echo "Completed installation of PNGQuant at v2.12.5 ..."
+#     fi
+# }
+
+# Install productivity tools
+function install_productivity_tools {
+    install_z
+    install_ffmpeg
+    # install_pngquant
+}
+
+# =========================================================================== #
+# 060 >>- CUSTOM DEPENDENCES
+# =================================================================== #
+
+# Install Homebrew dependencies
+# @expects $OSTYPE == darwin*
+# @requires [command] brew, mas
+function install_custom_tools_macos {
+    echo "Beginning installation of custom Homebrew dependencies ..."
+    if [ -f "$HOME/.Brewfile" ]; then
+        HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --no-upgrade --global
+    else
+        echo "Global Brewfile not found. Skipping installation ..."
+    fi
+    echo "Completed installation of custom Homebrew dependencies ..."
+}
+
+# Upgrade Homebrew dependencies
+# @expects $OSTYPE == darwin*
+# @requires [command] brew, mas
+function update_custom_tools_macos {
+    echo "Beginning update of custom Homebrew dependencies ..."
+    if [ -f "$HOME/.Brewfile" ]; then
+        brew bundle --global
+    else
+        echo "Global Brewfile not found. Skipping update ..."
+    fi
+    echo "Completed update of custom Homebrew dependencies ..."
+}
+
+# Install other dependencies
+function install_custom_tools {
+    [[ "$OSTYPE" == darwin* ]] && install_custom_tools_macos
+}
+
+# Update other dependencies
+function update_custom_tools {
+    [[ "$OSTYPE" == darwin* ]] && update_custom_tools_macos
+}
+
+# =========================================================================== #
+# HE DOVE INTO THE ICY WATER
+# =================================================================== #
+
+# color chart <https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg>
+
+grey=`tput setaf 239`
+red=`tput setaf 1`
+green=`tput setaf 2`
+magenta=`tput setaf 5`
+reset=`tput sgr0`
+bold=`tput bold`
+
+function print_help_message {
+    echo "archuro (Archuro) version 0.1.0"
+    echo
+    echo "SYNOPSIS"
+    echo
+    echo "    ${magenta}archuro${reset} ${grey}[COMMAND] [OPTION ...]${reset}"
+    echo
+    echo "COMMANDS"
+    echo
+    echo "    ${green}attach${reset}       ${grey}Attach to a running archlinux tty${reset}"
+    echo "    ${green}init${reset}         ${grey}Initialise build system${reset}                 ${green}-S, --stow${reset}   ${grey}Stow dotfiles${reset}"
+    echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}  ${grey}Ingore conflicts${reset}"
+    echo "    ${green}ls${reset}           ${grey}List available archlinux images${reset}"
+    echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-a, --all${reset}    ${grey}Include stopped${reset}"
+    echo "    ${green}stop${reset}         ${grey}Stop all running archlinux containers${reset}"
+    echo "    ${green}tty${reset}          ${grey}Start interactive archlinux tty${reset}"
+    echo "    ${green}update${reset}       ${grey}Update optional packages${reset}"
+    echo
+    echo "OPTIONS"
+    echo
+    echo "    ${green}-h, --help${reset}   ${grey}Show this help message${reset}"
+    echo
+    echo "Report bugs to: <https:/codeberg.org/vhs/archuro>"
+    echo "Archuro is free software licensed under the ${bold}GNU GPLv3+${reset}."
+}
+
+# Run program
+if [ $# -eq 0 ]; then
+    print_help_message
+    exit 0
+else
+    case "$1" in
+    "attach" | "a")
+        echo "${bold}TODO${reset} impment ..."
+        ;;
+    "init")
+        test "$2" = "-S" || test "$2" = "--stow" && UARG_STOW_DOTFILES=1
+        echo "${green}000 ${magenta}>>- ${green}BUILD ESSENTIALS ...${reset}"
+        install_build_essentials
+        echo "${green}000 ${magenta}>>- ${green}STOW DOTFILES ...${reset}"
+        [[ $UARG_STOW_DOTFILES -eq 1 ]] && stow_dotfiles
+        ;;
+    "update" | "up" | "install" | "ins" | "i")
+        test "$2" = "-f" || test "$2" = "--force" && UARG_FORCED_INSTALL=1
+        [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${red}Katarina! Katarina! ...${reset}"
+        echo "${green}010 ${magenta}>>- ${green}SHELL ENVIRONMENT${reset}"
+        configure_shell_environment
+        echo "${green}020 ${magenta}>>- ${green}SYSADMIN TOOLS${reset}"
+        install_sysadmin_tools
+        echo "${green}030 ${magenta}>>- ${green}DEVELOPMENT TOOLS${reset}"
+        install_development_tools
+        echo "${green}040 ${magenta}>>- ${green}SECURITY TOOLS${reset}"
+        install_security_tools
+        echo "${green}050 ${magenta}>>- ${green}PRODUCTIVITY TOOLS${reset}"
+        install_productivity_tools
+        echo "${green}060 ${magenta}>>- ${green}CUSTOM DEPENDENCIES${reset}"
+        install_custom_tools
+        [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${magenta}Archuro!${reset}"
+        ;;
+    "tty" | "t")
+        docker run -e LANG=en_US.utf8 -e TERM -it --rm archlinux/base bash -uexc '
+  pacman -Sy --noconfirm zsh git
+  git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
+  cd ~/powerlevel10k
+  exec zsh'
+        docker tag "$(docker images -q | head -1)" archuro
+        ;;
+    "ls")
+        echo "REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE"
+        docker images | grep archlinux # XXX: --filter based on image tag 'archuro'
+        ;;
+    "ps")
+        case "$2" in
+        "-a" | "--all")
+            docker container ls | grep archlinux # XXX: --filter based on image tag 'archuro'
+            ;;
+        *)
+            docker container ls -a | grep archlinux # XXX: --filter based on image tag 'archuro'
+            ;;
+        esac
+        ;;
+    "-h" | "--help")
+        print_help_message
+        ;;
+    *)
+        print_help_message
+        ;;
+    esac
+    exit 0
+fi
+
+# # Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
+# # as the default shell so we start by checking the current shell and emulating
+# # sh in the Z shell case and use a more portable, POSIX-compliant profile.
+# if [[ "${SHELL##/*/}" == "zsh" ]]; then
+#     [ -e ~/.profile ] && emulate sh -c 'source ~/.profile' # https://support.apple.com/en-us/HT208050
+#     echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
+# fi
+
+# echo "Installation finshed without error."
+# echo "Please use GNU Stow to symlink your dotfiles."
+# if $OSTYPE == darwin*; then
+#     echo "Modify custom tools from ~/.Brewfile once symlinked."
+# fi
+
+# # source "$HOME/.profile"
+# exit 0
+
+# =========================================================================== #
+# AND THEY BOTH DROWNED
+# =================================================================== #
+
+
+# <<- MARKDOWN
+#
+# [FiraCode]: https://github.com/tonsky/FiraCode "Monospaced font with programming ligatures."
+# [Terminal]: https://support.apple.com/guide/terminal/welcome/mac "Terminal on Mac."
+# [Bash 5]: https://www.gnu.org/software/bash/ "Bash is the Bourne Again SHell."
+# [iTerm2]: https://gitlab.com/gnachman/iterm2/ "Issues site for iTerm2. Mirrored from https://github.com/gnachman/iTerm2."
+# [Toybox]: https://github.com/landley/toybox "An all-in-one Linux command line."
+# [Hyper]: https://github.com/zeit/hyper "Terminal built on web technologies."
+# [Arch Linux]: https://www.archlinux.org "A simple, lightweight distribution."
+# [Powerlevel10k]: https://github.com/romkatv/powerlevel10k "A fast reimplementation of Powerlevel9k ZSH theme."
+# [Vim]: https://github.com/vim/vim "A highly configurable text editor"
+# [gruvbox]: https://github.com/morhetz/gruvbox "Retro groove color scheme for Vim."
+# [NeoVim]: https://github.com/neovim/neovim "Vim-fork focused on extensibility and usability."
+# [Verminal]: https://github.com/defringe/verminal "A Hyper theme."
+# [tmux]: https://github.com/tmux/tmux "Terminal multiplexer."
+# [xhyve]: https://github.com/machyve/xhyve "A lightweight OS X virtualization solution."
+# [VS Code]: https://code.visualstudio.com/ "A code editor redefined and optimized for building and debugging modern web and cloud applications."
+# [Homebrew]: https://github.com/Homebrew/brew "The missing package manager for macOS."
+# [Rectangle]: https://github.com/rxhanson/Rectangle
+# [Spectacle]: https://github.com/eczarny/spectacle "Spectacle allows you to organize your windows without using a mouse."
+# [Slate]: https://github.com/jigish/slate "A window management application."
+# [ShiftIt]: https://github.com/fikovnik/ShiftIt "Managing windows size and position in macOS with Hammerscript and Lua."
+# [Podman]: https://github.com/containers/libpod "A library used to create container pods."
+# [Docker Desktop for Mac]: https://docs.docker.com/docker-for-mac/ "Docker is a full development platform for creating containerized applications. Docker Desktop is the best way to get started with Docker on Mac."
+# [ffmpeg]: https://ffmpeg.org/ "A command line-only program that allows you to convert videos and audio into different formats, as well as record live audio and video."
+# [tldr]: https://tldr.sh "Simplified and community-driven man pages"
+# 
+# EOF

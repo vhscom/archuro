@@ -1,0 +1,54 @@
+# .zshrc interactive shell configuration for zsh
+
+#
+# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+#
+# This file is part of Archuro.
+#
+# Archuro is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Archuro is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# Source Bourne shell profile if exists
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+
+# Jump around
+[[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
+
+# Powerlevel10k (p10k) theme
+[[ -r /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme ]] && \
+    . /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && . ~/.p10k.zsh
+
+# Run Arch Linux when Hyper is opened given requirements
+# @requires [command] docker
+# @requires [command] archuro
+# [[ "$TERM_PROGRAM" == "Hyper" ]] && [[ -x "$(command -v archuro)" ]] && \
+#     [[ -x "$(command -v docker)" ]] && archuro tty
+
+# $ git log --no-merges --pretty=format:"%ae" | stats
+# # => 514 a@example.com
+# # => 200 b@example.com
+function stats () {
+    sort | uniq -c | sort -r
+}
+
+# $ color
+function color () {
+    for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
+}
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh

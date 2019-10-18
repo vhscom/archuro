@@ -1,0 +1,40 @@
+# .bashrc interactive shell configuration for bash
+
+#
+# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+#
+# This file is part of Archuro.
+#
+# Archuro is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Archuro is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# Load Bourne shell profile if exists
+[[ -e ~/.profile ]] && sh -c 'source ~/.profile'
+
+# Jump around
+# @see [command] .. in `dot-profile`
+[[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
+
+# Bind Ctrl+p so that it starts an Archruo tty
+# @see https://askubuntu.com/a/749017/401660
+bind -x '"\C-p":archuro tty'
+
+# Command completions for Bash 4.1+ (Homebrew compatabile)
+[[ $PS1 && -f "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
+    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d" && \
+    . "/usr/local/etc/profile.d/bash_completion.sh"
+
+# Command completions for Kitty
+[[ -x "$(command -v kitty)" ]] && . <(kitty + complete setup bash)
+

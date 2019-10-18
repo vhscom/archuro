@@ -1,0 +1,71 @@
+# .profile sourced automatically by bash and manually in zshrc
+
+#
+# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+#
+# This file is part of Archuro.
+#
+# Archuro is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Archuro is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# Miminalist prompt with color, i.e. user@host:~/directory $ 
+export PS1="\[$(tput bold)$(tput setb 4)$(tput setaf 7)\]\u@\h:\w $ \[$(tput sgr0)\]"
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
+alias ll="ls -lhAG" # Colorized with -G
+alias ..="cd .."
+alias tree="tree -C" # Colorized with -C
+
+#
+# Git
+#
+alias g='git'
+alias ga='git add'
+alias gbr='git branch'
+alias gcl='git clone'
+alias gd='git diff'
+alias gf='git fetch'
+alias gl='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
+alias gr='git rm'
+alias gp='git push'
+alias gs='git status -s'
+alias gu='git pull'
+alias gch='git checkout'
+
+gc () {
+  args="$@"
+  git commit -m "$args"
+}
+gca () {
+  args="$@"
+  git commit --amend -m "$args"
+}
+gcp () {
+  title="$@"
+  git commit -am "$title" && git push -u origin
+}
+
+#
+# Hugo
+#
+alias hs="hugo && hugo serve --buildDrafts --navigateToChanged"
+alias hd="hugo && hugo deploy --invalidateCDN"
+
+#
+# Docker
+#
+alias dk="docker"
+alias dh="docker images -q | head -1"
+alias dc="docker-compose"

@@ -1,0 +1,100 @@
+# Homebrew Bundle - Bundler for non-Ruby dependencies from Homebrew.
+
+#
+# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+#
+# This file is part of Archuro.
+#
+# Archuro is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published
+# by the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Archuro is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+
+# @see https://thoughtbot.com/blog/brewfile-a-gemfile-but-for-homebrew
+# @see https://github.com/Homebrew/homebrew-bundle
+
+# Install FFMpeg with all options
+# Usage: brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
+ALL_FFMPEG_OPTIONS=`brew options ffmpeg | grep -vE '\s' | grep -- '--with-'`.gsub("--", "").split("\n")
+
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "mas-cli/tap"
+# ... possibly more tap commands here 
+
+# 000 >>- BUILD ESSENTIALS
+brew "stow"
+brew "mas"
+
+# 010 >>- SHELL ENVIRONMENT
+brew "bash-completion@2" # programmable completion for bash@4.1+
+cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
+cask "hyper"
+cask "kitty"
+cask "visual-studio-code"
+cask "imageoptim"
+cask "telegram-desktop"
+# ... possibly more commands here
+
+# 020 >>- SYSADMIN TOOLS
+brew "tmux"
+brew "mosh"
+# ... possibly more commands here
+
+# 030 >>- DEVELOPER TOOLS
+brew "cmake"
+brew "emacs"
+brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
+brew "fzf"
+brew "git"
+brew "go"
+brew "hugo"
+brew "jq"
+brew "shellcheck"
+brew "sqlite"
+brew "mono"
+brew "neovim"
+brew "openssl"
+brew "pngquant"
+brew "python"
+brew "sip"
+brew "socat"
+brew "tcpdump"
+brew "tree"
+brew "yamllint"
+brew "yarn"
+brew "wget"
+cask "vivaldi"
+# mas "com.apple.dt.xcode", id: 497799835
+# ... possibly more commands here
+
+# 040 >>- SECURITY TOOLS
+# mas "bitwarden", id: 1352778147
+# mas "wireguard", id: 1451685025
+# ... possibly more commands here
+
+# 050 >>- PRODUCTIVITY TOOLS
+brew "youtube-dl"
+cask "spectacle"
+# mas "amphetamine", id: 937984704
+# mas "parcelosx", id: 639968404
+# mas "toggldesktop", id: 957734279
+# mas "omnigraffle", id: 1142578753
+# mas "drafts", id: 1435957248
+# mas "ulysses", id: 1225570693
+# mas "mindnode", id: 1289197285
+# mas "spark", id: 1176895641
+# mas "focus", id: 777233759
+# ... possibly more commands here
