@@ -41,6 +41,7 @@ brew "mas"
 # 010 >>- SHELL ENVIRONMENT
 brew "bash-completion@2" # programmable completion for bash@4.1+
 cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
+cask "font-fira-code" # installed as a convenience (not patched with nerd icons afaik)
 cask "hyper"
 cask "kitty"
 cask "visual-studio-code"
@@ -87,7 +88,7 @@ cask "vivaldi"
 
 # 050 >>- PRODUCTIVITY TOOLS
 brew "youtube-dl"
-cask "spectacle"
+cask "rectangle"
 # mas "amphetamine", id: 937984704
 # mas "parcelosx", id: 639968404
 # mas "toggldesktop", id: 957734279
