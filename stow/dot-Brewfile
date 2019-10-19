@@ -43,42 +43,60 @@ brew "bash-completion@2" # programmable completion for bash@4.1+
 cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
 cask "font-fira-code" # installed as a convenience (not patched with nerd icons afaik)
 cask "hyper"
-cask "kitty"
-cask "visual-studio-code"
 cask "imageoptim"
+cask "kitty"
 cask "telegram-desktop"
+cask "visual-studio-code"
 # ... possibly more commands here
 
 # 020 >>- SYSADMIN TOOLS
-brew "tmux"
 brew "mosh"
+brew "neofetch"
+brew "tmux"
 # ... possibly more commands here
 
 # 030 >>- DEVELOPER TOOLS
 brew "cmake"
+# mas "com.apple.dt.xcode", id: 497799835
+brew "elasticsearch"
+cask "elasticwolf"
 brew "emacs"
 brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
 brew "fzf"
 brew "git"
 brew "go"
 brew "hugo"
+brew "istioctl"
 brew "jq"
-brew "shellcheck"
-brew "sqlite"
+brew "kubernetes-cli"
+brew "kubernetes-helm"
+brew "kubernetes-service-catalog-client"
+brew "mongodb"
+brew "mongodb-compass"
 brew "mono"
+brew "navicat-for-postgresql" # @see https://www.navicat.com/en/products/navicat-for-postgresql
 brew "neovim"
 brew "openssl"
 brew "pngquant"
+brew "postgresql"
+brew "prometheus"
 brew "python"
+brew "redis"
+brew "rust"
+brew "rustc-completion"
+brew "rustup-init"
+brew "shellcheck"
 brew "sip"
 brew "socat"
 brew "tcpdump"
+brew "traefik"
+brew "sqlite"
 brew "tree"
+brew "wget"
 brew "yamllint"
 brew "yarn"
-brew "wget"
+cask "graphql-playground"
 cask "vivaldi"
-# mas "com.apple.dt.xcode", id: 497799835
 # ... possibly more commands here
 
 # 040 >>- SECURITY TOOLS
@@ -87,15 +105,15 @@ cask "vivaldi"
 # ... possibly more commands here
 
 # 050 >>- PRODUCTIVITY TOOLS
-brew "youtube-dl"
-cask "rectangle"
 # mas "amphetamine", id: 937984704
-# mas "parcelosx", id: 639968404
-# mas "toggldesktop", id: 957734279
-# mas "omnigraffle", id: 1142578753
 # mas "drafts", id: 1435957248
-# mas "ulysses", id: 1225570693
-# mas "mindnode", id: 1289197285
-# mas "spark", id: 1176895641
 # mas "focus", id: 777233759
+# mas "mindnode", id: 1289197285
+# mas "omnigraffle", id: 1142578753
+# mas "parcelosx", id: 639968404
+cask "rectangle"
+# mas "spark", id: 1176895641
+# mas "toggldesktop", id: 957734279
+brew "youtube-dl"
+# mas "ulysses", id: 1225570693
 # ... possibly more commands here
