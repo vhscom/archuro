@@ -5,8 +5,8 @@ Portable Arch Linux development workflow for macOS Catalina.
 ## Features
 
 - CLI to manage Arch Linux containers on macOS Catalina
+- Hotkey access to arch container via `archuro tty` command using `Ctrl+p`
 - 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty), [Hyper](https://hyper.is) (open on macOS and type `hyper i verminal` for translucency)
-- Hotkey access to `archuro tty` command using `Ctrl+p` (Bash 5 only for now)
 - SCM-friendly dotfile management using GNU Stow
 - Bash 5 with patches and programmable command completions
 - Opinionated Brew manifest with customizable dependencies
@@ -17,6 +17,10 @@ Portable Arch Linux development workflow for macOS Catalina.
 ## Screenshot
 
 ![archuro cli](./screenshots/photo_2019-10-19_01.50.16.jpeg)
+
+## Demo
+
+See MP4s in [`screenshots`](./screenshots) folder.
 
 ## Installation
 

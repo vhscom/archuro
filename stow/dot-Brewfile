@@ -65,6 +65,7 @@ brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
 brew "fzf"
 brew "git"
 brew "go"
+cask "graphql-playground"
 brew "hugo"
 brew "istioctl"
 brew "jq"
@@ -88,15 +89,15 @@ brew "rustup-init"
 brew "shellcheck"
 brew "sip"
 brew "socat"
+brew "sqlite"
 brew "tcpdump"
 brew "traefik"
-brew "sqlite"
 brew "tree"
+cask "vivaldi"
 brew "wget"
 brew "yamllint"
+brew "youtube-dl"
 brew "yarn"
-cask "graphql-playground"
-cask "vivaldi"
 # ... possibly more commands here
 
 # 040 >>- SECURITY TOOLS
@@ -114,6 +115,5 @@ cask "vivaldi"
 cask "rectangle"
 # mas "spark", id: 1176895641
 # mas "toggldesktop", id: 957734279
-brew "youtube-dl"
 # mas "ulysses", id: 1225570693
 # ... possibly more commands here
