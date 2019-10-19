@@ -58,8 +58,9 @@ brew "tmux"
 # 030 >>- DEVELOPER TOOLS
 brew "cmake"
 # mas "com.apple.dt.xcode", id: 497799835
-brew "elasticsearch"
-cask "elasticwolf"
+# cask "adoptopenjdk8"
+# brew "elasticsearch" # @requires [cask] adoptopenjdk8
+# cask "elasticwolf"
 brew "emacs"
 brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
 brew "fzf"
@@ -67,15 +68,16 @@ brew "git"
 brew "go"
 cask "graphql-playground"
 brew "hugo"
+brew "imagemagick"
 brew "istioctl"
 brew "jq"
-brew "kubernetes-cli"
+# brew "kubernetes-cli" Target /usr/local/bin/kubectl already exists via Docker Desktop.
 brew "kubernetes-helm"
 brew "kubernetes-service-catalog-client"
-brew "mongodb"
-brew "mongodb-compass"
+# brew "mongodb"
+# brew "mongodb-compass"
 brew "mono"
-brew "navicat-for-postgresql" # @see https://www.navicat.com/en/products/navicat-for-postgresql
+# brew "navicat-for-postgresql" # @see https://www.navicat.com/en/products/navicat-for-postgresql
 brew "neovim"
 brew "openssl"
 brew "pngquant"

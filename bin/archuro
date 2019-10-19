@@ -616,10 +616,10 @@ function print_help_message {
     echo "COMMANDS"
     echo
     echo "    ${green}attach${reset}       ${grey}Attach to a running archlinux tty${reset}"
-    echo "    ${green}init${reset}         ${grey}Initialise build system${reset}                 ${green}-S, --stow${reset}   ${grey}Stow dotfiles${reset}"
-    echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}  ${grey}Ingore conflicts${reset}"
+    echo "    ${green}init${reset}         ${grey}Initialise build system${reset}                 ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
+    echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
     echo "    ${green}ls${reset}           ${grey}List available archlinux images${reset}"
-    echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-a, --all${reset}    ${grey}Include stopped${reset}"
+    echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
     echo "    ${green}stop${reset}         ${grey}Stop all running archlinux containers${reset}"
     echo "    ${green}tty${reset}          ${grey}Start interactive archlinux tty${reset}"
     echo "    ${green}update${reset}       ${grey}Update optional packages${reset}"
@@ -639,7 +639,21 @@ if [ $# -eq 0 ]; then
 else
     case "$1" in
     "attach" | "a")
-        echo "${bold}TODO${reset} impment ..."
+        attachid="$(archuro ps -q | head -1)"
+        if [[ -z "$attachid" ]]; then
+            echo "Cannot attach to a container. No running containers found."
+            echo "Do you wish to start a new archuro tty now?"
+            select yn in "Yes" "No"; do
+                case $yn in
+                    Yes ) archuro tty; break;;
+                    No ) exit;;
+                esac
+            done
+        else
+            echo "Running container ${attachid} found. Attaching ..."
+            sleep 3
+            docker attach "$attachid"
+        fi
         ;;
     "init")
         test "$2" = "-S" || test "$2" = "--stow" && UARG_STOW_DOTFILES=1
@@ -681,11 +695,12 @@ else
         ;;
     "ps")
         case "$2" in
-        "-a" | "--all")
-            docker container ls | grep archlinux # XXX: --filter based on image tag 'archuro'
+        "-q" | "--quiet")
+            archuro ps | cut -c 1-12 | sed -n '1!p'
             ;;
         *)
-            docker container ls -a | grep archlinux # XXX: --filter based on image tag 'archuro'
+            echo "CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS              PORTS"
+            docker container ls | grep archlinux # XXX: --filter based on image tag 'archuro'
             ;;
         esac
         ;;
