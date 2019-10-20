@@ -4,15 +4,15 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Features
 
-- Installs Bash 5, patches and command completions from source
-- 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
+- Installs Bash 5 and patches directly from source
 - Provides `archuro` CLI to manage Arch Linux containers on macOS Catalina
 - Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
-- Adds a custom Terminal profile named Archuro for Mac
-- SCM-friendly dotfile management using GNU Stow (optional)
-- Opionated Brew manifest with customizable dependencies
+- 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
+- Opinionated Brew manifest with customizable dependencies
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for Zsh shells with optional shared config
+- Creates a custom profile named Archuro for Mac's Terminal app
+- SCM-friendly dotfile management using GNU Stow
 - Vivialdi web browser for productivity and development
-- Powerlevel10k for Zsh shells on macOS and Linux
 
 ## Screenshot
 
@@ -20,21 +20,32 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Demo
 
-Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) directory.
+Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) directory to access them.
 
 ## Installation
 
 1. Copy repository source code.
-2. `make install` to install `archuro` binary to `/usr/local/bin`.
-3. `archuro init` to initialize build system. Add `-S` to proceed with GNU Stow.
-4. `archuro install` to install dependencies.
-5. In a terminal run `bash` then `Ctrl+p` for hotkey access to `archuro tty`.
+2. Run `make install` to move `bin/archuro` to `/usr/local/bin`.
+3. Run `archuro init` to install build essentials. Add `-S` to proceed with GNU Stow.
+4. Finally, run `archuro install` to install dependencies.
 
 To uninstall run `make uninstall` from project root directory.
 
 ## Usage
 
-Once you've stowed you can use `brew bundle` just like you normally would. The thing to keep in mind is that some dependencies are built from source and therefore are not designed to be managed by Homebrew. Homebrew will error on these things. And that may be OK if the intention is not to replace exiting binaries as they may be shared between mountpoints across systems.
+- The `attach` command connects to a running `archlinux` container.
+- If an archlinux container isn't running, start one with `archuro tty`.
+- View running container info with the `archuro ps` command.
+- Leave a tty running backgrounded by closing it without `exit`.
+- Run `archuro update` to update Homebrew dependencies.
+
+Run `archuro --help` after installation for usage instructions.
+
+Once you've stowed with `archuro init -S` you may continue using `brew bundle` just like you normally would. Keep in mind Archuro builds some dependendencies from source so there may be conflicts though brew handles them like a champ.
+
+## Extended builds
+
+Run `archuro save` to build and tag an `extended` image. Update `Dockerfile` to customize build as desired. Rerun `archuro save` anytime to tag a new image. View all `archlinux` images by running `archuro ls`.
 
 ### Sharing dotfiles
 
