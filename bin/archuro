@@ -312,10 +312,31 @@ function configure_shell_environment {
 # 020 >>- SYSADMIN TOOLS
 # =================================================================== #
 
+# Install htop - an interactive viewer for unix
+# @see https://hisham.hm/htop/
+# @requires [command -y] sudo
+# @requires [command -y] curl
+# @requires [command -y] tar
+# @uses $TMPDIR temporary directory
+# @uses $BINDIR target directory
+function install_htop {
+    if hash htop 2>/dev/null; then
+        echo "Htop found. Skipping installation ..."
+    else
+        echo "Beginning installation of Htop ..."
+        mkdir -p "$TMPDIR/htop" && cd "$_"
+        curl -#Lo - https://hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz | tar xz --strip-components=1
+        ./configure; make; sudo make install
+        echo "Completed installation of Htop ..."
+    fi
+}
+
 # Install TLDR bash client if not installed
-# @requires curl, chmod, tar
+# @requires [command -y] curl
+# @requires [command -y] chmod
+# @requires [command -y] tar
 # @env $TMPDIR temporary directory
-# @env $BINDIR destination directory
+# @env $BINDIR target directory
 function install_tldr {
     if hash tldr 2>/dev/null; then
         echo "TLDR found. Skipping installation ..."
@@ -323,8 +344,7 @@ function install_tldr {
         echo "Beginning installation of TLDR ..."
         mkdir -p "$TMPDIR/tldr" && cd "$_"
         curl -#Lo - https://github.com/pepa65/tldr-bash-client/archive/v0.44.tar.gz | tar xz --strip-components=1
-        chmod +x tldr
-        mv tldr "$BINDIR/tldr"
+        chmod +x tldr && mv tldr "$BINDIR/tldr"
         echo "Completed installation of TLDR at v0.44 ..."
     fi
 }
@@ -346,41 +366,42 @@ function install_stow {
     # fi
 }
 
-# Install lynx text mode web browser
-# install_lynx () {
-#     if hash lynx 2>/dev/null; then
-#         echo "Lynx found. Skipping instalation ..."
-#     else
-#         echo "Beginning installation of Lynx ..."
-#         mkdir -p "$TMPDIR/lynx" && cd "$_"
-#         curl -#Lo - https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.gz | tar xz --strip-components=1
-#         ./configure && make
-#         make install && make install-help
-#         echo "Completed installation of Lynx at v2.8.9 (2018-07-08) ..."
-#     fi
-# }
+# Install Lynx text mode web browser
+function install_lynx {
+    if hash lynx 2>/dev/null; then
+        echo "Lynx found. Skipping installation ..."
+    else
+        echo "Beginning installation of Lynx ..."
+        mkdir -p "$TMPDIR/lynx" && cd "$_"
+        curl -#Lo - https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.gz | tar xz --strip-components=1
+        ./configure && make
+        make install && make install-help
+        echo "Completed installation of Lynx at v2.8.9 (2018-07-08) ..."
+    fi
+}
 
 # Install tmux for terminal multiplexing
-# install_tmux () {
-#     if hash tmux 2>/dev/null; then
-#         echo "tmux found. Skipping installation ..."
-#     else
-#         echo "Beginning installation of tmux ..."
-#         mkdir -p "$TMPDIR/tmux" && cd "$_"
-#         url=curl -s https://api.github.com/repos/tmux/tmux/releases/latest | grep browser_download_url | grep 'tar[.]gz' | cut -d '"' -f 4
-#         curl -#Lo - "$url" | tar xz --strip-components=1
-#         ./configure && make
-#         make install
-#         echo "Completed installation of tmux ..."
-#     fi
-# }
+function install_tmux {
+    if hash tmux 2>/dev/null; then
+        echo "Tmux found. Skipping installation ..."
+    else
+        echo "Beginning installation of tmux ..."
+        mkdir -p "$TMPDIR/tmux" && cd "$_"
+        url=curl -s https://api.github.com/repos/tmux/tmux/releases/latest | grep browser_download_url | grep 'tar[.]gz' | cut -d '"' -f 4
+        curl -#Lo - "$url" | tar xz --strip-components=1
+        ./configure && make
+        make install
+        echo "Completed installation of tmux ..."
+    fi
+}
 
 # Install system administration tools
 function install_sysadmin_tools {
+    install_htop
     install_tldr
     install_stow
-    # install_lynx
-    # install_tmux
+    install_lynx
+    install_tmux
 }
 
 # =========================================================================== #
@@ -624,8 +645,9 @@ else
         test "$2" = "-S" || test "$2" = "--stow" && UARG_STOW_DOTFILES=1
         echo "${green}000 ${magenta}>>- ${green}BUILD ESSENTIALS ...${reset}"
         install_build_essentials
-        echo "${green}000 ${magenta}>>- ${green}STOW DOTFILES ...${reset}"
-        [[ $UARG_STOW_DOTFILES -eq 1 ]] && stow_dotfiles
+        [[ $UARG_STOW_DOTFILES -eq 1 ]] && \
+            echo "${green}000 ${magenta}>>- ${green}STOW DOTFILES ...${reset}" && \
+            stow_dotfiles
         ;;
     "update" | "up" | "install" | "ins" | "i")
         test "$2" = "-f" || test "$2" = "--force" && UARG_FORCED_INSTALL=1
