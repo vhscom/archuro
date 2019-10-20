@@ -101,6 +101,7 @@ set -e
 
 # TODO
 #
+# - [ ] Update bash config to display PS1 just like arch linux
 # - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
 # - [ ] Touchbar buttons for man (and tldr) similar to Terminal
 # - [x] Bash completions
@@ -108,7 +109,7 @@ set -e
 # - [ ] Zsh completions
 # - [ ] Integrate [Packer] ([Example `Makefile`](https://stackoverflow.com/a/33594470/712334))
 # - [ ] [Pamac] (install using [Yay]) ([instructions](https://switchedtolinux.com/installing-pamac-on-arch-with-yay/))
-# - [ ] Consider how to meld with [Linux Brew](https://docs.brew.sh/Homebrew-on-Linux) manifest
+# - [x] Consider how to meld with [Linux Brew](https://docs.brew.sh/Homebrew-on-Linux) manifest
 # - [ ] Set p10k configuration at login/prompt for Zsh (whatever that meant)
 # - [ ] Create docker volume and mount
 # - [ ] Run configuration after Arch is up and running
@@ -177,6 +178,7 @@ function install_xcode_clt {
 
 # Install GNU Stow for managing dotfiles if not installed
 # @env $TMPDIR temporary directory
+# @expects [command] pacman if [ $OSTYPE = linux-gnu ]
 # @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
 # @see https://github.com/idcrook/i-dotfiles/tree/master/stow
 function install_stow {
@@ -184,10 +186,30 @@ function install_stow {
         echo "GNU Stow found. Skipping ..."
     else
         echo "Beginning installation of Stow ..."
-        mkdir -p "$TMPDIR/stow" && cd "$_"
-        curl -#Lo - https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz --strip-components=1
-        ./configure; make; sudo make install
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing from source ..."
+            mkdir -p "$TMPDIR/stow" && cd "$_"
+            curl -#Lo - https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz --strip-components=1
+            ./configure; make; sudo make install
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S stow
+        fi
         echo "Completed installation of GNU Stow ..."
+    fi
+}
+
+# Stow dotfiles using GNU stow
+# @requires [command] stow version 2.3.1+
+# @see [command] archuro init -S
+function stow_dotfiles {
+    local re="version [3-9]\.[3-9]\d?\.[1-9]\d?|version \d{2}.*|version [2-9]\.([3-9]|\d{2}).[1-9]"
+    if hash stow 2>/dev/null && stow -h | head -n 1 | grep -qE "$re"; then
+        echo "Creating symlink farm using 'dot-' files in 'stow' directory ..."
+        stow --dotfiles -S stow
+        echo "Completed creation of symlinks to $HOME ..."
+    else
+        echo "WARNING! Cannot stow dotfiles:"
+        echo "  * Install GNU Stow version 2.3.1 or higher to use this option"
     fi
 }
 
@@ -201,17 +223,6 @@ function install_homebrew {
         echo "Beginning installation of Homebrew ..."
         ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         echo "Homebrew installation completed ..."
-    fi
-}
-
-# Install Linux Brew
-function install_linuxbrew {
-    if hash brew 2>/dev/null; then
-        echo "Linuxbrew found. Skipping ..."
-    else
-        echo "Beginning installation of Linuxbrew ..."
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-        echo "Linuxbrew installation completed ..."
     fi
 }
 
@@ -252,22 +263,6 @@ function install_build_essentials {
     if [[ "$OSTYPE" == darwin* ]]; then
         install_build_essentials_macos
         install_docker_desktop_for_macos
-    else
-        install_linuxbrew
-    fi
-}
-
-# Stow dotfiles using GNU stow
-# @requires [command] stow version 2.3.1+
-function stow_dotfiles {
-    local re="version [3-9]\.[3-9]\d?\.[1-9]\d?|version \d{2}.*|version [2-9]\.\d\.\d"
-    if hash stow 2>/dev/null && stow -h | head -n 1 | grep -qE "$re"; then
-        echo "Creating symlink farm using 'dot-' files in 'stow' directory ..."
-        stow --dotfiles -S stow
-        echo "Completed creation of symlinks to $HOME ..."
-    else
-        echo "WARNING! Cannot stow dotfiles:"
-        echo "  * Install GNU Stow version 2.3.1 or higher to use this option"
     fi
 }
 
@@ -288,7 +283,7 @@ function stow_dotfiles {
 # @see https://ftp.gnu.org/gnu/bash/ "downloads"
 # @see http://ftpmirror.gnu.org/bash/ "download mirror"
 # @see https://scriptingosx.com/2019/02/install-bash-5-on-macos/ "instructions"
-function install_bash_5 {
+function install_bash_5_macos {
     if bash --version | grep -qE "5.0.11\(1\)-release"; then
         "$(which bash)" --version | head -1
         "$(which zsh)" --version
@@ -324,14 +319,10 @@ function install_bash_5 {
     # fi
 }
 
-# Install bash completions
-# install_bash_completions () {
-    # XXX
-# }
-
+# Configure shell environemnt
 function configure_shell_environment {
-    install_bash_5
-    # install_bash_completions
+    [[ "$OSTYPE" == darwin* ]] && install_bash_5_macos
+    continue
 }
 
 # =========================================================================== #
@@ -350,17 +341,19 @@ function install_htop {
         echo "htop found. Skipping ..."
     else
         echo "Beginning installation of htop ..."
-        mkdir -p "$TMPDIR/htop" && cd "$_"
-        curl -#Lo - https://hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz | tar xz --strip-components=1
-        ./configure; make; sudo make install
-        echo "Completed installation of htop ..."
+        if [[ "$OSTYPE" == darwin* ]]; then
+            mkdir -p "$TMPDIR/htop" && cd "$_"
+            curl -#Lo - https://hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz | tar xz --strip-components=1
+            ./configure; make; sudo make install # @requires [command ...] python, gcc
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S htop
+        fi
+        echo "Finished installation of htop ..."
     fi
 }
 
 # Install TLDR bash client if not installed
-# @requires [command -y] curl
-# @requires [command -y] chmod
-# @requires [command -y] tar
+# @requires [command ...] curl, chmod, tar
 # @env $TMPDIR temporary directory
 # @env $BINDIR target directory
 function install_tldr {
@@ -368,9 +361,14 @@ function install_tldr {
         echo "TLDR found. Skipping ..."
     else
         echo "Beginning installation of TLDR ..."
-        mkdir -p "$TMPDIR/tldr" && cd "$_"
-        curl -#Lo - https://github.com/pepa65/tldr-bash-client/archive/v0.44.tar.gz | tar xz --strip-components=1
-        chmod +x tldr && mv tldr "$BINDIR/tldr"
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing v0.44 from remote tarball ..."
+            mkdir -p "$TMPDIR/tldr" && cd "$_"
+            curl -#Lo - https://github.com/pepa65/tldr-bash-client/archive/v0.44.tar.gz | tar xz --strip-components=1
+            chmod +x tldr && mv tldr "$BINDIR/tldr"
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S tldr
+        fi 
         echo "Completed installation of TLDR at v0.44 ..."
     fi
 }
@@ -381,25 +379,37 @@ function install_lynx {
         echo "Lynx found. Skipping ..."
     else
         echo "Beginning installation of Lynx ..."
-        mkdir -p "$TMPDIR/lynx" && cd "$_"
-        curl -#Lo - https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.gz | tar xz --strip-components=1
-        ./configure && make
-        make install && make install-help
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing from source ..."
+            mkdir -p "$TMPDIR/lynx" && cd "$_"
+            curl -#Lo - https://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.9rel.1.tar.gz | tar xz --strip-components=1
+            ./configure && make
+            make install && make install-help
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S lynx
+        fi 
         echo "Completed installation of Lynx at v2.8.9 (2018-07-08) ..."
     fi
 }
 
 # Install tmux for terminal multiplexing
+# @uses [command ...] sudo, curl, make, grep - source builds
+# @uses [command] pacman - archlinux
 function install_tmux {
     if hash tmux 2>/dev/null; then
         echo "tmux found. Skipping ..."
     else
         echo "Beginning installation of tmux ..."
-        mkdir -p "$TMPDIR/tmux" && cd "$_"
-        url=curl -s https://api.github.com/repos/tmux/tmux/releases/latest | grep browser_download_url | grep 'tar[.]gz' | cut -d '"' -f 4
-        curl -#Lo - "$url" | tar xz --strip-components=1
-        ./configure && make
-        make install
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing from source ..."
+            mkdir -p "$TMPDIR/tmux" && cd "$_"
+            url=curl -s https://api.github.com/repos/tmux/tmux/releases/latest | grep browser_download_url | grep 'tar[.]gz' | cut -d '"' -f 4
+            curl -#Lo - "$url" | tar xz --strip-components=1
+            ./configure; make; sudo make install
+            make install
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S tmux
+        fi 
         echo "Completed installation of tmux ..."
     fi
 }
@@ -417,31 +427,33 @@ function install_sysadmin_tools {
 # =================================================================== #
 
 # Install Powerlevel10k for Zsh
-# @requires git
-# @assumes dotfiles symlinked
+# @expects [command] stow --dotfiles -S stow
+# @requires [command] git
 function install_powerlevel10k {
     if [ -d "$ETCDIR/powerlevel10k" ]; then
         echo "Using powerlevel10k"
     else
         echo "Beginning installation of Powerlevel10k ..."
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ETCDIR/powerlevel10k"
+        # XXX: Write below conditionally based on precence in existing dotfiles
         echo "source $ETCDIR/powerlevel10k/powerlevel10k.zsh-theme" >>- ~/.zshrc
         echo "Completed installation of Powerlevel10k ..."
     fi
 }
 
 # Install Profile for macOS Terminal
+# @expects $OSTYPE == darwin*
 function install_terminal_profile_macos {
-    all_themes=$(defaults read com.apple.Terminal 'Window Settings')
+    allthemes=$(defaults read com.apple.Terminal 'Window Settings')
     # terminal_theme=$(defaults read com.apple.Terminal 'Default Window Settings')
-    if [[ $all_themes == *"Archuro"* ]]; then
+    if [[ "$allthemes" == *"Archuro"* ]]; then
         echo "Using Archuro.terminal"; return
     else
-        echo "Beginning installation of Terminal profile ..."
-        open "$ARTDIR/Archuro.terminal" # XXX: opens a terminal window
+        echo "Beginning installation of Terminal profile ..."d
+        open "$ARTDIR/Archuro.terminal" # opens a terminal window
         defaults write com.apple.Terminal 'Default Window Settings' -string 'Archuro'
         defaults write com.apple.Terminal 'Startup Window Settings' -string 'Archuro'
-        osascript -e 'tell application "Terminal" to close first window'
+        osascript -e 'tell application "Terminal" to close first window' # closes terminal window
         echo "Completed installation of Terminal profile ..."
         echo "Changes will take effect after all Terminal windows are closed."
     fi
@@ -504,6 +516,7 @@ function install_security_tools_macos {
 # Install security tools
 function install_security_tools {
     [[ "$OSTYPE" == darwin* ]] && install_security_tools_macos
+    continue
 }
 
 # =========================================================================== #
@@ -517,10 +530,15 @@ function install_z {
         echo "Z found. Skipping ..."
     else
         echo "Beginning installation of Z ..."
-        mkdir -p "$TMPDIR/z" && cd "$_"
-        curl -#Lo - https://github.com/rupa/z/archive/v1.9.tar.gz | tar xz --strip-components=1
-        chmod +x z.sh
-        mv z.sh "$BINDIR" # must be sourced subsequently
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing from source ..."
+            mkdir -p "$TMPDIR/z" && cd "$_"
+            curl -#Lo - https://github.com/rupa/z/archive/v1.9.tar.gz | tar xz --strip-components=1
+            chmod +x z.sh
+            mv z.sh "$BINDIR" # must be sourced subsequently
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S awk z
+        fi 
         echo "Completed installation of Z ..."
     fi
 }
@@ -532,33 +550,42 @@ function install_ffmpeg {
         echo "FFmpeg found. Skipping ..."
     else
         echo "Beginning installation of FFmpeg ..."
-        mkdir -p "$TMPDIR" && cd "$_"
-        curl -#Lo - https://evermeet.cx/pub/ffmpeg/snapshots/ffmpeg-95291-g5345965b3f.zip | tar xz
-        chmod +x ffmpeg
-        mv ffmpeg "$BINDIR"
+        if [[ "$OSTYPE" == darwin* ]]; then
+            mkdir -p "$TMPDIR" && cd "$_"
+            curl -#Lo - https://evermeet.cx/pub/ffmpeg/snapshots/ffmpeg-95291-g5345965b3f.zip | tar xz
+            chmod +x ffmpeg
+            mv ffmpeg "$BINDIR"
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S ffmpeg
+        fi 
         echo "Completed installation of FFmpeg at 2019-10-09 snapshot ..."
     fi
 }
 
 # Install pngquant from gzipped release tarball in git repository
-# install_pngquant () {
-#     if hash pngquant 2>/dev/null; then
-#         echo "PNGQuant found. Skipping ..."
-#     else
-#         echo "Beginning installation of PNGQuant ..."
-#         mkdir -p "$TMPDIR/pngquant" && cd "$_"
-#         curl -#Lo - https://github.com/kornelski/pngquant/archive/2.12.5.tar.gz | tar xz --strip-components=1
-#         chmod +x pngquant
-#         mv pngquant "$BINDIR"
-#         echo "Completed installation of PNGQuant at v2.12.5 ..."
-#     fi
-# }
+install_pngquant () {
+    if hash pngquant 2>/dev/null; then
+        echo "PNGQuant found. Skipping ..."
+    else
+        echo "Beginning installation of PNGQuant ..."
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Installing from source ..."
+            mkdir -p "$TMPDIR/pngquant" && cd "$_"
+            curl -#Lo - https://github.com/kornelski/pngquant/archive/2.12.5.tar.gz | tar xz --strip-components=1
+            chmod +x pngquant
+            mv pngquant "$BINDIR"
+        elif [[ "$OSTYPE" == linux-gnu* ]]; then
+            hash pacman 2>/dev/null && pacman --noconfirm -S pngquant
+        fi 
+        echo "Completed installation of PNGQuant at v2.12.5 ..."
+    fi
+}
 
 # Install productivity tools
 function install_productivity_tools {
     install_z
     install_ffmpeg
-    # install_pngquant
+    install_pngquant
 }
 
 # =========================================================================== #
@@ -591,14 +618,16 @@ function update_custom_tools_macos {
     echo "Completed update of custom Homebrew dependencies ..."
 }
 
-# Install other dependencies
+# Install custom dependencies
 function install_custom_tools {
     [[ "$OSTYPE" == darwin* ]] && install_custom_tools_macos
+    continue
 }
 
-# Update other dependencies
+# Update custon dependencies
 function update_custom_tools {
     [[ "$OSTYPE" == darwin* ]] && update_custom_tools_macos
+    continue
 }
 
 # =========================================================================== #
@@ -628,6 +657,7 @@ function print_help_message {
     echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
     echo "    ${green}ls${reset}           ${grey}List available archlinux images${reset}"
     echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}save${reset}         ${grey}Build Dockerfile and tag latest${reset}"
     echo "    ${green}stop${reset}         ${grey}Stop all running archlinux containers${reset}"
     echo "    ${green}tty${reset}          ${grey}Start interactive archlinux tty${reset}"
     echo "    ${green}update${reset}       ${grey}Update optional packages${reset}"
@@ -703,8 +733,13 @@ else
         docker tag "$(docker images -q | head -1)" archuro
         ;;
     "ls")
-        echo "REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE"
+        echo "REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE"
         docker images | grep archlinux # XXX: --filter based on image tag 'archuro'
+        ;;
+    "save" | "s")
+        echo "Building and tagging Dockerfile image ..."
+        docker build . && docker tag $(docker image ls -q | head -1) archlinux/extended:latest
+        echo "Dockerfile $(docker image ls -q | head -1) built and tagged. Run 'archuro ls' to view it."
         ;;
     "ps")
         case "$2" in

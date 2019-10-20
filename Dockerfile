@@ -23,7 +23,8 @@
 FROM archlinux/base AS basebuilder
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
-RUN groupadd -r archuro && useradd --no-log-init -r -g archuro archuro
+# COPY stow /etc/skel/
+# RUN groupadd -r archuro && useradd --no-log-init -r -g archuro archuro
 RUN bash -uexc 'pacman -Sy --noconfirm zsh git neofetch jq'
 
 # Add p10k
@@ -31,14 +32,27 @@ FROM basebuilder AS p10kbuilder
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 RUN bash -uexc '\
-    git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k && \
-    echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc'
+    git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k'
+    # echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc' # stow dotfiles first
 
 # Add Archuro
-FROM p10kbuilder as archuro
+FROM p10kbuilder as archurobuilder
+ENV LANG=en_US.utf8
+ENV TERM=xterm-256color
+WORKDIR /root/archuro
+# RUN find . -depth -name "dot-*" -exec sh -c 'f="{}"; mv -- "$f" ".${dot-f%}"' \;
+COPY . .
+RUN ["mv","bin/archuro","/usr/bin/"]
+# # Install Archuro from origin
+# RUN bash -uexc '\
+#     git clone https:/codeberg.org/vhs/archuro.git ~/archuro && \
+#     cd "$_" && make install'
+
+# Final
+FROM archurobuilder
 EXPOSE 7005/tcp
 VOLUME ["/root/powerlevel10k","/root/archuro"]
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
-USER archuro
-WORKDIR /home/archuro
+# USER archuro
+WORKDIR /root/archuro

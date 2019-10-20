@@ -4,11 +4,11 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Features
 
+- Installs Bash 5, patches and command completions from source
 - 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
 - Provides `archuro` CLI to manage Arch Linux containers on macOS Catalina
 - Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
 - Adds a custom Terminal profile named Archuro for Mac
-- Installs Bash 5, patches and command completions from source
 - SCM-friendly dotfile management using GNU Stow (optional)
 - Opionated Brew manifest with customizable dependencies
 - Vivialdi web browser for productivity and development
@@ -35,6 +35,26 @@ To uninstall run `make uninstall` from project root directory.
 ## Usage
 
 Once you've stowed you can use `brew bundle` just like you normally would. The thing to keep in mind is that some dependencies are built from source and therefore are not designed to be managed by Homebrew. Homebrew will error on these things. And that may be OK if the intention is not to replace exiting binaries as they may be shared between mountpoints across systems.
+
+### Sharing dotfiles
+
+Share dotfiles between systems. To do so use docker to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) after building the `Dockerfile`. Specific steps described in more detail here:
+
+1. Start with `docker build .` to build the Archuro `Dockerfile` image.
+2. Tag image with `docker tag $(docker images -q | head -1) archlinux/extended:lastest`.
+3. Confirm image available with `archuro ls` which looks for `archlinux` tagged images.
+
+Then create a bind mount while starting an interactive tty with `zsh` as the shell:
+
+```sh
+docker run -it -v ~/archuro/stow:/root/archuro/stow archlinux/extended bash
+```
+
+At a `bash` prompt run `archuro init --stow` to install and symlink dotfiles. Then run `zsh` to access the Z shell and begin the configuration wizard of Powerlevel10k. If you don't see the configuration wizard it's likely because `~/.p10k.zsh` exists and was already sourced.
+
+## Exposting ports
+
+Declaring a `PORT` in a `Dockerfile` isn't enough. When running the `Dockerfile` pass the `-p` flag like `-p 8181:8080/tcp` to bind host port `8181` to `8080` of the guest.
 
 ## Package management
 

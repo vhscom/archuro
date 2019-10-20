@@ -38,6 +38,8 @@
 # [[ "$TERM_PROGRAM" == "Hyper" ]] && [[ -x "$(command -v archuro)" ]] && \
 #     [[ -x "$(command -v docker)" ]] && archuro tty
 
+# Sort duplicates grouped by count descending
+# @see [alias] gls
 # $ git log --no-merges --pretty=format:"%ae" | stats
 # # => 514 a@example.com
 # # => 200 b@example.com
@@ -45,9 +47,17 @@ function stats () {
     sort | uniq -c | sort -r
 }
 
-# $ color
+# Print terminal color code swatches
+# # => 000 001 002 003 004 005 006 007
+# # => 008 009 010 011 012 013 014 015
+# # => ...
+# # => 248 249 250 251 252 253 254 255
 function color () {
     for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
+}
+
+function scripts () {
+    cat package.json | jq '.scripts'
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
