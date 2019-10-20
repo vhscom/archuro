@@ -4,15 +4,15 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Features
 
-- CLI to manage Arch Linux containers on macOS Catalina
-- Hotkey access to arch container via `archuro tty` command using `Ctrl+p`
-- 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty), [Hyper](https://hyper.is) (open on macOS and type `hyper i verminal` for translucency)
-- SCM-friendly dotfile management using GNU Stow
-- Bash 5 with patches and programmable command completions
-- Opinionated Brew manifest with customizable dependencies
+- 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
+- Provides `archuro` CLI to manage Arch Linux containers on macOS Catalina
+- Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
+- Adds a custom Terminal profile named Archuro for Mac
+- Installs Bash 5, patches and command completions from source
+- SCM-friendly dotfile management using GNU Stow (optional)
+- Opionated Brew manifest with customizable dependencies
 - Vivialdi web browser for productivity and development
-- Powerlevel10k for Kitty and Hyper Zsh shells
-- Customized translucent macOS Terminal profile based on Pro
+- Powerlevel10k for Zsh shells on macOS and Linux
 
 ## Screenshot
 
@@ -20,7 +20,7 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Demo
 
-See MP4s in [`screenshots`](./screenshots) folder.
+Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) directory.
 
 ## Installation
 
@@ -30,7 +30,7 @@ See MP4s in [`screenshots`](./screenshots) folder.
 4. `archuro install` to install dependencies.
 5. In a terminal run `bash` then `Ctrl+p` for hotkey access to `archuro tty`.
 
-More to come here, stay tuned...
+To uninstall run `make uninstall` from project root directory.
 
 ## Usage
 

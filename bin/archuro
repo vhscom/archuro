@@ -175,12 +175,28 @@ function install_xcode_clt {
     fi
 }
 
+# Install GNU Stow for managing dotfiles if not installed
+# @env $TMPDIR temporary directory
+# @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
+# @see https://github.com/idcrook/i-dotfiles/tree/master/stow
+function install_stow {
+    if hash stow 2>/dev/null; then
+        echo "GNU Stow found. Skipping ..."
+    else
+        echo "Beginning installation of Stow ..."
+        mkdir -p "$TMPDIR/stow" && cd "$_"
+        curl -#Lo - https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz --strip-components=1
+        ./configure; make; sudo make install
+        echo "Completed installation of GNU Stow ..."
+    fi
+}
+
 # Install Homebrew
 # @expects $OSTYPE == darwin*
 # @requires [command] ruby, sudo
 function install_homebrew {
     if hash brew 2>/dev/null; then
-        echo "Homebrew found. Skipping installation ..."
+        echo "Homebrew found. Skipping ..."
     else
         echo "Beginning installation of Homebrew ..."
         ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -191,7 +207,7 @@ function install_homebrew {
 # Install Linux Brew
 function install_linuxbrew {
     if hash brew 2>/dev/null; then
-        echo "Linuxbrew found. Skipping installation ..."
+        echo "Linuxbrew found. Skipping ..."
     else
         echo "Beginning installation of Linuxbrew ..."
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
@@ -204,7 +220,7 @@ function install_linuxbrew {
 # @requires [command] brew
 function install_store_cli {
     if hash mas 2>/dev/null; then
-        echo "Mac App Store CLI found. Skipping installation ..."
+        echo "Mac App Store CLI found. Skipping ..."
     else
         echo "Beginning installation of Mac App Store command line interface ..."
         brew install mas
@@ -216,7 +232,7 @@ function install_store_cli {
 # Install Docker Desktop for macOS
 function install_docker_desktop_for_macos {
     if [[ -n "$(docker info --format '{{.OperatingSystem}}' | grep 'Docker Desktop')" ]]; then
-        echo "Docker Desktop found. Skipping installation ..."
+        echo "Docker Desktop found. Skipping ..."
     else
         echo "WARNING! Docker Desktop not installed:"
         echo "  * Install docker desktop from <https://docs.docker.com/docker-for-mac/install/>"
@@ -232,6 +248,7 @@ function install_build_essentials_macos {
 
 # Install build essentials
 function install_build_essentials {
+    install_stow
     if [[ "$OSTYPE" == darwin* ]]; then
         install_build_essentials_macos
         install_docker_desktop_for_macos
@@ -273,7 +290,8 @@ function stow_dotfiles {
 # @see https://scriptingosx.com/2019/02/install-bash-5-on-macos/ "instructions"
 function install_bash_5 {
     if bash --version | grep -qE "5.0.11\(1\)-release"; then
-        echo "Bash 5.0.11(1) found. Skipping installation ..."
+        "$(which bash)" --version | head -1
+        "$(which zsh)" --version
     else
         echo "Beginning installation of GNU Bash, version 5 ..."
         echo "Downloading version 5.0 release ..."
@@ -286,7 +304,7 @@ function install_bash_5 {
         ./configure -q &>1
         echo "<<- Beginning build ..."
         make -s &>1
-        echo "<<- Beginning installation ..."
+        echo "<<- Beginning ..."
         make install -s &>1
         echo "$BINDIR/bash" | sudo tee -a /etc/shells # XXX: do not append if shell exists
         echo "Bash 5 installation completed ..."
@@ -296,6 +314,14 @@ function install_bash_5 {
             echo "<<- To set Bash 5.0.11(1) as the default shell for $(whoami) run `chsh -u $whoami -s /usr/local/bin/bash`."
         fi
     fi
+
+    # Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
+    # as the default shell so we start by checking the current shell and emulating
+    # sh in the Z shell case and use a more portable, POSIX-compliant profile.
+    # if [[ "${SHELL##/*/}" == "zsh" ]]; then
+    #     [ -e ~/.profile ] && emulate sh -c 'source ~/.profile' # https://support.apple.com/en-us/HT208050
+    #     echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
+    # fi
 }
 
 # Install bash completions
@@ -321,13 +347,13 @@ function configure_shell_environment {
 # @uses $BINDIR target directory
 function install_htop {
     if hash htop 2>/dev/null; then
-        echo "Htop found. Skipping installation ..."
+        echo "htop found. Skipping ..."
     else
-        echo "Beginning installation of Htop ..."
+        echo "Beginning installation of htop ..."
         mkdir -p "$TMPDIR/htop" && cd "$_"
         curl -#Lo - https://hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz | tar xz --strip-components=1
         ./configure; make; sudo make install
-        echo "Completed installation of Htop ..."
+        echo "Completed installation of htop ..."
     fi
 }
 
@@ -339,7 +365,7 @@ function install_htop {
 # @env $BINDIR target directory
 function install_tldr {
     if hash tldr 2>/dev/null; then
-        echo "TLDR found. Skipping installation ..."
+        echo "TLDR found. Skipping ..."
     else
         echo "Beginning installation of TLDR ..."
         mkdir -p "$TMPDIR/tldr" && cd "$_"
@@ -349,27 +375,10 @@ function install_tldr {
     fi
 }
 
-# Install GNU Stow for managing dotfiles if not installed
-# @env $TMPDIR temporary directory
-# @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
-# @see https://github.com/idcrook/i-dotfiles/tree/master/stow
-function install_stow {
-    echo "GNU Stow installation script unavailable. Skipping installation ..."
-    # if hash stow 2>/dev/null; then
-    #     echo "GNU Stow found. Skipping installation ..."
-    # else
-    #     echo "Beginning installation of Stow ..."
-    #     mkdir -p "$TMPDIR/stow" && cd "$_"
-    #     curl -#Lo - https://ftp.gnu.org/gnu/stow/stow-latest.tar.gz | tar xz --strip-components=1
-    #     [ ./configure 1>/dev/null ] && make install
-    #     echo "Completed installation of GNU Stow ..."
-    # fi
-}
-
 # Install Lynx text mode web browser
 function install_lynx {
     if hash lynx 2>/dev/null; then
-        echo "Lynx found. Skipping installation ..."
+        echo "Lynx found. Skipping ..."
     else
         echo "Beginning installation of Lynx ..."
         mkdir -p "$TMPDIR/lynx" && cd "$_"
@@ -383,7 +392,7 @@ function install_lynx {
 # Install tmux for terminal multiplexing
 function install_tmux {
     if hash tmux 2>/dev/null; then
-        echo "Tmux found. Skipping installation ..."
+        echo "tmux found. Skipping ..."
     else
         echo "Beginning installation of tmux ..."
         mkdir -p "$TMPDIR/tmux" && cd "$_"
@@ -399,7 +408,6 @@ function install_tmux {
 function install_sysadmin_tools {
     install_htop
     install_tldr
-    install_stow
     install_lynx
     install_tmux
 }
@@ -413,7 +421,7 @@ function install_sysadmin_tools {
 # @assumes dotfiles symlinked
 function install_powerlevel10k {
     if [ -d "$ETCDIR/powerlevel10k" ]; then
-        echo "Powerlevel10k already installed. Skipping installation ..."
+        echo "Using powerlevel10k"
     else
         echo "Beginning installation of Powerlevel10k ..."
         git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ETCDIR/powerlevel10k"
@@ -427,7 +435,7 @@ function install_terminal_profile_macos {
     all_themes=$(defaults read com.apple.Terminal 'Window Settings')
     # terminal_theme=$(defaults read com.apple.Terminal 'Default Window Settings')
     if [[ $all_themes == *"Archuro"* ]]; then
-        echo "Terminal profile found. Skipping installation ..."; return
+        echo "Using Archuro.terminal"; return
     else
         echo "Beginning installation of Terminal profile ..."
         open "$ARTDIR/Archuro.terminal" # XXX: opens a terminal window
@@ -468,7 +476,7 @@ function install_wireguard_macos {
         mas install 1451685025 # Installs directly from Mac App Store
         echo "Completed installation of WireGuard for macOS ..."
     else
-        echo "WireGuard found. Skipping installation ..."
+        echo "WireGuard found. Skipping ..."
     fi
 }
 
@@ -481,7 +489,7 @@ function install_bitwarden_macos {
         mas install 1352778147 # Installs directly from Mac App Store
         echo "Completed installation of Bitwarden for macOS ..."
     else
-        echo "Bitwarden found. Skipping installation ..."
+        echo "Bitwarden found. Skipping ..."
     fi
 }
 
@@ -506,7 +514,7 @@ function install_security_tools {
 # @requires chmod, curl, tar
 function install_z {
     if test -f "$BINDIR/z.sh"; then
-        echo "Z found. Skipping installation ..."
+        echo "Z found. Skipping ..."
     else
         echo "Beginning installation of Z ..."
         mkdir -p "$TMPDIR/z" && cd "$_"
@@ -521,7 +529,7 @@ function install_z {
 # @requires chmod, curl, tar
 function install_ffmpeg {
     if hash ffmpeg 2>/dev/null; then
-        echo "FFmpeg found. Skipping installation ..."
+        echo "FFmpeg found. Skipping ..."
     else
         echo "Beginning installation of FFmpeg ..."
         mkdir -p "$TMPDIR" && cd "$_"
@@ -535,7 +543,7 @@ function install_ffmpeg {
 # Install pngquant from gzipped release tarball in git repository
 # install_pngquant () {
 #     if hash pngquant 2>/dev/null; then
-#         echo "PNGQuant found. Skipping installation ..."
+#         echo "PNGQuant found. Skipping ..."
 #     else
 #         echo "Beginning installation of PNGQuant ..."
 #         mkdir -p "$TMPDIR/pngquant" && cd "$_"
@@ -565,7 +573,7 @@ function install_custom_tools_macos {
     if [ -f "$HOME/.Brewfile" ]; then
         HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --no-upgrade --global
     else
-        echo "Global Brewfile not found. Skipping installation ..."
+        echo "Global Brewfile not found. Skipping ..."
     fi
     echo "Completed installation of custom Homebrew dependencies ..."
 }
@@ -679,6 +687,11 @@ else
         echo "${green}060 ${magenta}>>- ${green}CUSTOM DEPENDENCIES${reset}"
         install_custom_tools
         [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${magenta}Archuro!${reset}"
+        echo "Installation finshed. Review output for potential issues."
+        echo "Use 'stow --dotfiles stow' (GNU Stow) to symlink your dotfiles."
+        if [[ "$OSTYPE" == darwin* ]]; then
+            echo "Manage Homebrew dependencies from ~/.Brewfile once stowed."
+        fi
         ;;
     "tty" | "t")
         docker run -e LANG=en_US.utf8 -e TERM -it --rm archlinux/base bash -uexc '
@@ -713,23 +726,6 @@ else
     esac
     exit 0
 fi
-
-# # Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
-# # as the default shell so we start by checking the current shell and emulating
-# # sh in the Z shell case and use a more portable, POSIX-compliant profile.
-# if [[ "${SHELL##/*/}" == "zsh" ]]; then
-#     [ -e ~/.profile ] && emulate sh -c 'source ~/.profile' # https://support.apple.com/en-us/HT208050
-#     echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
-# fi
-
-# echo "Installation finshed without error."
-# echo "Please use GNU Stow to symlink your dotfiles."
-# if $OSTYPE == darwin*; then
-#     echo "Modify custom tools from ~/.Brewfile once symlinked."
-# fi
-
-# # source "$HOME/.profile"
-# exit 0
 
 # =========================================================================== #
 # AND THEY BOTH DROWNED

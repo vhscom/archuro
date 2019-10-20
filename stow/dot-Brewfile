@@ -35,54 +35,53 @@ tap "mas-cli/tap"
 # ... possibly more tap commands here 
 
 # 000 >>- BUILD ESSENTIALS
+# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
 brew "stow"
 brew "mas"
 
 # 010 >>- SHELL ENVIRONMENT
 brew "bash-completion@2" # programmable completion for bash@4.1+
 cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
-cask "font-fira-code" # installed as a convenience (not patched with nerd icons afaik)
-cask "hyper"
-cask "imageoptim"
+cask "font-fira-code" # installed as a convenience
+cask "hyper" # terminal emulator
 cask "kitty"
 cask "telegram-desktop"
 cask "visual-studio-code"
 # ... possibly more commands here
 
 # 020 >>- SYSADMIN TOOLS
+brew "fzf"
+brew "git"
+# brew "htop" # installed from source
+brew "jq"
+# brew "lynx" # installed from source
 brew "mosh"
-brew "neofetch"
+# brew "tldr" # installed from source
 brew "tmux"
+brew "tree"
+brew "wget"
 # ... possibly more commands here
 
 # 030 >>- DEVELOPER TOOLS
-brew "cmake"
-# mas "com.apple.dt.xcode", id: 497799835
 # cask "adoptopenjdk8"
+brew "cmake"
 # brew "elasticsearch" # @requires [cask] adoptopenjdk8
 # cask "elasticwolf"
 brew "emacs"
 brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
-brew "fzf"
-brew "git"
 brew "go"
 cask "graphql-playground"
 brew "hugo"
 brew "imagemagick"
-brew "istioctl"
-brew "jq"
-# brew "kubernetes-cli" Target /usr/local/bin/kubectl already exists via Docker Desktop.
-brew "kubernetes-helm"
-brew "kubernetes-service-catalog-client"
+cask "imageoptim"
 # brew "mongodb"
 # brew "mongodb-compass"
 brew "mono"
-# brew "navicat-for-postgresql" # @see https://www.navicat.com/en/products/navicat-for-postgresql
+brew "neofetch"
 brew "neovim"
 brew "openssl"
 brew "pngquant"
 brew "postgresql"
-brew "prometheus"
 brew "python"
 brew "redis"
 brew "rust"
@@ -93,13 +92,19 @@ brew "sip"
 brew "socat"
 brew "sqlite"
 brew "tcpdump"
-brew "traefik"
-brew "tree"
 cask "vivaldi"
-brew "wget"
 brew "yamllint"
 brew "youtube-dl"
 brew "yarn"
+# ... possibly more commands here
+
+# 035 >>- DEVOPS TOOLS
+# brew "istioctl"
+# brew "kubernetes-cli" # Included with Docker Desktop (archuro init)
+# brew "kubernetes-helm"
+# brew "kubernetes-service-catalog-client"
+brew "prometheus"
+brew "traefik"  
 # ... possibly more commands here
 
 # 040 >>- SECURITY TOOLS

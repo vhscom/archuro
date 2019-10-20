@@ -24,7 +24,7 @@ FROM archlinux/base AS basebuilder
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 RUN groupadd -r archuro && useradd --no-log-init -r -g archuro archuro
-RUN bash -uexc 'pacman -Sy --noconfirm zsh git neofetch'
+RUN bash -uexc 'pacman -Sy --noconfirm zsh git neofetch jq'
 
 # Add p10k
 FROM basebuilder AS p10kbuilder
