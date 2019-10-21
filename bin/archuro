@@ -96,12 +96,12 @@ set -e
 # - https://github.com/AlexanderWillner/runMacOSinVirtualBox for make-based setup
 
 # OTHER TOOLS
+# 
 # - https://github.com/bkuhlmann/mac_os automation scripts for macOS
 # - https://github.com/bkuhlmann/mac_os-config
 
 # TODO
-#
-# - [ ] Update bash config to display PS1 just like arch linux
+# 
 # - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
 # - [ ] Touchbar buttons for man (and tldr) similar to Terminal
 # - [x] Bash completions
@@ -164,7 +164,7 @@ UARG_STOW_DOTFILES=
 # Install Xcode Command Line Tools (CLT) if not installed
 # @requires [command] sudo
 # @expects $OSTYPE == darwin*
-function install_xcode_clt {
+function install_xcode_clt_macos {
     if ! xcode-select --install 2>/dev/null; then
         echo "Xcode Command Line Tools found. Skipping setup ..."
     else
@@ -181,7 +181,7 @@ function install_xcode_clt {
 # @expects [command] pacman if [ $OSTYPE = linux-gnu ]
 # @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
 # @see https://github.com/idcrook/i-dotfiles/tree/master/stow
-function install_stow {
+function install_stow_common {
     if hash stow 2>/dev/null; then
         echo "GNU Stow found. Skipping ..."
     else
@@ -216,7 +216,7 @@ function stow_dotfiles {
 # Install Homebrew
 # @expects $OSTYPE == darwin*
 # @requires [command] ruby, sudo
-function install_homebrew {
+function install_homebrew_macos {
     if hash brew 2>/dev/null; then
         echo "Homebrew found. Skipping ..."
     else
@@ -229,7 +229,7 @@ function install_homebrew {
 # Install Mac App Store command line interface
 # @expects $OSTYPE == darwin*
 # @requires [command] brew
-function install_store_cli {
+function install_store_cli_macos {
     if hash mas 2>/dev/null; then
         echo "Mac App Store CLI found. Skipping ..."
     else
@@ -252,17 +252,90 @@ function install_docker_desktop_for_macos {
 
 # Install build essentials for macOS
 function install_build_essentials_macos {
-    install_xcode_clt
-    install_homebrew
-    install_store_cli
+    install_xcode_clt_macos
+    install_homebrew_macos
+    install_store_cli_macos
+}
+
+# Install Go at user request
+# @requires [command] pacman
+function install_go_arch_maybe {
+    echo "Would you like to install Go?"
+    select yn in "Yes" "No"; do
+        case "$yn" in
+            Yes ) pacman --noconfirm -S go; break;;
+            No ) break;;
+        esac
+    done
+}
+
+# Installs a sample Vue project for use with Node and Yarn
+# @requires [command] git
+function install_vue_project_maybe {
+    echo "Beginning installation of sample Vue project for Node ..."
+    git clone https://github.com/logaretm/vue-use-web.git ~/vue-use-web
+    echo "Completed installation of sample Vue project for Node ..."
+}
+
+# Install NPM (includes Node) and Yarn at user request
+# @requires [command] pacman
+function install_node_arch_maybe {
+    echo "Would you like to install Node?"
+    select yn in "Yes" "No"; do
+        case "$yn" in
+            Yes ) pacman --noconfirm -S npm yarn; install_vue_project_maybe; break;;
+            No ) break;;
+        esac
+    done
+}
+
+# Install Python at user request
+# @requires [command] pacman
+function install_python_arch_maybe {
+    echo "Would you like to install Python?"
+    select yn in "Yes" "No"; do
+        case "$yn" in
+            Yes ) pacman --noconfirm -S python; break;;
+            No ) break;;
+        esac
+    done
+}
+
+# Install Rust at user request
+# @requires [command] pacman
+function install_rust_arch_maybe {
+    echo "Would you like to install Rust?"
+    select yn in "Yes" "No"; do
+        case "$yn" in
+            Yes ) pacman --noconfirm -S rust; break;;
+            No ) break;;
+        esac
+    done
+}
+
+# Short series of prompts helps user choose programming languages to
+# install during init on GNU/Linux. Skipped when '-S' option passed.
+function choose_programming_languages {
+    install_go_arch_maybe
+    install_node_arch_maybe
+    install_python_arch_maybe
+    install_rust_arch_maybe
 }
 
 # Install build essentials
 function install_build_essentials {
-    install_stow
+    install_stow_common
     if [[ "$OSTYPE" == darwin* ]]; then
         install_build_essentials_macos
         install_docker_desktop_for_macos
+    elif [[ "$OSTYPE" == linux-gnu* && "$UARG_STOW_DOTFILES" -ne 1 ]]; then
+        echo "Install a programming language?"
+        select yn in "Yes" "No"; do
+            case "$yn" in
+                Yes ) choose_programming_languages; break;;
+                No ) return;;
+            esac
+        done
     fi
 }
 
@@ -313,10 +386,9 @@ function install_bash_5_macos {
     # Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
     # as the default shell so we start by checking the current shell and emulating
     # sh in the Z shell case and use a more portable, POSIX-compliant profile.
-    # if [[ "${SHELL##/*/}" == "zsh" ]]; then
-    #     [ -e ~/.profile ] && emulate sh -c 'source ~/.profile' # https://support.apple.com/en-us/HT208050
-    #     echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
-    # fi
+    if [[ "${SHELL##/*/}" == "zsh" ]]; then
+        echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
+    fi
 }
 
 # Configure shell environemnt
@@ -657,6 +729,7 @@ function print_help_message {
     echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
     echo "    ${green}ls${reset}           ${grey}List available archlinux images${reset}"
     echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}run${reset}          ${grey}Run last saved archlinux image"${reset}
     echo "    ${green}save${reset}         ${grey}Build Dockerfile and tag latest${reset}"
     echo "    ${green}stop${reset}         ${grey}Stop all running archlinux containers${reset}"
     echo "    ${green}tty${reset}          ${grey}Start interactive archlinux tty${reset}"
@@ -682,7 +755,7 @@ else
             echo "Cannot attach to a container. No running containers found."
             echo "Do you wish to start a new archuro tty now?"
             select yn in "Yes" "No"; do
-                case $yn in
+                case "$yn" in
                     Yes ) archuro tty; break;;
                     No ) exit;;
                 esac
@@ -718,7 +791,7 @@ else
         install_custom_tools
         [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${magenta}Archuro!${reset}"
         echo "Installation finshed. Review output for potential issues."
-        echo "Use 'stow --dotfiles stow' (GNU Stow) to symlink your dotfiles."
+        echo "Run command again  with '-S' flag to 'stow --dotfiles stow' with GNU Stow."
         if [[ "$OSTYPE" == darwin* ]]; then
             echo "Manage Homebrew dependencies from ~/.Brewfile once stowed."
         fi
@@ -735,6 +808,12 @@ else
     "ls")
         echo "REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE"
         docker images | grep archlinux # XXX: --filter based on image tag 'archuro'
+        ;;
+    "run")
+        echo "Running extended image and connecting to tty ..."
+        echo "Port 8080 is exposed and ~/archuro/stow bind mounted ..."
+        docker run -it -p 8080:8080 -v ~/archuro/stow:/root/archuro/stow archlinux/extended:latest bash
+        echo "Run 'archuro ps' to view running archlinux containers. Run 'attach' to attach to tty."
         ;;
     "save" | "s")
         echo "Building and tagging Dockerfile image ..."

@@ -20,7 +20,7 @@
 #
 
 # Source Bourne shell profile if exists
-[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile' # @see # https://support.apple.com/en-us/HT208050
 
 # Jump around
 [[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
@@ -43,7 +43,7 @@
 # $ git log --no-merges --pretty=format:"%ae" | stats
 # # => 514 a@example.com
 # # => 200 b@example.com
-function stats () {
+function stats {
     sort | uniq -c | sort -r
 }
 
@@ -56,7 +56,7 @@ function color () {
     for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
 }
 
-function scripts () {
+function scripts {
     cat package.json | jq '.scripts'
 }
 
