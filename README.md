@@ -4,6 +4,7 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 ## Features
 
+- Create [Extended Builds](#extended-builds) of Arch suited for your workflow
 - Installs Bash 5 and patches directly from source
 - Provides `archuro` CLI to manage Arch Linux containers on macOS Catalina
 - Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
@@ -13,6 +14,7 @@ Portable Arch Linux development workflow for macOS Catalina.
 - Creates a custom profile named Archuro for Mac's Terminal app
 - SCM-friendly dotfile management using GNU Stow
 - Vivialdi web browser for productivity and development
+- Automates VSCode setup and helps keep track of extensions
 
 ## Screenshot
 
@@ -30,6 +32,12 @@ Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) dire
 4. Finally, run `archuro install` to install dependencies.
 
 To uninstall run `make uninstall` from project root directory.
+
+## Usage
+
+Run `archuro --help` after installation for usage instructions. To get a disposabe Arch Linux container run `archuro tty`. To get a reusable container run `archuro save && archuro run`. Run `archuro ps` to view running containers and `archuro attach` to attach a tty otherwise.
+
+Once you've stowed with `archuro init -S` you may continue using `brew bundle` just like you normally would and Archuro will help you keep track of your dependencies.
 
 ## VSCode Setup
 
@@ -53,18 +61,6 @@ The `stow/dot-profile` file contains scripts to manage them:
 Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/getstarted/settings/#settings-file-locations) vary. Mac and Windows store VSCode settings along with application data and not in the user's home directory. Keep this in mind and create a symbolic link (`ln -s`) to the user `$HOME` or adjust scripts as needed.
 
 For more info on extensions see [User and Workspace settings](https://vscode.readthedocs.io/en/latest/getstarted/settings/) on the VSCode docs site.
-
-## Usage
-
-- The `attach` command connects to a running `archlinux` container.
-- If an archlinux container isn't running, start one with `archuro tty`.
-- View running container info with the `archuro ps` command.
-- Leave a tty running backgrounded by closing it without `exit`.
-- Run `archuro update` to update Homebrew dependencies.
-
-Run `archuro --help` after installation for usage instructions.
-
-Once you've stowed with `archuro init -S` you may continue using `brew bundle` just like you normally would. Keep in mind Archuro builds some dependendencies from source so there may be conflicts though brew handles them like a champ.
 
 ## Extended builds
 
