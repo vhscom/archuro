@@ -1,12 +1,18 @@
 # Archuro
 
-Portable Arch Linux development workflow for macOS Catalina.
+> Your development workflow, hypervized.
+
+![archuro](./screenshots/photo_2019-10-21_16.33.22-fs8.png)
+
+Archuro is a CLI written in Bash designed to streamline set-up and management of a Mac for cross-platform, containerized app development.
 
 ## Features
 
+Archuro replaces the "my dotfiles" concept with something far more powerful for modern development workflows.
+
+- Normalizes macOS with Arch by installing Bash 5 (and patches).
+- Manage all tasks from the minimalist, cross-platform `archuro` CLI.
 - Create [Extended Builds](#extended-builds) of Arch suited for your workflow
-- Installs Bash 5 and patches directly from source
-- Provides `archuro` CLI to manage Arch Linux containers on macOS Catalina
 - Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
 - 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
 - Opinionated Brew manifest with customizable dependencies
@@ -16,30 +22,39 @@ Portable Arch Linux development workflow for macOS Catalina.
 - Vivialdi web browser for productivity and development
 - Automates VSCode setup and helps keep track of extensions
 
-## Screenshot
+## Screens and demo
 
-![archuro cli](./screenshots/photo_2019-10-19_01.50.16.jpeg)
+<p>
+  <img src="./archuro/raw/branch/master/screenshots/hyper-split-cli-fs8.png" title="Archuro Hyper Split CLI" width="48%" alt="cli">
+  <img src="./archuro/raw/branch/master/screenshots/hyper-split-neofetch-fs8.png" width="48%" title="Archuro Hyper Split Neofetch" alt="neofetch">
+</p>
 
-## Demo
+Videos? Several in the [`screenshots`](./screenshots) directory.
 
-Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) directory to access them.
+## Installation
 
-## Basic Installation
+Assumes basic knowledge of command line, git and file system management.
 
 1. Copy repository source code.
 2. Run `make install` to move `bin/archuro` to `/usr/local/bin`.
 3. Run `archuro init` to install build essentials. Add `-S` to proceed with GNU Stow.
 4. Finally, run `archuro install` to install dependencies.
 
-To uninstall run `make uninstall` from project root directory.
+Repeat steps 2-3 on an [Extended Build](#extended-builds) of Arch Linux to share your dotfiles.
+
+To uninstall run `make uninstall` from project root.
 
 ## Usage
 
 Run `archuro --help` after installation for usage instructions. To get a disposabe Arch Linux container run `archuro tty`. To get a reusable container run `archuro save && archuro run`. Run `archuro ps` to view running containers and `archuro attach` to attach a tty otherwise.
 
-Once you've stowed with `archuro init -S` you may continue using `brew bundle` just like you normally would and Archuro will help you keep track of your dependencies.
+Once dotfiles are stowed with `archuro init -S` a simple `archuro update` will update configured applications.
 
-## VSCode Setup
+## Homebrew
+
+Archuro assumes all macOS development dependencies are managed using a manifest file known as a `Brewfile`. The Brewfile keeps track dependencies and may also influence Homebrew how to tweak app installations specific for an environment. The manifest lives in `stow/dot-Homebrew` file which becomes symlinked to `~/.Brewfile` for use by the current user during `archuro init` using the `-S` flag.
+
+## VSCode
 
 Settings and extensions are kept in the `stow/dot-vscode` directory under the project root:
 
@@ -64,7 +79,11 @@ For more info on extensions see [User and Workspace settings](https://vscode.rea
 
 ## Extended builds
 
-Run `archuro save` to build and tag an `extended` image. Update `Dockerfile` to customize build as desired. Rerun `archuro save` anytime to tag a new image. View all `archlinux` images by running `archuro ls`.
+Spinning up a disposable Arch Linux tty is great. But throwing away work during repetitive tasks isn't. For this reason Archuro provides a method for persisting state and heavily caching development dependencies on Arch Linux using Docker.
+
+Run `archuro save` to build and tag an `extended` Arch Linux image. Think of it as your own custom build of the OS and update the `Dockerfile` provided to customize as desired. Rerun `archuro save` anytime to build and tag a new docker image (or use `docker` cli directly).
+
+View tagged Arch Linux builds by running `archuro ls`.
 
 ### Sharing dotfiles
 
