@@ -22,7 +22,7 @@ Portable Arch Linux development workflow for macOS Catalina.
 
 Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) directory to access them.
 
-## Installation
+## Basic Installation
 
 1. Copy repository source code.
 2. Run `make install` to move `bin/archuro` to `/usr/local/bin`.
@@ -30,6 +30,29 @@ Videos available. Run `ls | grep mp4` in the [`screenshots`](./screenshots) dire
 4. Finally, run `archuro install` to install dependencies.
 
 To uninstall run `make uninstall` from project root directory.
+
+## VSCode Setup
+
+Settings and extensions are kept in the `stow/dot-vscode` directory under the project root:
+
+```
+└── stow
+    ├── dot-profile
+    ├── dot-vscode
+    │   ├── extensions
+    │   └── settings.json
+```
+
+The `stow/dot-profile` file contains scripts to manage them:
+
+- `cx` lists currently installed VSCode extensions
+- `cxinstall` attempts to install saved extensions from `~/.vscode/extensions`
+- `cxsave` appends currently installed VSCode extensions to `~/.vscode/extensions`
+- `cxremoveall` removes all currently installed extensions (use with caution)
+
+Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/getstarted/settings/#settings-file-locations) vary. Mac and Windows store VSCode settings along with application data and not in the user's home directory. Keep this in mind and create a symbolic link (`ln -s`) to the user `$HOME` or adjust scripts as needed.
+
+For more info on extensions see [User and Workspace settings](https://vscode.readthedocs.io/en/latest/getstarted/settings/) on the VSCode docs site.
 
 ## Usage
 

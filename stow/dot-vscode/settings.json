@@ -1,0 +1,19 @@
+{
+  "editor.tabSize": 2,
+  "explorer.confirmDelete": false,
+  "files.insertFinalNewline": true,
+  "terminal.integrated.fontFamily": "Hack Nerd Font",
+  "window.zoomLevel": 0,
+  "workbench.colorTheme": "One Dark Pro",
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.wordwrap": "on",
+    "editor.renderWhitespace": "all",
+    "editor.acceptSuggestionOnEnter": false
+  },
+  "[shellscript]": {},
+  "[typescript]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+}
