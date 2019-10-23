@@ -32,6 +32,7 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "mas-cli/tap"
+tap "mongodb/brew"
 # ... possibly more tap commands here 
 
 # 000 >>- BUILD ESSENTIALS
@@ -74,7 +75,7 @@ cask "graphql-playground"
 brew "hugo"
 brew "imagemagick"
 cask "imageoptim"
-cask "mongodb"
+brew "mongodb-community@4.2"
 cask "mongodb-compass"
 brew "mono"
 brew "neofetch"
