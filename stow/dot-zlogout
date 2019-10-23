@@ -1,4 +1,4 @@
-# .zlogout sometimes used to clear and reset the terminal
+# User logout file for zsh(1) shells.
 
 #
 # Copyright (C) 2019  VHS <0xc000007b@tutanota.com>

@@ -4,23 +4,23 @@
 
 ![archuro](./screenshots/photo_2019-10-21_16.33.22-fs8.png)
 
-Archuro is a CLI written in Bash designed to streamline set-up and management of a Mac for cross-platform, containerized app development.
+Archuro is a CLI designed to streamline set-up and management of a Mac for cross-platform, containerized app development using Arch Linux.
 
 ## Features
 
-Archuro replaces the "my dotfiles" concept with something far more powerful for modern development workflows.
-
-- Normalizes macOS with Arch by installing Bash 5 (and patches).
-- Manage all tasks from the minimalist, cross-platform `archuro` CLI.
-- Create [Extended Builds](#extended-builds) of Arch suited for your workflow
-- Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5
+- Quickly install all tools necessary to run Arch Linux on macOS.
+- Appealing prompt with [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack) for Zsh.
+- Maximize reuse of user config between macOS and Arch Linux.
+- Bash and Zsh productivity affordances [without getting clever](https://github.com/zsh-users/antigen).
+- CLI-driven GNU Stow installation for SCM-friendly dotfile management.
+- Install Bash 5 from source on macOS to normalize it with Arch Linux.
+- Create [Extended Builds](#extended-builds) of Arch suited for your workflow.
+- Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5.
 - 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
 - Opinionated Brew manifest with customizable dependencies
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for Zsh shells with optional shared config
-- Creates a custom profile named Archuro for Mac's Terminal app
-- SCM-friendly dotfile management using GNU Stow
-- Vivialdi web browser for productivity and development
-- Automates VSCode setup and helps keep track of extensions
+- Create a custom profile named Archuro for Mac's Terminal app
+- Install Vivialdi web browser for productivity and development
+- Automate [VS Code](https://code.visualstudio.com/) setup and helps keep track of extensions
 
 ## Screens and demo
 
@@ -54,7 +54,7 @@ Once dotfiles are stowed with `archuro init -S` a simple `archuro update` will u
 
 Archuro assumes all macOS development dependencies are managed using a manifest file known as a `Brewfile`. The Brewfile keeps track dependencies and may also influence Homebrew how to tweak app installations specific for an environment. The manifest lives in `stow/dot-Homebrew` file which becomes symlinked to `~/.Brewfile` for use by the current user during `archuro init` using the `-S` flag.
 
-## VSCode
+## VS Code
 
 Settings and extensions are kept in the `stow/dot-vscode` directory under the project root:
 
@@ -68,40 +68,42 @@ Settings and extensions are kept in the `stow/dot-vscode` directory under the pr
 
 The `stow/dot-profile` file contains scripts to manage them:
 
-- `cx` lists currently installed VSCode extensions
+- `cx` lists currently installed VS Code extensions
 - `cxinstall` attempts to install saved extensions from `~/.vscode/extensions`
-- `cxsave` appends currently installed VSCode extensions to `~/.vscode/extensions`
+- `cxsave` appends currently installed VS Code extensions to `~/.vscode/extensions`
 - `cxremoveall` removes all currently installed extensions (use with caution)
 
-Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/getstarted/settings/#settings-file-locations) vary. Mac and Windows store VSCode settings along with application data and not in the user's home directory. Keep this in mind and create a symbolic link (`ln -s`) to the user `$HOME` or adjust scripts as needed.
+Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/getstarted/settings/#settings-file-locations) vary. Mac and Windows store VS Code settings along with application data and not in the user's home directory. Keep this in mind and create a symbolic link (`ln -s`) to the user `$HOME` or adjust scripts as needed.
 
-For more info on extensions see [User and Workspace settings](https://vscode.readthedocs.io/en/latest/getstarted/settings/) on the VSCode docs site.
+For more info on extensions see [User and Workspace settings](https://vscode.readthedocs.io/en/latest/getstarted/settings/) on the VS Code docs site.
 
 ## Extended builds
 
-Spinning up a disposable Arch Linux tty is great. But throwing away work during repetitive tasks isn't. For this reason Archuro provides a method for persisting state and heavily caching development dependencies on Arch Linux using Docker.
+Spinning up a disposable Arch Linux tty is great. But throwing away work doing repetitive tasks isn't. For this reason Archuro provides extended builds for persisting state and heavily caching development dependencies under Arch Linux using Docker. Think of it as your own custom build of the OS and update the `Dockerfile` provided to customize as desired. 
 
-Run `archuro save` to build and tag an `extended` Arch Linux image. Think of it as your own custom build of the OS and update the `Dockerfile` provided to customize as desired. Rerun `archuro save` anytime to build and tag a new docker image (or use `docker` cli directly).
+Run `archuro save` to created and tag an `extended` build using Arch Linux. Rerun `archuro save` anytime to build and tag a new docker image (or use `docker` cli directly).
 
 View tagged Arch Linux builds by running `archuro ls`.
 
 ### Sharing dotfiles
 
-Share dotfiles between systems. To do so use docker to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) after building the `Dockerfile`. Specific steps described in more detail here:
+Share dotfiles between between platforms. To share dotfiles between macOS and Linux use Docker to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) after creating an [extended build](#extended-builds).
+
+Specific steps described in more detail below:
 
 1. Start with `docker build .` to build the Archuro `Dockerfile` image.
 2. Tag image with `docker tag $(docker images -q | head -1) archlinux/extended:lastest`.
-3. Confirm image available with `archuro ls` which looks for `archlinux` tagged images.
+3. Confirm image creation with `archuro ls` which looks for `archlinux` tagged images.
 
-Then create a bind mount while starting an interactive tty with `zsh` as the shell:
+Then create a bind mount when running extended build container:
 
 ```sh
 docker run -it -v ~/archuro/stow:/root/archuro/stow archlinux/extended bash
 ```
 
-At a `bash` prompt run `archuro init --stow` to install and symlink dotfiles. Then run `zsh` to access the Z shell and begin the configuration wizard of Powerlevel10k. If you don't see the configuration wizard it's likely because `~/.p10k.zsh` exists and was already sourced.
+At the resulting `bash` prompt run `archuro init --stow` to install and symlink dotfiles. Then run `zsh` to access the Z shell and begin the configuration wizard of Powerlevel10k. If you don't see the configuration wizard it's likely because `~/.p10k.zsh` exists and was already sourced.
 
-## Exposting ports
+## Exposing ports
 
 Declaring a `PORT` in a `Dockerfile` isn't enough. When running the `Dockerfile` pass the `-p` flag like `-p 8181:8080/tcp` to bind host port `8181` to `8080` of the guest.
 

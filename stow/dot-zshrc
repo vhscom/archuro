@@ -1,4 +1,4 @@
-# .zshrc interactive shell configuration for zsh
+# User run commands file for interactive zsh(1) shells.
 
 #
 # Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
@@ -19,8 +19,57 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+# =========================================================================== #
+# Performance profiling
+# =================================================================== #
+
+# Uncomment to use profiling module
+# $ zprof
+# zmodload zsh/zprof
+
+# Test shell startup speed over 10 invocations
+# $ for i in $(seq 1 10); do /usr/bin/time zsh -i -c exit; done
+# @see https://carlosbecker.com/posts/speeding-up-zsh/
+
+# =========================================================================== #
+# Emulate Bourne shell and load its profile settings
+# =================================================================== #
+
 # Source Bourne shell profile if exists
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile' # @see # https://support.apple.com/en-us/HT208050
+
+# =========================================================================== #
+# Command completions
+# =================================================================== #
+
+# Enable advanced tab-completion with improved completion appearance
+# @see https://wiki.gentoo.org/wiki/Zsh/Guide
+autoload -Uz compinit; compinit
+zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
+zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
+
+# Check for color support and set color bit
+# @see https://unix.stackexchange.com/a/198949/111911
+color=0
+if tput Co > /dev/null 2>&1; then
+    test "`tput Co`" -gt 2 && color=1
+elif tput colors > /dev/null 2>&1; then
+    test "`tput colors`" -gt 2 && color=1
+fi
+
+# =========================================================================== #
+# macOS-only
+# =================================================================== #
+
+if [[ "$OSTYPE" == darwin* ]]; then
+
+    # Remove all items safely, to Trash (`brew install trash`)
+    [[ -z "$commands[trash]" ]] || alias rm='trash' 2>&1 > /dev/null
+fi
+
+# =========================================================================== #
+# Application-specific settings
+# =================================================================== #
 
 # Jump around
 [[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
@@ -52,8 +101,12 @@ function stats {
 # # => 008 009 010 011 012 013 014 015
 # # => ...
 # # => 248 249 250 251 252 253 254 255
-function color () {
-    for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
+function colors () {
+    if [[ color -eq 1 ]]; then
+        for i in {0..255}; do print -Pn "%${i}F${(l:3::0:)i}%f " ${${(M)$((i%8)):#7}:+$'\n'}; done
+    else
+        echo "Sorry, pardner. ${TERM:-"Your terminal"} doesn't support color display."
+    fi
 }
 
 function scripts {

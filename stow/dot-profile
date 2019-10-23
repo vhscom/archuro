@@ -1,4 +1,4 @@
-# .profile sourced automatically by bash and manually in zshrc
+# User profile for interactive sh(1) shells.
 
 #
 # Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
@@ -19,26 +19,46 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+# =========================================================================== #
+# General settings
+# =================================================================== #
+
 # Miminalist prompt with color, i.e. user@host:~/directory $ 
 export PS1="\[$(tput bold)$(tput setb 4)$(tput setaf 7)\]\u@\h:\w $ \[$(tput sgr0)\]"
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
 
-alias ll="ls -lhAG" # Colorized with -G
-alias ..="cd .."
-alias tree="tree -C" # Colorized with -C
+# =========================================================================== #
+# Aliases and utility functions
+# =================================================================== #
+
+#
+# Nagivation
+#
+
+alias z='z'
+alias ll='ls -lhAG' # Colorized with -G
+alias ..='cd ..'
+alias tree='tree -C' # Colorized with -C
+
+ff () {
+  find . -iname "*${1:-}*"
+}
 
 #
 # Archuro
 #
+
 alias ao='archuro'
 
 #
-# Code (macOS-only)
+# VS Code (macOS-only)
 #
+
 if [[ "$OSTYPE" == darwin* ]]; then
-  alias c="code"
-  alias cx="code --list-extensions"
+  alias c='code'
+  alias cx='code --list-extensions'
+
   cxinstall () {
     [[ -r ~/.vscode/extensions ]] && cat ~/.vscode/extensions | xargs -n1 code --install-extension
   }
@@ -54,45 +74,46 @@ fi
 #
 # Git
 #
+
 alias g='git'
 alias ga='git add'
-alias gf='git fetch'
-alias gd='git diff'
-alias gbr='git branch'
-alias gch='git checkout'
+alias gaa='git add --all'
+alias gb='git branch'
+alias gca='git commit --amend --no-edit'
+alias gcb='git checkout -b'
 alias gcl='git clone'
+alias gcm='git checkout master'
+alias gco='git checkout'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gf='git fetch'
 alias gl='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
-alias gls='git log --no-merges --pretty=format:"%ae" | sort | uniq -c | sort -r'
+alias gls='git log --no-merges --pretty=format:"%ae" | sort | uniq -c | sort --reverse'
 alias gp='git push'
 alias gr='git rm'
-alias gs='git status -s'
+alias gs='git status --short'
 alias gu='git pull'
-cherry () {
-  args="$@"
-  git cherry-pick "$args"
+
+gcp () {
+  title="$@"
+  git commit -am "$title" && git push -u origin
 }
 gc () {
   args="$@"
   git commit -m "$args"
 }
-gca () {
-  args="$@"
-  git commit --amend -m "$args"
-}
-gcp () {
-  title="$@"
-  git commit -am "$title" && git push -u origin
-}
 
 #
 # Hugo
 #
-alias hs="hugo && hugo serve --buildDrafts --navigateToChanged"
-alias hd="hugo && hugo deploy --invalidateCDN"
+
+alias hs='hugo && hugo serve --buildDrafts --navigateToChanged'
+alias hd='hugo && hugo deploy --invalidateCDN'
 
 #
 # Docker
 #
-alias dk="docker"
-alias dh="docker images -q | head -1"
-alias dc="docker-compose"
+
+alias dk='docker'
+alias dh='docker images -q | head -1'
+alias dc='docker-compose'

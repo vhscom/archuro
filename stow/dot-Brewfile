@@ -33,95 +33,114 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "mas-cli/tap"
 tap "mongodb/brew"
-# ... possibly more tap commands here 
+# ... possibly more taps here 
 
+# =========================================================================== #
 # 000 >>- BUILD ESSENTIALS
-# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
-brew "stow"
-brew "mas"
+# =================================================================== #
 
+brew "stow" # Installable via Archuro
+brew "mas" # Installable via Archuro
+
+# =========================================================================== #
 # 010 >>- SHELL ENVIRONMENT
+# =================================================================== #
+
 brew "bash-completion@2" # programmable completion for bash@4.1+
 cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
 cask "font-fira-code" # installed as a convenience
 cask "hyper" # terminal emulator
 cask "kitty"
-cask "telegram-desktop"
-cask "visual-studio-code"
 # ... possibly more commands here
 
+# =========================================================================== #
 # 020 >>- SYSADMIN TOOLS
+# =================================================================== #
+
 brew "fzf"
 brew "git"
-# brew "htop" # installed from source
+# brew "htop" # Installable via Archuro
 brew "jq"
-# brew "lynx" # installed from source
+# brew "lynx" # Installable via Archuro
 brew "mosh"
-# brew "tldr" # installed from source
+# brew "tldr" # Installable via Archuro
 brew "tmux"
 brew "tree"
 brew "wget"
 # ... possibly more commands here
 
+# =========================================================================== #
 # 030 >>- DEVELOPER TOOLS
+# =================================================================== #
+
 # cask "adoptopenjdk8"
 brew "cmake"
 # brew "elasticsearch" # @requires [cask] adoptopenjdk8
 # cask "elasticwolf"
-brew "emacs"
+brew "emacs"                      # GNU Emacs text editor
 brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
-brew "go"
-cask "graphql-playground"
-brew "hugo"
-brew "imagemagick"
-cask "imageoptim"
-brew "mongodb-community@4.2"
-cask "mongodb-compass"
-brew "mono"
-brew "neofetch"
-brew "neovim"
-brew "openssl"
-brew "pngquant"
-brew "postgresql"
-brew "python"
-brew "redis"
-brew "rust"
-brew "rustc-completion"
-brew "rustup-init"
-brew "shellcheck"
-brew "sip"
-brew "socat"
-brew "sqlite"
-brew "tcpdump"
-cask "vivaldi"
-brew "yamllint"
-brew "youtube-dl"
-brew "yarn"
+brew "go"                         # Open source programming language
+cask "graphql-playground"         # GraphQL IDE for better development workflows
+brew "hugo"                       # Configurable static site generator
+brew "mongodb-community"          # High-performance, schema-free, document-oriented database
+cask "mongodb-compass"            # The GUI for MongoDB
+brew "mono"                       # Cross platform, open source .NET development framework
+brew "neofetch"                   # Fast, highly customisable system info script
+brew "neovim"                     # Ambitious Vim-fork focused on extensibility and agility
+brew "openssl"                    # SSL/TLS cryptography library
+brew "pngquant"                   # PNG image optimizing utility
+brew "postgresql"                 # Object-relational database system
+brew "python"                     # Interpreted, interactive, object-oriented programming language
+brew "redis"                      # Persistent key-value database, with built-in net interface
+brew "rustup-init"                # The Rust toolchain installer
+brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
+brew "sip"                        # Tool to create Python bindings for C and C++ libraries
+brew "trash"                      # CLI tool that moves files or folder to the trash
+cask "visual-studio-code"         # VS Code
+cask "vivaldi"                    # The Web browser
+# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
+brew "yamllint"                   # Linter for YAML files
+brew "youtube-dl"                 # Download YouTube videos from the command-line
+brew "yarn"                       # JavaScript package manager
 # ... possibly more commands here
 
-# 035 >>- DEVOPS TOOLS
+# =========================================================================== #
+# 035 >>- DEVOPS
+# =================================================================== #
+
 # brew "istioctl"
 # brew "kubernetes-cli" # Included with Docker Desktop (archuro init)
 # brew "kubernetes-helm"
 # brew "kubernetes-service-catalog-client"
 brew "prometheus"
-brew "traefik"  
+brew "traefik" 
 # ... possibly more commands here
 
+# =========================================================================== #
 # 040 >>- SECURITY TOOLS
+# =================================================================== #
+
+brew "pass"                            # Password manager
+# brew "socat"                         # Netcat on steroids
+# brew "tcpdump"                       # Command-line packet analyzer
 # mas "bitwarden", id: 1352778147
 # mas "wireguard", id: 1451685025
 # ... possibly more commands here
 
+# =========================================================================== #
 # 050 >>- PRODUCTIVITY TOOLS
+# =================================================================== #
+
 # mas "amphetamine", id: 937984704
 # mas "drafts", id: 1435957248
 # mas "focus", id: 777233759
 # mas "mindnode", id: 1289197285
 # mas "omnigraffle", id: 1142578753
 # mas "parcelosx", id: 639968404
-cask "rectangle"
+cask "imageoptim"                      # ImageOptim makes images load faster
+cask "rectangle"                       # Move and resize windows in macOS
 # mas "spark", id: 1176895641
+# cask "telegram-desktop"
 # mas "toggldesktop", id: 957734279
 # mas "ulysses", id: 1225570693
 # ... possibly more commands here

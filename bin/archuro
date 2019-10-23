@@ -102,6 +102,8 @@ set -e
 
 # TODO
 # 
+# - [ ] Review https://github.com/macmade/trash/issues/4 or just keep using trash
+# - [ ] Add gitconfig with some aliases
 # - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
 # - [ ] Touchbar buttons for man (and tldr) similar to Terminal
 # - [x] Bash completions
@@ -125,7 +127,7 @@ set -e
 #   - https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 #   - https://github.com/prettier/prettier-vscode
 # - [ ] Automate VS Code extension setup
-# - [ ] Enable "sane defaults" for VSCode (e.g. "files.insertFinalNewline": true) https://github.com/Microsoft/vscode/issues/12076#issuecomment-340037747
+# - [ ] Enable "sane defaults" for VS Code (e.g. "files.insertFinalNewline": true) https://github.com/Microsoft/vscode/issues/12076#issuecomment-340037747
 # - [ ] Colorize output (some done, more needed. here's a [breadcrumb from SO](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux))
 # - [ ] Consider [XDG configuration files standard](https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html)
 #   *Note:* ...above mentioned on [Managing dotfiles with stow](https://alexpearce.me/2016/02/managing-dotfiles-with-stow/) article
