@@ -9,7 +9,7 @@ Archuro is a CLI designed to streamline set-up and management of a Mac for cross
 ## Features
 
 - Quickly install all tools necessary to run Arch Linux on macOS.
-- Installs [GNU Stow](https://www.gnu.org/software/stow/) for [robust dotfile management](https://alexpearce.me/2016/02/managing-dotfiles-with-stow/).
+- Installs [GNU Stow](https://www.gnu.org/software/stow/) for robust dotfile management.
 - Appealing prompt with [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack) for Zsh.
 - Maximize reuse of user config between macOS and Arch Linux.
 - Bash and Zsh productivity affordances [without getting clever](https://github.com/zsh-users/antigen).
@@ -20,7 +20,7 @@ Archuro is a CLI designed to streamline set-up and management of a Mac for cross
 - Create a custom profile named Archuro for Mac's Terminal app.
 - Install Vivialdi web browser for productivity and development.
 - Automate [VS Code](https://code.visualstudio.com/) setup and [helps keep track](#vs-code) of extensions.
-- Recommended terminals: [Kitty](https://github.com/kovidgoyal/kitty), [HyperTerm](https://hyper.is).
+- Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Verminal](https://github.com/defringe/verminal).
 
 ## Screens and demo
 
@@ -50,11 +50,11 @@ Run `archuro --help` after installation for usage instructions. To get a disposa
 
 Once dotfiles are stowed with `archuro init -S` a simple `archuro update` will update configured applications.
 
-## Homebrew
+### Homebrew
 
 Archuro assumes all macOS development dependencies are managed using a manifest file known as a `Brewfile`. The Brewfile keeps track dependencies and may also influence Homebrew how to tweak app installations specific for an environment. The manifest lives in `stow/dot-Homebrew` file which becomes symlinked to `~/.Brewfile` for use by the current user during `archuro init` using the `-S` flag.
 
-## VS Code
+### VS Code
 
 Settings and extensions are kept in the `stow/dot-vscode` directory under the project root:
 
@@ -77,39 +77,50 @@ Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/ge
 
 For more info on extensions see [User and Workspace settings](https://vscode.readthedocs.io/en/latest/getstarted/settings/) on the VS Code docs site.
 
-## Extended builds
+### Extended builds
 
 Spinning up a disposable Arch Linux tty is great. But throwing away work doing repetitive tasks isn't. For this reason Archuro provides extended builds for persisting state and heavily caching development dependencies under Arch Linux using Docker. Think of it as your own custom build of the OS and update the `Dockerfile` provided to customize as desired. 
 
-Run `archuro save` to created and tag an `extended` build using Arch Linux. Rerun `archuro save` anytime to build and tag a new docker image (or use `docker` cli directly).
+Run `archuro save` to automatically create and tag an `archlinux/extended` build as shown here:
 
-View tagged Arch Linux builds by running `archuro ls`.
+```
+REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
+archlinux/extended   latest              0104776b36cc        2 seconds ago       616MB
+archlinux/base       latest              5323a8f7a7a4        3 weeks ago         461MB
+```
 
-### Sharing dotfiles
+Rerun `archuro save` to rebuild the `Dockerfile` and update the `IMAGE ID` associated with the extended build.
 
-Share dotfiles between between platforms. To share dotfiles between macOS and Linux use Docker to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) after creating an [extended build](#extended-builds).
+#### Sharing dotfiles
 
-Specific steps described in more detail below:
-
-1. Start with `docker build .` to build the Archuro `Dockerfile` image.
-2. Tag image with `docker tag $(docker images -q | head -1) archlinux/extended:lastest`.
-3. Confirm image creation with `archuro ls` which looks for `archlinux` tagged images.
-
-Then create a bind mount when running extended build container:
+To share dotfiles with your extended build container run `archuro save` to build the Dockerfile image and then run `archuro run` to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) using a bind mount, i.e.
 
 ```sh
 docker run -it -v ~/archuro/stow:/root/archuro/stow archlinux/extended bash
 ```
 
-At the resulting `bash` prompt run `archuro init --stow` to install and symlink dotfiles. Then run `zsh` to access the Z shell and begin the configuration wizard of Powerlevel10k. If you don't see the configuration wizard it's likely because `~/.p10k.zsh` exists and was already sourced.
+Once the Arch tty starts run `archuro init --stow` to install GNU Stow and symlink your dotfiles. Then run `zsh` to access the Z shell and start using your dotfiles right away.
 
-## Exposing ports
+#### Exposing ports
 
-Declaring a `PORT` in a `Dockerfile` isn't enough. When running the `Dockerfile` pass the `-p` flag like `-p 8181:8080/tcp` to bind host port `8181` to `8080` of the guest.
+Run `archuro run` to expose port `8080` defined in the `Dockerfile` with `8080` on the host. If you need more customization use `docker run` directly as shown here in combination with the bind mount created to [share dotfiles](#sharing-dotfiles):
 
-## Package management
+```sh
+docker run -it -p 8080:8080 -v ~/archuro/stow:/root/archuro/stow archlinux/extended:latest bash
+```
 
-Installed on demand. Modify `/stow/dot-Brewfile` after running `archuro init` to adjust. Then run `archuro install` to install and `archuro update` to check for new versions and update automatically.
+### Package management
+
+If you're backing up an existing system:
+
+1. Run `brew bundle dump` to write all installed casks/formulae/taps into a Brewfile for you.
+2. Copy that into Archuro's `stow/dot-Brewfile`.
+3. Run `archuro init` to install [GNU Stow](https://www.gnu.org/software/stow/) and Bash 5.
+4. Safely create symlinks to your `$HOME` directory using GNU Stow with `archuro init --stow`.
+
+Otherwise:
+
+Modify `stow/dot-Brewfile` to adjust macOS dependencies. If you're not using Homebrew yet `archuro init` will install it alongside GNU Stow automatically. Then run `archuro install` or `archuro update` to check for new dependencies and install them automatically.
 
 ## Troubleshooting
 
