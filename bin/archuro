@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 #
 # Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
@@ -79,6 +79,7 @@ set -e
 
 # INSPIRATION / RESOURCES
 # 
+# - https://www.mankier.com/1/docker-container-ls for docker snippets
 # - https://openfolder.sh/macos-migrations-with-brewfile for backup and restore
 # - https://github.com/lmammino/dotfiles/blob/master/.bash_profile snippets
 # - https://scriptingosx.com/2019/07/install-bash-5-on-macos-with-patches/
@@ -102,7 +103,7 @@ set -e
 
 # TODO
 # 
-
+# - [ ] Use podman for Docker https://www.mankier.com/package/podman-docker#General_Commands
 # - [ ] Explore use of Nix for cross-platform install of Kitty et al.
 # - [ ] Consider rewrite in TypeScript with https://yargs.js.org
 # - [ ] Review https://github.com/macmade/trash/issues/4 or just keep using trash
@@ -158,7 +159,8 @@ BINDIR=/usr/local/bin
 TMPDIR="${TMPDIR:-"/var/tmp"}"
 ETCDIR=/usr/local/etc
 ARTDIR="$HOME/archuro/artifacts"
-APPDIR="/Applications"
+
+ARCVERS="0.1.0"
 
 UARG_FORCED_INSTALL=
 UARG_STOW_DOTFILES=
@@ -642,7 +644,7 @@ function install_ffmpeg {
 }
 
 # Install pngquant from gzipped release tarball in git repository
-install_pngquant () {
+function install_pngquant  {
     if hash pngquant 2>/dev/null; then
         echo "PNGQuant found. Skipping ..."
     else
@@ -715,15 +717,15 @@ function update_custom_tools {
 
 # color chart <https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg>
 
-grey=`tput setaf 239`
-red=`tput setaf 1`
-green=`tput setaf 2`
-magenta=`tput setaf 5`
-reset=`tput sgr0`
-bold=`tput bold`
+grey=$(tput setaf 245)
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+magenta=$(tput setaf 5)
+reset=$(tput sgr0)
+bold=$(tput bold)
 
 function print_help_message {
-    echo "archuro (Archuro) version 0.1.0"
+    echo "archuro (Archuro) version $ARCVERS"
     echo
     echo "SYNOPSIS"
     echo
@@ -731,20 +733,20 @@ function print_help_message {
     echo
     echo "COMMANDS"
     echo
-    echo "    ${green}attach${reset}       ${grey}Attach to a running archlinux tty${reset}"
-    echo "    ${green}init${reset}         ${grey}Initialise build system${reset}                 ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
-    echo "    ${green}install${reset}      ${grey}Install dependencies${reset}                    ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
-    echo "    ${green}ls${reset}           ${grey}List available archlinux images${reset}"
-    echo "    ${green}ps${reset}           ${grey}Show archlinux containers${reset}               ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
-    echo "    ${green}run${reset}          ${grey}Run last saved archlinux image"${reset}
-    echo "    ${green}save${reset}         ${grey}Build Dockerfile and tag latest${reset}"
-    echo "    ${green}stop${reset}         ${grey}Stop all running archlinux containers${reset}"
-    echo "    ${green}tty${reset}          ${grey}Start interactive archlinux tty${reset}"
-    echo "    ${green}update${reset}       ${grey}Update optional packages${reset}"
+    echo "    ${green}attach${reset}        ${grey}Attach to running arch tty${reset}"
+    echo "    ${green}init${reset}          ${grey}Initialize arch build system${reset}          ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
+    echo "    ${green}install${reset}       ${grey}Install optional packages${reset}             ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
+    echo "    ${green}ls${reset}            ${grey}List arch images${reset}                      ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}ps${reset}            ${grey}List arch containers${reset}                  ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}run${reset}           ${grey}Run extended build${reset}"
+    echo "    ${green}save${reset}          ${grey}Create extended build${reset}"
+    echo "    ${green}stop${reset}          ${grey}Stop running arch containers${reset}"
+    echo "    ${green}tty${reset}           ${grey}Start ephemeral arch tty${reset}"
+    echo "    ${green}update${reset}        ${grey}Update optional packages${reset}"
     echo
     echo "OPTIONS"
     echo
-    echo "    ${green}-h, --help${reset}   ${grey}Show this help message${reset}"
+    echo "    ${green}-h, --help${reset}    ${grey}Show this help message${reset}"
     echo
     echo "Report bugs to: <https:/codeberg.org/vhs/archuro>"
     echo "Archuro is free software licensed under the ${bold}GNU GPLv3+${reset}."
@@ -756,7 +758,7 @@ if [ $# -eq 0 ]; then
     exit 0
 else
     case "$1" in
-    "attach" | "a")
+    "attach")
         attachid="$(archuro ps -q | head -1)"
         if [[ -z "$attachid" ]]; then
             echo "Cannot attach to a container. No running containers found."
@@ -777,13 +779,13 @@ else
         test "$2" = "-S" || test "$2" = "--stow" && UARG_STOW_DOTFILES=1
         echo "${green}000 ${magenta}>>- ${green}BUILD ESSENTIALS ...${reset}"
         install_build_essentials
-        [[ $UARG_STOW_DOTFILES -eq 1 ]] && \
+        [[ "$UARG_STOW_DOTFILES" -eq 1 ]] && \
             echo "${green}000 ${magenta}>>- ${green}STOW DOTFILES ...${reset}" && \
             stow_dotfiles
         ;;
-    "update" | "up" | "install" | "ins" | "i")
+    "update" | "install")
         test "$2" = "-f" || test "$2" = "--force" && UARG_FORCED_INSTALL=1
-        [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${red}Katarina! Katarina! ...${reset}"
+        [[ "$UARG_FORCED_INSTALL" -eq 1 ]] && echo "${red}Katarina! Katarina! ...${reset}"
         echo "${green}010 ${magenta}>>- ${green}SHELL ENVIRONMENT${reset}"
         configure_shell_environment
         echo "${green}020 ${magenta}>>- ${green}SYSADMIN TOOLS${reset}"
@@ -796,25 +798,32 @@ else
         install_productivity_tools
         echo "${green}060 ${magenta}>>- ${green}CUSTOM DEPENDENCIES${reset}"
         install_custom_tools
-        [[ $UARG_FORCED_INSTALL -eq 1 ]] && echo "${magenta}Archuro!${reset}"
+        [[ "$UARG_FORCED_INSTALL" -eq 1 ]] && echo "${magenta}Archuro!${reset}"
         echo "Installation finshed. Review output for potential issues."
         echo "Run command again  with '-S' flag to 'stow --dotfiles stow' with GNU Stow."
         if [[ "$OSTYPE" == darwin* ]]; then
             echo "Manage Homebrew dependencies from ~/.Brewfile once stowed."
         fi
         ;;
-    "tty" | "t")
-        docker run -e LANG=en_US.utf8 -e TERM -it --rm archlinux/base bash -uexc '
-  pacman -Sy --noconfirm zsh git
-  git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-  echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
-  cd ~/powerlevel10k
-  exec zsh'
-        docker tag "$(docker images -q | head -1)" archuro
-        ;;
     "ls")
-        echo "REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE"
-        docker images | grep archlinux # XXX: --filter based on image tag 'archuro'
+        case "$2" in
+        "-q" | "--quiet")
+            docker images -q "archlinux/*"
+            ;;
+        *)
+            docker images "archlinux/*"
+            ;;
+        esac
+        ;;
+    "ps")
+        case "$2" in
+        "-q" | "--quiet")
+            docker ps -qf ancestor=archlinux/base
+            ;;
+        *)
+            docker ps -f ancestor=archlinux/base
+            ;;
+        esac
         ;;
     "run")
         echo "Running extended image and connecting to tty ..."
@@ -822,21 +831,22 @@ else
         docker run -it -p 8080:8080 -v ~/archuro/stow:/root/archuro/stow archlinux/extended:latest bash
         echo "Run 'archuro ps' to view running archlinux containers. Run 'attach' to attach to tty."
         ;;
-    "save" | "s")
+    "save")
         echo "Building and tagging Dockerfile image ..."
-        docker build . && docker tag $(docker image ls -q | head -1) archlinux/extended:latest
+        docker build . && docker tag "$(docker image ls -q | head -1)" archlinux/extended:latest
         echo "Dockerfile $(docker image ls -q | head -1) built and tagged. Run 'archuro ls' to view it."
         ;;
-    "ps")
-        case "$2" in
-        "-q" | "--quiet")
-            archuro ps | cut -c 1-12 | sed -n '1!p'
-            ;;
-        *)
-            echo "CONTAINER ID        IMAGE               COMMAND                   CREATED             STATUS              PORTS"
-            docker container ls | grep archlinux # XXX: --filter based on image tag 'archuro'
-            ;;
-        esac
+    "stop")
+        archuro ps -q | xargs -n 1 -P 8 -I {} docker stop {}
+        ;;
+    "tty")
+        docker run -e LANG=en_US.utf8 -e TERM -it --rm archlinux/base bash -uexc '
+  pacman -Sy --noconfirm zsh git
+  git clone https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+  echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
+  cd ~/powerlevel10k
+  exec zsh'
+        docker tag "$(docker images -q | head -1)" archuro
         ;;
     "-h" | "--help")
         print_help_message
@@ -856,6 +866,7 @@ fi
 # <<- MARKDOWN
 #
 # [Arch Linux]: https://www.archlinux.org "A simple, lightweight distribution."
+# [AURman]: https://github.com/polygamma/aurman "AUR Helper."
 # [Bash 5]: https://www.gnu.org/software/bash/ "Bash is the Bourne Again SHell."
 # [Docker Desktop for Mac]: https://docs.docker.com/docker-for-mac/ "Docker is a full development platform for creating containerized applications. Docker Desktop is the best way to get started with Docker on Mac."
 # [ffmpeg]: https://ffmpeg.org/ "A command line-only program that allows you to convert videos and audio into different formats, as well as record live audio and video."
