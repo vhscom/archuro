@@ -87,6 +87,7 @@ cask "mongodb-compass"            # The GUI for MongoDB
 brew "mono"                       # Cross platform, open source .NET development framework
 brew "neofetch"                   # Fast, highly customisable system info script
 brew "neovim"                     # Ambitious Vim-fork focused on extensibility and agility
+brew "node"                       # Platform built on V8 to build network applications
 brew "openssl"                    # SSL/TLS cryptography library
 brew "pngquant"                   # PNG image optimizing utility
 brew "postgresql"                 # Object-relational database system
@@ -96,6 +97,7 @@ brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
 brew "trash"                      # CLI tool that moves files or folder to the trash
+brew "typescript"                 # Language for application scale JavaScript development
 cask "visual-studio-code"         # VS Code
 cask "vivaldi"                    # The Web browser
 # mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
