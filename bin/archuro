@@ -102,6 +102,9 @@ set -e
 
 # TODO
 # 
+
+# - [ ] Explore use of Nix for cross-platform install of Kitty et al.
+# - [ ] Consider rewrite in TypeScript with https://yargs.js.org
 # - [ ] Review https://github.com/macmade/trash/issues/4 or just keep using trash
 # - [ ] Add gitconfig with some aliases
 # - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
@@ -155,6 +158,7 @@ BINDIR=/usr/local/bin
 TMPDIR="${TMPDIR:-"/var/tmp"}"
 ETCDIR=/usr/local/etc
 ARTDIR="$HOME/archuro/artifacts"
+APPDIR="/Applications"
 
 UARG_FORCED_INSTALL=
 UARG_STOW_DOTFILES=
@@ -183,7 +187,7 @@ function install_xcode_clt_macos {
 # @expects [command] pacman if [ $OSTYPE = linux-gnu ]
 # @see https://alexpearce.me/2016/02/managing-dotfiles-with-stow/
 # @see https://github.com/idcrook/i-dotfiles/tree/master/stow
-function install_stow_common {
+function install_stow {
     if hash stow 2>/dev/null; then
         echo "GNU Stow found. Skipping ..."
     else
@@ -326,7 +330,8 @@ function choose_programming_languages {
 
 # Install build essentials
 function install_build_essentials {
-    install_stow_common
+    install_stow
+    install_terminal_emuators
     if [[ "$OSTYPE" == darwin* ]]; then
         install_build_essentials_macos
         install_docker_desktop_for_macos
@@ -374,7 +379,7 @@ function install_bash_5_macos {
         ./configure -q &>1
         echo "<<- Beginning build ..."
         make -s &>1
-        echo "<<- Beginning ..."
+        echo "<<- Beginning installation..."
         make install -s &>1
         echo "$BINDIR/bash" | sudo tee -a /etc/shells # XXX: do not append if shell exists
         echo "Bash 5 installation completed ..."
