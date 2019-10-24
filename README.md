@@ -9,18 +9,18 @@ Archuro is a CLI designed to streamline set-up and management of a Mac for cross
 ## Features
 
 - Quickly install all tools necessary to run Arch Linux on macOS.
+- Installs [GNU Stow](https://www.gnu.org/software/stow/) for [robust dotfile management](https://alexpearce.me/2016/02/managing-dotfiles-with-stow/).
 - Appealing prompt with [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack) for Zsh.
 - Maximize reuse of user config between macOS and Arch Linux.
 - Bash and Zsh productivity affordances [without getting clever](https://github.com/zsh-users/antigen).
-- CLI-driven GNU Stow installation for SCM-friendly dotfile management.
 - Install Bash 5 from source on macOS to normalize it with Arch Linux.
 - Create [Extended Builds](#extended-builds) of Arch suited for your workflow.
 - Hotkey access to `archuro tty` command via `Ctrl+p` using Bash 5.
-- 2 terminals: [Kitty](https://github.com/kovidgoyal/kitty) (cross-platform), [HyperTerm](https://hyper.is) (via Homebrew)
-- Opinionated Brew manifest with customizable dependencies
-- Create a custom profile named Archuro for Mac's Terminal app
-- Install Vivialdi web browser for productivity and development
-- Automate [VS Code](https://code.visualstudio.com/) setup and helps keep track of extensions
+- Opinionated Brew manifest with customizable dependencies.
+- Create a custom profile named Archuro for Mac's Terminal app.
+- Install Vivialdi web browser for productivity and development.
+- Automate [VS Code](https://code.visualstudio.com/) setup and [helps keep track](#vs-code) of extensions.
+- Recommended terminals: [Kitty](https://github.com/kovidgoyal/kitty), [HyperTerm](https://hyper.is).
 
 ## Screens and demo
 
