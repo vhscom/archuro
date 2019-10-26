@@ -333,7 +333,6 @@ function choose_programming_languages {
 # Install build essentials
 function install_build_essentials {
     install_stow
-    install_terminal_emuators
     if [[ "$OSTYPE" == darwin* ]]; then
         install_build_essentials_macos
         install_docker_desktop_for_macos
