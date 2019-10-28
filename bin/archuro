@@ -79,6 +79,7 @@ set -e
 
 # INSPIRATION / RESOURCES
 # 
+# - https://www.nmattia.com/posts/2018-03-21-nix-reproducible-setup-linux-macos.html
 # - https://www.mankier.com/1/docker-container-ls for docker snippets
 # - https://openfolder.sh/macos-migrations-with-brewfile for backup and restore
 # - https://github.com/lmammino/dotfiles/blob/master/.bash_profile snippets
@@ -103,8 +104,9 @@ set -e
 
 # TODO
 # 
-# - [ ] Use podman for Docker https://www.mankier.com/package/podman-docker#General_Commands
 # - [ ] Explore use of Nix for cross-platform install of Kitty et al.
+# - [ ] Incorporate pass, opengpg
+# - [ ] Use podman for Docker https://www.mankier.com/package/podman-docker#General_Commands
 # - [ ] Consider rewrite in TypeScript with https://yargs.js.org
 # - [ ] Review https://github.com/macmade/trash/issues/4 or just keep using trash
 # - [ ] Add gitconfig with some aliases
@@ -391,9 +393,6 @@ function install_bash_5_macos {
         fi
     fi
 
-    # Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
-    # as the default shell so we start by checking the current shell and emulating
-    # sh in the Z shell case and use a more portable, POSIX-compliant profile.
     if [[ "${SHELL##/*/}" == "zsh" ]]; then
         echo 'You might want to change your default shell to Bash 5: `chsh -s /usr/local/bin/bash`'
     fi
@@ -402,7 +401,6 @@ function install_bash_5_macos {
 # Configure shell environemnt
 function configure_shell_environment {
     [[ "$OSTYPE" == darwin* ]] && install_bash_5_macos
-    continue
 }
 
 # =========================================================================== #
@@ -596,7 +594,6 @@ function install_security_tools_macos {
 # Install security tools
 function install_security_tools {
     [[ "$OSTYPE" == darwin* ]] && install_security_tools_macos
-    continue
 }
 
 # =========================================================================== #
@@ -669,7 +666,7 @@ function install_productivity_tools {
 }
 
 # =========================================================================== #
-# 060 >>- CUSTOM DEPENDENCES
+# 060 >>- CUSTOM TOOLS
 # =================================================================== #
 
 # Install Homebrew dependencies
