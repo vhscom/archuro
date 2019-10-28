@@ -1,21 +1,3 @@
-/*!
-* Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
-*
-* This file is part of Archuro.
-*
-* Archuro is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published
-* by the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* Archuro is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <https://www.gnu.org/licenses/>.
-**/
 
 // Future versions of Hyper may add additional config options,
 // which will not automatically be merged into this file.
@@ -55,7 +37,7 @@ module.exports = {
     cursorShape: 'BLOCK',
 
     // set to `true` (without backticks and without quotes) for blinking cursor
-    cursorBlink: false,
+    cursorBlink: true,
 
     // color of the text
     foregroundColor: '#fff',
@@ -163,7 +145,23 @@ module.exports = {
     verminal: {
       fontFamily: '"Hack Nerd Font"',
       fontSize: 13
-    }
+    },
+
+    hyperCustomTouchbar: [
+      // if you just need a single button then don't add options array
+      { label: 'clear', command: 'clear', backgroundColor: '#d13232' },
+      { label: 'man', command: 'man ', prompt: true },
+      {
+        label: 'git',
+        options: [
+          { label: 'diff', command: 'git diff' },          
+          { label: 'status', command: 'git status' },  
+          { label: 'log', command: 'git log' },
+          { label: 'add .', command: 'git add .' },
+          { label: 'clone', command: 'git clone ', prompt: true },
+        ]
+      },
+    ]
   },
 
   // a list of plugins to fetch and install from npm
@@ -172,7 +170,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ["hyper-flat", "hyperpower", "verminal"],
+  plugins: ["hyperpower", "hyper-custom-touchbar", "verminal"],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
@@ -183,4 +181,5 @@ module.exports = {
     // Example
     // 'window:devtools': 'cmd+alt+o',
   },
+
 };

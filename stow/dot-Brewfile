@@ -39,16 +39,17 @@ tap "mongodb/brew"
 # 000 >>- BUILD ESSENTIALS
 # =================================================================== #
 
-brew "stow" # Installable via Archuro
-brew "mas" # Installable via Archuro
+# brew "stow" # Installed by Archuro
+# brew "mas"  # Installed by Archuro
+# brew "bash" # Installed by Archuro
 
 # =========================================================================== #
 # 010 >>- SHELL ENVIRONMENT
 # =================================================================== #
 
-brew "bash-completion@2" # programmable completion for bash@4.1+
-cask "font-hack-nerd-font" # fontFamily: "Hack Nerd Font"
-cask "font-fira-code" # installed as a convenience
+brew "bash-completion@2"     # Programmable completion for bash@4.1+
+cask "font-hack-nerd-font"   # Hack Nerd Font
+cask "font-fira-code"        # Monospaced font with programming ligatures
 cask "hyper" # terminal emulator
 cask "kitty"
 # ... possibly more commands here
@@ -59,11 +60,11 @@ cask "kitty"
 
 brew "fzf"
 brew "git"
-# brew "htop" # Installable via Archuro
+# brew "htop" # Installed by Archuro
 brew "jq"
-# brew "lynx" # Installable via Archuro
+# brew "lynx" # Installed by Archuro
 brew "mosh"
-# brew "tldr" # Installable via Archuro
+# brew "tldr" # Installed by Archuro
 brew "tmux"
 brew "tree"
 brew "wget"
@@ -73,22 +74,20 @@ brew "wget"
 # 030 >>- DEVELOPER TOOLS
 # =================================================================== #
 
-# cask "adoptopenjdk8"
 brew "cmake"
-# brew "elasticsearch" # @requires [cask] adoptopenjdk8
-# cask "elasticwolf"
+brew "elasticsearch"
 brew "emacs"                      # GNU Emacs text editor
-brew "ffmpeg", args: ALL_FFMPEG_OPTIONS
+brew "ffmpeg",
+    args: ALL_FFMPEG_OPTIONS      # Collection of libraries and tools to process multimedia
 brew "go"                         # Open source programming language
-cask "graphql-playground"         # GraphQL IDE for better development workflows
 brew "hugo"                       # Configurable static site generator
 brew "mongodb-community"          # High-performance, schema-free, document-oriented database
-cask "mongodb-compass"            # The GUI for MongoDB
 brew "mono"                       # Cross platform, open source .NET development framework
 brew "neofetch"                   # Fast, highly customisable system info script
 brew "neovim"                     # Ambitious Vim-fork focused on extensibility and agility
 brew "node"                       # Platform built on V8 to build network applications
 brew "openssl"                    # SSL/TLS cryptography library
+brew "pandoc"                     # Swiss-army knife of markup format conversion
 brew "pngquant"                   # PNG image optimizing utility
 brew "postgresql"                 # Object-relational database system
 brew "python"                     # Interpreted, interactive, object-oriented programming language
@@ -98,12 +97,15 @@ brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh sc
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
 brew "trash"                      # CLI tool that moves files or folder to the trash
 brew "typescript"                 # Language for application scale JavaScript development
-cask "visual-studio-code"         # VS Code
-cask "vivaldi"                    # The Web browser
-# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
+cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
+cask "graphql-playground"         # GraphQL IDE for better development workflows
+cask "mongodb-compass"            # The GUI for MongoDB
+cask "visual-studio-code"         # VS Code
+cask "vivaldi"                    # Web browser
+# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
 # ... possibly more commands here
 
 # =========================================================================== #
@@ -115,7 +117,7 @@ brew "yarn"                       # JavaScript package manager
 # brew "kubernetes-helm"
 # brew "kubernetes-service-catalog-client"
 brew "prometheus"
-brew "traefik" 
+brew "traefik"
 # ... possibly more commands here
 
 # =========================================================================== #
@@ -123,26 +125,26 @@ brew "traefik"
 # =================================================================== #
 
 brew "pass"                            # Password manager
-# brew "socat"                         # Netcat on steroids
-# brew "tcpdump"                       # Command-line packet analyzer
-# mas "bitwarden", id: 1352778147
-# mas "wireguard", id: 1451685025
+# brew "socat"                           # Netcat on steroids
+# brew "tcpdump"                         # Command-line packet analyzer
+# mas "bitwarden", id: 1352778147        # Password manager
+# mas "wireguard", id: 1451685025        # Fast, modern, and secure VPN tunnel
 # ... possibly more commands here
 
 # =========================================================================== #
 # 050 >>- PRODUCTIVITY TOOLS
 # =================================================================== #
 
-# mas "amphetamine", id: 937984704
-# mas "drafts", id: 1435957248
-# mas "focus", id: 777233759
-# mas "mindnode", id: 1289197285
-# mas "omnigraffle", id: 1142578753
-# mas "parcelosx", id: 639968404
+cask "blender"                         # Free and open source 3D creation suite
+cask "framer-x"                        # Design toolkit to create code components
 cask "imageoptim"                      # ImageOptim makes images load faster
 cask "rectangle"                       # Move and resize windows in macOS
+cask "sketch"                          # Design toolkit built to help you create your best work
+# cask "telegram-desktop"                # Cloud-based mobile and desktop messaging app
+# mas "amphetamine", id: 937984704       # Keep your Mac, and optionally its display, awake
+# mas "mindnode", id: 1289197285         # Makes mind mapping easy, fast and stunning.
+# mas "omnigraffle", id: 1142578753      # Create beautiful, precise graphics
+# mas "parcelosx", id: 639968404         # Delivery tracking
 # mas "spark", id: 1176895641
-# cask "telegram-desktop"
-# mas "toggldesktop", id: 957734279
 # mas "ulysses", id: 1225570693
 # ... possibly more commands here

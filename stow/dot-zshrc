@@ -35,8 +35,11 @@
 # Emulate Bourne shell and load its profile settings
 # =================================================================== #
 
-# Source Bourne shell profile if exists
-[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile' # @see # https://support.apple.com/en-us/HT208050
+# Read profile settings. By default macOS Catalina (v10.15) ships with Z shell
+# as the default shell so we start by checking the current shell and emulating
+# sh in the Z shell case and use a more portable, POSIX-compliant profile.
+# @see https://support.apple.com/en-us/HT208050
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 
 # =========================================================================== #
 # Command completions
