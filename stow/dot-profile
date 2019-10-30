@@ -39,6 +39,7 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 alias z='z'
 alias ll='ls -lhAG' # Colorized with -G
 alias ..='cd ..'
+alias ...='cd ..; cd ..'
 alias tree='tree -C' # Colorized with -C
 
 ff () {
@@ -46,10 +47,28 @@ ff () {
 }
 
 #
+# General
+#
+
+alias net="ping vhs.codeberg.page | grep -E --only-match --color=never '[0-9\.]+ ms'"
+
+#
 # Archuro
 #
 
 alias ao='archuro'
+
+#
+# Homebrew
+# @see https://thoughtbot.com/blog/starting-and-stopping-background-services-with-homebrew
+#
+
+alias b='brew'
+alias bs='brew services'
+alias bsc='brew services cleanup'
+alias bsl='brew services list'
+alias bsr='brew services restart'
+alias bss='brew services start'
 
 #
 # VS Code (macOS-only)
@@ -59,11 +78,11 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias c='code'
   alias cx='code --list-extensions'
 
-  cxinstall () {
-    [[ -r ~/.vscode/extensions ]] && cat ~/.vscode/extensions | xargs -n1 code --install-extension
+  cxinstall() {
+    test -r ~/.vscode/ext-list && < ~/.vscode/ext-list xargs -n1 code --install-extension
   }
   cxsave () {
-    [[ -r ~/.vscode/extensions ]] && cx >> ~/.vscode/extensions # appended for now
+    test -r ~/.vscode/ext-list && cx > ~/.vscode/ext-list
   }
   cxremoveall () {
     # WARNING: Use with care. This removes all currently installed extensions.
@@ -90,9 +109,14 @@ alias gf='git fetch'
 alias gl='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
 alias gls='git log --no-merges --pretty=format:"%ae" | sort | uniq -c | sort --reverse'
 alias gp='git push'
-alias gr='git rm'
+alias gr='git rebase'
+alias gra='git rebase --abort'
+alias grc='git rebase --continue'
+alias gri='git rebase --interactive'
+alias grs='git rebase --skip'
 alias gs='git status --short'
 alias gu='git pull'
+alias gz='npx git-cz'
 
 gcp () {
   title="$@"
@@ -101,6 +125,20 @@ gcp () {
 gc () {
   args="$@"
   git commit -m "$args"
+}
+
+# 
+# NPM
+# 
+
+alias ni="npm install"
+alias nr="npm run"
+alias nrb="npm run build"
+alias nrc="npm run clean"
+alias nrd="npm run dev"
+
+ns() {
+  cat < package.json | jq '.scripts'
 }
 
 #
