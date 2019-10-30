@@ -20,7 +20,7 @@ Archuro is a CLI designed to streamline set-up and management of a Mac for cross
 - Create a custom profile named Archuro for Mac's Terminal app.
 - Install Vivialdi web browser for productivity and development.
 - Automate [VS Code](https://code.visualstudio.com/) setup and [helps keep track](#vs-code) of extensions.
-- Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Verminal](https://github.com/defringe/verminal).
+- Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Verminal](https://github.com/defringe/verminal) and `hyper-flat`.
 
 ## Screens and demo
 
