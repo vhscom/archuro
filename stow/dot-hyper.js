@@ -170,7 +170,13 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ["hyperpower", "hyper-custom-touchbar", "hyper-flat", "verminal"],
+  plugins: [
+    "hyperpower",
+    "hyper-custom-touchbar",
+    "hyper-flat",
+    "verminal",
+    "hypercwd"
+  ],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
