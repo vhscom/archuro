@@ -36,7 +36,7 @@ tap "mongodb/brew"
 # ... possibly more taps here 
 
 # =========================================================================== #
-# 000 >>- BUILD ESSENTIALS
+# 000 >>- BUILD
 # =================================================================== #
 
 # brew "stow" # Installed by Archuro
@@ -44,7 +44,7 @@ tap "mongodb/brew"
 # brew "bash" # Installed by Archuro
 
 # =========================================================================== #
-# 010 >>- SHELL ENVIRONMENT
+# 010 >>- SHELL
 # =================================================================== #
 
 brew "bash-completion@2"     # Programmable completion for bash@4.1+
@@ -55,7 +55,7 @@ cask "kitty"
 # ... possibly more commands here
 
 # =========================================================================== #
-# 020 >>- SYSADMIN TOOLS
+# 020 >>- SYSADMIN
 # =================================================================== #
 
 brew "fzf"
@@ -71,14 +71,13 @@ brew "wget"
 # ... possibly more commands here
 
 # =========================================================================== #
-# 030 >>- DEVELOPER TOOLS
+# 030 >>- DEVELOPER :: CLI
 # =================================================================== #
 
-brew "cmake"
-brew "elasticsearch"
+brew "ack"                        # Search tool like grep, but optimized for programmers
+brew "cmake"                      # Cross-platform make
+brew "elasticsearch"              # Distributed search & analytics engine
 brew "emacs"                      # GNU Emacs text editor
-brew "ffmpeg",
-    args: ALL_FFMPEG_OPTIONS      # Collection of libraries and tools to process multimedia
 brew "go"                         # Open source programming language
 brew "hugo"                       # Configurable static site generator
 brew "mongodb-community"          # High-performance, schema-free, document-oriented database
@@ -100,51 +99,76 @@ brew "typescript"                 # Language for application scale JavaScript de
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
-cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
-cask "graphql-playground"         # GraphQL IDE for better development workflows
+# cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
+cask "android-studio"             # Official IDE for Google's Android operating system
+cask "fork"                       # Fast and friendly git client for Mac and Windows
+cask "framer-x"                   # Design toolkit to create code components
+# cask "genymotion"                 # Genymotion is a VM that runs Android OS
+# cask "graphql-playground"         # GraphQL IDE for better development workflows
+cask "imageoptim"                 # ImageOptim makes images load faster
 cask "mongodb-compass"            # The GUI for MongoDB
 cask "visual-studio-code"         # VS Code
-cask "vivaldi"                    # Web browser
-# mas "com.apple.dt.xcode", id: 497799835 # xdcode not required
+cask "vivaldi"                    # Modern, cross-platform web browser
+# mas "com.apple.dt.xcode", id: 497799835 # Xcode
 # ... possibly more commands here
 
 # =========================================================================== #
-# 035 >>- DEVOPS
+# 030 >>- DEVELOPER :: DEVOPS
 # =================================================================== #
 
 # brew "istioctl"
-# brew "kubernetes-cli" # Included with Docker Desktop (archuro init)
-# brew "kubernetes-helm"
-# brew "kubernetes-service-catalog-client"
-brew "prometheus"
-brew "traefik"
+# brew "kubernetes-cli"             # Included with Docker Desktop (archuro init)
+# brew "kubernetes-helm"            # Package manager for Kubernetes applications
+# brew "kubernetes-service-catalog-client" # Consume Services in k8s using the OSB API
+# brew "kompose"                    # Tool to move from `docker-compose` to Kubernetes
+brew "drone-cli"                  # Self-service Continuous Delivery platform
+brew "prometheus"                 # Service monitoring system and time series database
+brew "traefik"                    # Modern reverse proxy
 # ... possibly more commands here
 
 # =========================================================================== #
-# 040 >>- SECURITY TOOLS
+# 040 >>- SECURITY
 # =================================================================== #
 
 brew "pass"                            # Password manager
-# brew "socat"                           # Netcat on steroids
-# brew "tcpdump"                         # Command-line packet analyzer
+brew "socat"                           # Netcat on steroids
+brew "tcpdump"                         # Command-line packet analyzer
+brew "vault"                           # Secures, stores, and tightly controls access to secrets
 # mas "bitwarden", id: 1352778147        # Password manager
 # mas "wireguard", id: 1451685025        # Fast, modern, and secure VPN tunnel
 # ... possibly more commands here
 
 # =========================================================================== #
-# 050 >>- PRODUCTIVITY TOOLS
+# 050 >>- PRODUCTIVITY
+# =================================================================== #
+
+# cask "axure-rp"                        # UX Design and Prototyping Tool
+cask "boostnote"                         # Intuitive and stylish markdown editor for developers
+cask "rectangle"                       # Move and resize windows in macOS
+# mas "amphetamine", id: 937984704       # Keep your Mac, and optionally its display, awake
+# mas "parcelosx", id: 639968404         # Delivery tracking
+# mas "spark", id: 1176895641            # Personal email client
+# ... possibly more commands here
+
+# =========================================================================== #
+# 000 >>- CREATIVE
 # =================================================================== #
 
 cask "blender"                         # Free and open source 3D creation suite
-cask "framer-x"                        # Design toolkit to create code components
-cask "imageoptim"                      # ImageOptim makes images load faster
-cask "rectangle"                       # Move and resize windows in macOS
-cask "sketch"                          # Design toolkit built to help you create your best work
-# cask "telegram-desktop"                # Cloud-based mobile and desktop messaging app
-# mas "amphetamine", id: 937984704       # Keep your Mac, and optionally its display, awake
+cask "figma"                           # Browser-based UI and UX design application
+brew "ffmpeg",
+    args: ALL_FFMPEG_OPTIONS           # Collection of libraries and tools to process multimedia
 # mas "mindnode", id: 1289197285         # Makes mind mapping easy, fast and stunning.
 # mas "omnigraffle", id: 1142578753      # Create beautiful, precise graphics
-# mas "parcelosx", id: 639968404         # Delivery tracking
-# mas "spark", id: 1176895641
-# mas "ulysses", id: 1225570693
-# ... possibly more commands here
+cask "sketch"                          # Design toolkit built to help you create your best work
+# mas "ulysses", id: 1225570693          # The Ultimate Writing App for Mac
+
+
+# =========================================================================== #
+# 000 >>- SOCIAL
+# =================================================================== #
+
+brew "irssi"                           # Modular IRC client
+cask "discord"                         # Discord is a proprietary freeware VoIP application
+cask "spectrum"                        # Simple, powerful online communities
+cask "telegram-desktop"                # Cloud-based mobile and desktop messaging app
