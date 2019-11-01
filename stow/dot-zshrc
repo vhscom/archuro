@@ -61,6 +61,13 @@ elif tput colors > /dev/null 2>&1; then
 fi
 
 # =========================================================================== #
+# Colorize output of less and more - @see also zshenv
+# =================================================================== #
+
+alias less="less -R"
+alias more="more -R"
+
+# =========================================================================== #
 # macOS-only
 # =================================================================== #
 
@@ -73,10 +80,13 @@ fi
 # Application-specific settings
 # =================================================================== #
 
-# Jump around
+# rupa/z - Jump to any visited directory using the frecency algorithm
+# $ z desk && pwd
+# # => /Users/username/Desktop
 [[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
 
-# Powerlevel10k (p10k) theme
+# Powerlevel10k (p10k) ZSH theme
+# @see https://github.com/romkatv/powerlevel10k
 [[ -r /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme ]] && \
     . /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme
 

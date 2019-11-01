@@ -18,3 +18,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+
+# =========================================================================== #
+# Color output not directed at the terminal - @see also zshrc
+# =================================================================== #
+
+# GREP(1)
+# 
+# Mark up the matching text with the expression stored in
+# GREP_COLOR environment variable.  The possible values of when can
+# be `never', `always' or `auto'
+export GREP_COLOR=always
+
+# LS(1)
+# 
+# Color sequences are normally disabled if the output isn't
+# directed to a terminal.  This can be overridden by set-
+# ting this flag.  The TERM variable still needs to refer-
+# ence a color capable terminal however otherwise it is not
+# possible to determine which color sequences to use.
+export CLICOLOR_FORCE=true
