@@ -33,32 +33,40 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 # =================================================================== #
 
 #
-# Nagivation
+# Navigation and Listing
 #
 
-alias z='z'
-alias ll='ls -lhAG' # Colorized with -G
+alias l='ls -1'
+alias ll='ls -1A'
+alias la='ls -al'
+alias lr='ls -R'
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
-alias tree='tree -C' # Colorized with -C
 
 ff () {
   find . -iname "*${1:-}*"
 }
 
 #
-# General
+# Network
 #
 
 alias net="ping vhs.codeberg.page | grep -E --only-match --color=never '[0-9\.]+ ms'"
+alias myip="curl http://ipecho.net/plain; echo"
 
 #
 # Archuro
 #
 
 alias ao='archuro'
+alias sp="source $HOME/.profile"
 
 #
+# Make
+#
+
+alias mi='make install'
+
 # Homebrew
 # @see https://thoughtbot.com/blog/starting-and-stopping-background-services-with-homebrew
 #
@@ -136,8 +144,9 @@ alias nr="npm run"
 alias nrb="npm run build"
 alias nrc="npm run clean"
 alias nrd="npm run dev"
+alias nrs="npm run start"
 
-ns() {
+ns () {
   cat < package.json | jq '.scripts'
 }
 
