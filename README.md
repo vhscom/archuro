@@ -1,14 +1,16 @@
 # Archuro
 
-Archuro is a command-line tool for running Arch Linux on macOS.
+Archuro helps bridge the gap between development and production by facilitating the creation of deterministic environments on a user-defined, workflow-by-workflow basis.
 
 ![archuro](./screenshots/photo_2019-10-21_16.33.22-fs8.png)
 
-> Your development workflow, hypervized.
+> The march of science and technology does not imply growing intellectual complexity in the lives of most people. It often means the opposite. —Thomas Sowell
 
 ## Motiviation
 
-My [MacBomb Pro 15" Retina](https://vhs.codeberg.page/post/bomb-took-30-flight/) finally had to be replaced.
+A typical development workflow requires a number of different programs, libraries and tools to produce working software. As projects mature so too do the languages used to build them, the platforms they run on and the operating systems used to build them. And it's seldom the case a software developer works on only one project at a time.
+
+Constantly shifting conditions make it difficult to keep software running reliably over time, increase development costs and lead to unhappiness. If you wouldn't allow the kind of variance described in your production enviornment, why let it occur in development? Thankfully you don't need to. That's why I created Archuro.
 
 ## Features
 
