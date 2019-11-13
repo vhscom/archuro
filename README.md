@@ -1,32 +1,39 @@
 # Archuro
 
-Archuro helps bridge the gap between development and production by facilitating the creation of deterministic environments on a user-defined, workflow-by-workflow basis.
+Build minimal, portable application development environments.
 
 ![archuro](./screenshots/photo_2019-10-21_16.33.22-fs8.png)
 
-> The march of science and technology does not imply growing intellectual complexity in the lives of most people. It often means the opposite. —Thomas Sowell
+> “Simplicity is a great virtue but it requires hard work to achieve it and education to appreciate it. And to make matters worse: complexity sells better.” ― Edsger Wybe Dijkstra
 
-## Motiviation
+## Motivation
 
-A typical development workflow requires a number of different programs, libraries and tools to produce working software. As projects mature so too do the languages used to build them, the platforms they run on and the operating systems used to build them. And it's seldom the case a software developer works on only one project at a time.
+A typical application development environment requires a number of different programs, libraries and tools to produce working software. As applications mature so too do the techniques used to build them, the languages they're written in and the platforms they run on. Furthermore, it's seldom the case a developer works on only one application at a time.
 
-Constantly shifting conditions make it difficult to keep software running reliably over time, increase development costs and lead to unhappiness. If you wouldn't allow the kind of variance described in your production enviornment, why let it occur in development? Thankfully you don't need to. That's why I created Archuro.
+Constant churn in application development environments make it difficult to keep software running reliably over time, even on a single machine. And that's assuming your application doesn't carry around a lot of dependencies. If you wouldn't allow the kind of variance described in your production environment, why let it start during development? Thankfully you don't have to. That's why I created Archuro.
 
-## Features
+## Goals
 
-- Easily run Arch Linux on macOS with [experimental](https://docs.docker.com/docker-for-mac/faqs/#experimental-features) feature support.
-- Creates a deterministic development environment without being overly prescriptive.
-- Share config between macOS and containerized Arch Linux.
-- Updates Catalina with Bash 5 _without_ requiring Homebrew.
+- Eliminate hidden app dependencies.
+- Increase development agility.
+- Improve deployment predictability.
+
+## Affordances
+
+- Automate macOS dev environment setup using `archuro` CLI.
+- Quickly spin up throwaway [Arch Linux] containers with root access.
+- Iterate on [Extended Builds](#extended-builds) of Arch Linux suited for individual workflows.
+- Build ad hoc, portable environments with [LinuxKit].
+- Share user configuration cross-platform using [GNU Stow].
 - Adds cross-shell profile aliases [without getting clever](https://github.com/zsh-users/antigen).
-- Creates ephemeral and persisted [Extended Builds](#extended-builds) of Arch suited for your workflow.
-- Provides hotkey access to a Arch tty command via `Ctrl+p` using Bash 5.
+- Modernizes macOS Catalina with [Bash] 5, patches and command completions.
+- Manage macOS dev dependencies via [Homebrew Bundle].
+- Configures [Powerlevel10k] and [Hack Nerd Font] with Zsh.
 - Creates a custom profile named Archuro for Mac's Terminal app.
-- Helps install Vivialdi, a web browser geared for for productivity and development.
-- Automate [VS Code](https://code.visualstudio.com/) setup and [helps keep track](#vs-code) of extensions.
-- Provides [Powerlevel10k](https://github.com/romkatv/powerlevel10k) and [Hack Nerd Font](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack) with Zsh.
+- Provides hotkey access to a Arch tty command via `Ctrl+p` from Bash.
+- Helps install Vivaldi, a modern and developer-friendly browser.
+- Automate [VS Code] setup and [helps keep track](#vs-code) of extensions.
 - Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Verminal](https://github.com/defringe/verminal) and `hyper-flat`.
-
   
 ## Screens and demo
 
@@ -39,32 +46,39 @@ Videos? Several in the [`screenshots`](./screenshots) directory.
 
 ## Requirements
 
-- macOS though platform agnostic use is under consideration
-- Understanding of symlinks, dotfiles and how to run `stow --help`
-- Basic command line skills and patience reading instructions
+- macOS though platform agnostic use is under consideration.
+- Understanding of symlinks, dotfiles and how to run `stow --help`.
+- Basic command line skills and patience reading instructions.
 
 ## Installation
 
-Assumes basic knowledge of command line, git and file system management.
+Assumes basic knowledge of command line, git and file system management. **During development of Archuro you will also be expected to understand Shell Script and trace through `bin/archuro` to understand how it works.**
 
 1. Copy repository source code.
 2. Run `make install` to move `bin/archuro` to `/usr/local/bin`.
-3. Run `archuro init` to install build essentials. Add `-S` to proceed with [GNU Stow] (recommended).
-4. Finally, run `archuro install` to install dependencies.
 
-Repeat steps 2-3 on an [Extended Build](#extended-builds) of Arch Linux to share your dotfiles. To uninstall remove the binary installed. Then use the `stow` and `brew` commands to unlink remaining dotfiles and uninstall optional packages.
+To uninstall run `make uninstall` from the project root directory to remove the binary installed. Then use the `stow` and `brew` commands to unlink remaining dotfiles and uninstall optional packages. See `stow -h` and `brew bundle -h` for help.
 
- the CLI run `make uninstall` from the Archuro project root directory.
+## Configuration
+
+1. Review the dotfiles in the `stow` directory and update as desired.
+2. Run `archuro init` to install build essentials.
+3. Rerun `archuro init` with option `-S` use [GNU Stow] to symlink dotfiles from `stow` directory to the current user `$HOME`. Command will error if dotfile already exists to prevent overwriting existing config.
+4. Finally, run `archuro install` to install [optional dependencies](#package-management).
+
+Repeat steps 2-3 on an [Extended Build](#extended-builds) of Arch Linux to share your dotfiles.
 
 ## Usage
 
-Run `archuro --help` after [installation](#installation) for Archuro command-line usage instructions.
+To create a throwaway Arch Linux container run `archuro tty` or run `bash` and press `Ctrl+p`. To create a reusable Arch Linux container run `archuro save && archuro run`. See [Extended Builds](#extended-builds) for help.
 
-To create a throwaway Arch Linux container run `archuro tty` or run `bash` and press `Ctrl+p`. To get a reusable container create an [extended build](#extended-builds). Use `archuro ps` to view running containers and `archuro attach` to attach a tty to a running arch container.
+Most actions in Archuro expect you're using [GNU Stow] to safely symlink your dotfiles from the `stow` directory. If you have an existing "dotfiles" repository and wish to share your shell configuration files inside Arch Linux run `archuro init` with the `-S` flag to your `$HOME` run `archuro init -S` from the project root directory after downloading a copy of Archuro.
 
-Install [GNU Stow] and symlink dotfiles using `archuro init -S`.
+Run `archuro --help` after [installation](#installation) for command-line usage instructions.
 
 ## SSH protocol support
+
+Work in progress...
 
 Create an [extended build](#extended-builds) using `archuro save --ssh` to enable SSH protocol support. Setting this option enables SSK key sharing from host using SSH Agent via `SSH_AUTH_SOCK`. For background on why this functionality exists in Docker see [Build secrets and SSH forwarding in Docker 18.09](https://medium.com/@tonistiigi/build-secrets-and-ssh-forwarding-in-docker-18-09-ae8161d066).
 
@@ -106,24 +120,6 @@ archlinux/base       latest              5323a8f7a7a4        3 weeks ago        
 ```
 
 Rerun `archuro save` to rebuild the `Dockerfile` and update the `IMAGE ID` associated with the extended build.
-
-### Sharing dotfiles
-
-To share dotfiles with your extended build container run `archuro save` to build the Dockerfile image and then run `archuro run` to create a [shared file system](https://docs.docker.com/engine/reference/run/#volume-shared-filesystems) using a bind mount, i.e.
-
-```sh
-docker run -it -v ~/archuro/stow:/root/archuro/stow archlinux/extended bash
-```
-
-Once the Arch tty starts run `archuro init --stow` to install [GNU Stow] and symlink your dotfiles. Then run `zsh` to access the Z shell and start using your dotfiles right away.
-
-### Exposing ports
-
-Run `archuro run` to expose port `8080` defined in the `Dockerfile` with `8080` on the host. If you need more customization use `docker run` directly as shown here in combination with the bind mount created to [share dotfiles](#sharing-dotfiles):
-
-```sh
-docker run -it -p 8080:8080 -v ~/archuro/stow:/root/archuro/stow archlinux/extended:latest bash
-```
 
 ## Package management
 
@@ -222,4 +218,11 @@ No downloads
 Warning: No downloads began
 Installing amphetamine has failed!
 
-[GNU Stow]: (https://www.gnu.org/software/stow/)
+[Arch Linux]: https://www.archlinux.org/
+[Bash]: https://www.gnu.org/software/bash/
+[GNU Stow]: https://www.gnu.org/software/stow/
+[Hack Nerd Font]: https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Hack
+[Homebrew Bundle]: https://github.com/Homebrew/homebrew-bundle
+[LinuxKit]: https://github.com/linuxkit/linuxkit
+[Powerlevel10k]: https://github.com/romkatv/powerlevel10k
+[VS Code]: https://code.visualstudio.com/
