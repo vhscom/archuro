@@ -19,6 +19,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Colorize output of ls command on GNU/Linux
+[[ "$OSTYPE" == linux-gnu* ]] && alias ls='ls --color=auto'
+
 # Load Bourne shell profile if exists
 [[ -e ~/.profile ]] && sh -c 'source ~/.profile'
 

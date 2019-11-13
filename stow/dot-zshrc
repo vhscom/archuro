@@ -68,12 +68,15 @@ alias less="less -R"
 alias more="more -R"
 
 # =========================================================================== #
-# macOS-only
+# Platform-specific modifications
 # =================================================================== #
 
 if [[ "$OSTYPE" == darwin* ]]; then
     # Remove all items safely, to Trash (`brew install trash`)
     [[ -z "$commands[trash]" ]] || alias rm='trash' 2>&1 > /dev/null
+elif [[ "$OSTYPE" == linux-gnu* ]]; then
+    # Colorize output of ls
+    alias ls='ls --color=auto'
 fi
 
 # =========================================================================== #
