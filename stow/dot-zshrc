@@ -71,12 +71,8 @@ alias more="more -R"
 # Platform-specific modifications
 # =================================================================== #
 
-if [[ "$OSTYPE" == darwin* ]]; then
-    # Remove all items safely, to Trash (`brew install trash`)
-    [[ -z "$commands[trash]" ]] || alias rm='trash' 2>&1 > /dev/null
-elif [[ "$OSTYPE" == linux-gnu* ]]; then
-    # Colorize output of ls
-    alias ls='ls --color=auto'
+if [[ "$OSTYPE" == linux-gnu* ]]; then
+    alias ls='ls --color=auto' # Colorize output of ls
 fi
 
 # =========================================================================== #

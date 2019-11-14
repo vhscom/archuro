@@ -108,7 +108,6 @@ set -e
 # - [ ] Incorporate pass, opengpg
 # - [ ] Use podman for Docker https://www.mankier.com/package/podman-docker#General_Commands
 # - [ ] Consider rewrite in TypeScript with https://yargs.js.org
-# - [ ] Review https://github.com/macmade/trash/issues/4 or just keep using trash
 # - [ ] Add gitconfig with some aliases
 # - [ ] Install Touchbar for Hyper <https://github.com/SwarShah/hyper-custom-touchbar>
 # - [ ] Touchbar buttons for man (and tldr) similar to Terminal

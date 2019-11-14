@@ -71,7 +71,7 @@ brew "wget"
 # ... possibly more commands here
 
 # =========================================================================== #
-# 030 >>- DEVELOPER :: CLI
+# 030 >>- DEVELOPER
 # =================================================================== #
 
 brew "ack"                        # Search tool like grep, but optimized for programmers
@@ -94,13 +94,13 @@ brew "redis"                      # Persistent key-value database, with built-in
 brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
-brew "trash"                      # CLI tool that moves files or folder to the trash
 brew "typescript"                 # Language for application scale JavaScript development
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
 # cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
 cask "android-studio"             # Official IDE for Google's Android operating system
+cask "cocoapods"
 cask "fork"                       # Fast and friendly git client for Mac and Windows
 cask "framer-x"                   # Design toolkit to create code components
 # cask "genymotion"                 # Genymotion is a VM that runs Android OS
@@ -113,7 +113,7 @@ cask "vivaldi"                    # Modern, cross-platform web browser
 # ... possibly more commands here
 
 # =========================================================================== #
-# 030 >>- DEVELOPER :: DEVOPS
+# 035 >>- DEVOPS
 # =================================================================== #
 
 # brew "istioctl"
