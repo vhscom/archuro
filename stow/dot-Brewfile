@@ -95,12 +95,13 @@ brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
 brew "typescript"                 # Language for application scale JavaScript development
+brew "watchman"                   # Watch files and take action when they change
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
 # cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
 cask "android-studio"             # Official IDE for Google's Android operating system
-cask "cocoapods"
+cask "cocoapods"                  # dependency manager for Swift and Objective-C projects
 cask "fork"                       # Fast and friendly git client for Mac and Windows
 cask "framer-x"                   # Design toolkit to create code components
 # cask "genymotion"                 # Genymotion is a VM that runs Android OS
@@ -130,10 +131,12 @@ brew "traefik"                    # Modern reverse proxy
 # 040 >>- SECURITY
 # =================================================================== #
 
+brew "mitmproxy"                       # Interactive HTTPS proxy
 brew "pass"                            # Password manager
 brew "socat"                           # Netcat on steroids
 brew "tcpdump"                         # Command-line packet analyzer
 brew "vault"                           # Secures, stores, and tightly controls access to secrets
+# cask "charles"                         # HTTP proxy / HTTP monitor / Reverse Proxy
 # mas "bitwarden", id: 1352778147        # Password manager
 # mas "wireguard", id: 1451685025        # Fast, modern, and secure VPN tunnel
 # ... possibly more commands here
@@ -142,6 +145,7 @@ brew "vault"                           # Secures, stores, and tightly controls a
 # 050 >>- PRODUCTIVITY
 # =================================================================== #
 
+brew "aspell"                          # Free and Open Source spell checker
 # cask "axure-rp"                        # UX Design and Prototyping Tool
 cask "boostnote"                         # Intuitive and stylish markdown editor for developers
 cask "rectangle"                       # Move and resize windows in macOS
@@ -154,21 +158,19 @@ cask "rectangle"                       # Move and resize windows in macOS
 # 000 >>- CREATIVE
 # =================================================================== #
 
-cask "blender"                         # Free and open source 3D creation suite
-cask "figma"                           # Browser-based UI and UX design application
 brew "ffmpeg",
     args: ALL_FFMPEG_OPTIONS           # Collection of libraries and tools to process multimedia
-# mas "mindnode", id: 1289197285         # Makes mind mapping easy, fast and stunning.
-# mas "omnigraffle", id: 1142578753      # Create beautiful, precise graphics
+brew "imagemagick"                     # Create, edit, compose, or convert bitmap images
+cask "blender"                         # Free and open source 3D creation suite
+# cask "figma"                           # Browser-based UI and UX design application
 cask "sketch"                          # Design toolkit built to help you create your best work
-# mas "ulysses", id: 1225570693          # The Ultimate Writing App for Mac
-
+# ... possibly more commands here
 
 # =========================================================================== #
 # 000 >>- SOCIAL
 # =================================================================== #
 
 brew "irssi"                           # Modular IRC client
-cask "discord"                         # Discord is a proprietary freeware VoIP application
-cask "spectrum"                        # Simple, powerful online communities
+cask "riot"                            # Universal secure chat app
 cask "telegram-desktop"                # Cloud-based mobile and desktop messaging app
+# ... possibly more commands here
