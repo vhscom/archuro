@@ -90,6 +90,7 @@ brew "pandoc"                     # Swiss-army knife of markup format conversion
 brew "pngquant"                   # PNG image optimizing utility
 brew "postgresql"                 # Object-relational database system
 brew "python"                     # Interpreted, interactive, object-oriented programming language
+brew "qemu"                       # Generic and open source machine emulator and virtualizer
 brew "redis"                      # Persistent key-value database, with built-in net interface
 brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
@@ -164,6 +165,7 @@ brew "imagemagick"                     # Create, edit, compose, or convert bitma
 cask "blender"                         # Free and open source 3D creation suite
 # cask "figma"                           # Browser-based UI and UX design application
 cask "sketch"                          # Design toolkit built to help you create your best work
+cask "wireframe-sketcher"              # Create wireframes, mockups and prototypes
 # ... possibly more commands here
 
 # =========================================================================== #
@@ -172,5 +174,12 @@ cask "sketch"                          # Design toolkit built to help you create
 
 brew "irssi"                           # Modular IRC client
 cask "riot"                            # Universal secure chat app
-cask "telegram-desktop"                # Cloud-based mobile and desktop messaging app
+cask "telegram"                        # Cloud-based mobile and desktop messaging app
+# ... possibly more commands here
+
+# =========================================================================== #
+# 000 >>- ENTERTAINMENT
+# =================================================================== #
+
+cask "vlc"                             #  Cross-platform multimedia player and framework
 # ... possibly more commands here
