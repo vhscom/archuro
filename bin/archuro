@@ -668,42 +668,42 @@ function install_productivity_tools {
 # 060 >>- CUSTOM TOOLS
 # =================================================================== #
 
-# Install Homebrew dependencies
+# Install Homebrew packages
 # @expects $OSTYPE == darwin*
 # @requires [command] brew, mas
-function install_custom_tools_macos {
-    echo "Beginning installation of custom Homebrew dependencies ..."
+function install_custom_packages_macos {
+    echo "Beginning installation of custom Homebrew packages ..."
     if [ -f "$HOME/.Brewfile" ]; then
         HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --no-upgrade --global
     else
         echo "Global Brewfile not found. Skipping ..."
     fi
-    echo "Completed installation of custom Homebrew dependencies ..."
+    echo "Completed installation of custom Homebrew packages ..."
 }
 
-# Upgrade Homebrew dependencies
+# Upgrade Homebrew packages
 # @expects $OSTYPE == darwin*
 # @requires [command] brew, mas
-function update_custom_tools_macos {
-    echo "Beginning update of custom Homebrew dependencies ..."
+function update_custom_packages_macos {
+    echo "Beginning update of custom Homebrew packages ..."
     if [ -f "$HOME/.Brewfile" ]; then
         brew bundle --global
     else
         echo "Global Brewfile not found. Skipping update ..."
     fi
-    echo "Completed update of custom Homebrew dependencies ..."
+    echo "Completed update of custom Homebrew packages ..."
 }
 
 # Install custom dependencies
-function install_custom_tools {
-    [[ "$OSTYPE" == darwin* ]] && install_custom_tools_macos
-    continue
+function install_custom_packages {
+    [[ "$OSTYPE" == darwin* ]] && install_custom_packages_macos
+    return
 }
 
 # Update custon dependencies
-function update_custom_tools {
-    [[ "$OSTYPE" == darwin* ]] && update_custom_tools_macos
-    continue
+function update_custom_packages {
+    [[ "$OSTYPE" == darwin* ]] && update_custom_packages_macos
+    return
 }
 
 # =========================================================================== #
@@ -778,7 +778,7 @@ else
             echo "${green}000 ${magenta}>>- ${green}STOW DOTFILES ...${reset}" && \
             stow_dotfiles
         ;;
-    "update" | "install")
+    "install")
         test "$2" = "-f" || test "$2" = "--force" && UARG_FORCED_INSTALL=1
         [[ "$UARG_FORCED_INSTALL" -eq 1 ]] && echo "${red}Katarina! Katarina! ...${reset}"
         echo "${green}010 ${magenta}>>- ${green}SHELL ENVIRONMENT${reset}"
@@ -791,13 +791,13 @@ else
         install_security_tools
         echo "${green}050 ${magenta}>>- ${green}PRODUCTIVITY TOOLS${reset}"
         install_productivity_tools
-        echo "${green}060 ${magenta}>>- ${green}CUSTOM DEPENDENCIES${reset}"
-        install_custom_tools
+        echo "${green}060 ${magenta}>>- ${green}CUSTOM PACKAGES${reset}"
+        install_custom_packages
         [[ "$UARG_FORCED_INSTALL" -eq 1 ]] && echo "${magenta}Archuro!${reset}"
         echo "Installation finshed. Review output for potential issues."
         echo "Run command again  with '-S' flag to 'stow --dotfiles stow' with GNU Stow."
         if [[ "$OSTYPE" == darwin* ]]; then
-            echo "Manage Homebrew dependencies from ~/.Brewfile once stowed."
+            echo "Manage Homebrew packages from ~/.Brewfile once stowed."
         fi
         ;;
     "ls")
@@ -842,6 +842,9 @@ else
   cd ~/powerlevel10k
   exec zsh'
         docker tag "$(docker images -q | head -1)" archuro
+        ;;
+    "update")
+        update_custom_packages
         ;;
     "-h" | "--help")
         print_help_message
