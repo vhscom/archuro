@@ -19,6 +19,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+# To update packages in this manifest run command 'archuro update'
 # @see https://thoughtbot.com/blog/brewfile-a-gemfile-but-for-homebrew
 # @see https://github.com/Homebrew/homebrew-bundle
 
@@ -109,6 +110,7 @@ cask "framer-x"                   # Design toolkit to create code components
 # cask "graphql-playground"         # GraphQL IDE for better development workflows
 cask "imageoptim"                 # ImageOptim makes images load faster
 cask "mongodb-compass"            # The GUI for MongoDB
+cask "postman"                    # Collaboration platform for API development
 cask "visual-studio-code"         # VS Code
 cask "vivaldi"                    # Modern, cross-platform web browser
 # mas "com.apple.dt.xcode", id: 497799835 # Xcode
@@ -138,6 +140,7 @@ brew "socat"                           # Netcat on steroids
 brew "tcpdump"                         # Command-line packet analyzer
 brew "vault"                           # Secures, stores, and tightly controls access to secrets
 # cask "charles"                         # HTTP proxy / HTTP monitor / Reverse Proxy
+cask "keepassxc"                       # Community fork of KeePassX
 # mas "bitwarden", id: 1352778147        # Password manager
 # mas "wireguard", id: 1451685025        # Fast, modern, and secure VPN tunnel
 # ... possibly more commands here
