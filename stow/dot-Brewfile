@@ -139,6 +139,7 @@ brew "pass"                            # Password manager
 brew "socat"                           # Netcat on steroids
 brew "tcpdump"                         # Command-line packet analyzer
 brew "vault"                           # Secures, stores, and tightly controls access to secrets
+cask "authy"                           # Two-factor authentication
 # cask "charles"                         # HTTP proxy / HTTP monitor / Reverse Proxy
 cask "keepassxc"                       # Community fork of KeePassX
 # mas "bitwarden", id: 1352778147        # Password manager
