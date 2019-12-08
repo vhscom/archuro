@@ -80,6 +80,7 @@ brew "cmake"                      # Cross-platform make
 brew "elasticsearch"              # Distributed search & analytics engine
 brew "emacs"                      # GNU Emacs text editor
 brew "go"                         # Open source programming language
+brew "gradle"                     # Build automation tool based on the Groovy and Kotlin DSL
 brew "hugo"                       # Configurable static site generator
 brew "mongodb-community"          # High-performance, schema-free, document-oriented database
 brew "mono"                       # Cross platform, open source .NET development framework
