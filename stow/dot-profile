@@ -154,7 +154,7 @@ ns () {
 # Hugo
 #
 
-alias hs='hugo && hugo serve --buildDrafts --navigateToChanged'
+alias hs='hugo serve --buildDrafts --navigateToChanged'
 alias hd='hugo && hugo deploy --invalidateCDN'
 
 #
