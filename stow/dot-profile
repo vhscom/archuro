@@ -155,7 +155,7 @@ ns () {
 #
 
 alias hs='hugo serve --buildDrafts --navigateToChanged'
-alias hd='hugo && hugo deploy --invalidateCDN'
+alias hd='hugo && hugo deploy'
 
 #
 # Docker
