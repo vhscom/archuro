@@ -1,6 +1,6 @@
 # Archuro
 
-Build minimal, portable application development environments.
+Build minimal, portable application development environments on macOS.
 
 ![archuro](./screenshots/photo_2019-10-21_16.33.22-fs8.png)
 
