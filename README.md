@@ -59,12 +59,14 @@ Assumes basic knowledge of command line, git and file system management. **Durin
 
 To uninstall run `make uninstall` from the project root directory to remove the binary installed. Then use the `stow` and `brew` commands to unlink remaining dotfiles and uninstall optional packages. See `stow -h` and `brew bundle -h` for help.
 
+
 ## Configuration
 
 1. Review the dotfiles in the `stow` directory and update as desired.
 2. Run `archuro init` to install build essentials.
 3. Rerun `archuro init` with option `-S` use [GNU Stow] to symlink dotfiles from `stow` directory to the current user `$HOME`. Command will error if dotfile already exists to prevent overwriting existing config.
-4. Finally, run `archuro install` to install [optional dependencies](#package-management).
+4. Comment out or remove [optional dependencies](#package-management) you're not using from `dot-Brewfile`.
+5. Finally, run `archuro install` to install [optional dependencies](#package-management).
 
 Repeat steps 2-3 on an [Extended Build](#extended-builds) of Arch Linux to share your dotfiles.
 
