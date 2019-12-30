@@ -169,8 +169,8 @@ brew "ffmpeg",
 brew "imagemagick"                     # Create, edit, compose, or convert bitmap images
 cask "blender"                         # Free and open source 3D creation suite
 # cask "figma"                           # Browser-based UI and UX design application
-cask "sketch"                          # Design toolkit built to help you create your best work
-cask "wireframe-sketcher"              # Create wireframes, mockups and prototypes
+# cask "sketch"                          # Design toolkit built to help you create your best work
+# cask "wireframe-sketcher"              # Create wireframes, mockups and prototypes
 # ... possibly more commands here
 
 # =========================================================================== #
