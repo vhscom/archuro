@@ -12,6 +12,10 @@ A typical application development environment requires a number of different pro
 
 Constant churn in application development environments make it difficult to keep software running reliably over time, even on a single machine. And that's assuming your application doesn't carry around a lot of dependencies. If you wouldn't allow the kind of variance described in your production environment, why let it start during development? Thankfully you don't have to. That's why I created Archuro.
 
+# About
+
+Archuro is a simple CLI tool for macOS to get a hypervized Linux dev environment up and running as quickly as possible. It was created primarily to get Arch Linux running on Catalina on a 2019 MacBookPro as bare metal Arch Linux support still isn't quite there yet (though it is in progress and I recommend you use real Arch Linux if you can though, sadly, macOS will still be required to perform firmware updates on the machine which may include security patches).
+
 ## Goals
 
 - Eliminate hidden app dependencies.
