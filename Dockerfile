@@ -37,7 +37,8 @@ FROM p10kbuilder as archurobuilder
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 ARG USER=archuro
-RUN bash -uexc 'pacman -Sy --noconfirm make zsh'
+RUN bash -uexc 'pacman -Sy --noconfirm make zsh which'
+RUN bash -uexc 'chsh -s $(which zsh)'
 RUN echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/dont-prompt-$USER-for-password
 RUN useradd -Ng wheel -s /bin/zsh --create-home --no-log-init archuro
 WORKDIR /home/$USER/archuro
