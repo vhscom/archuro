@@ -52,6 +52,6 @@ ARG USER=archuro
 EXPOSE 8080/tcp
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
-RUN bash -uexc 'pacman -Sy --noconfirm neovim neofetch jq'
+RUN bash -uexc 'pacman -Sy --noconfirm neofetch'
 VOLUME ["/home/archuro/archuro"]
 USER $USER
