@@ -728,15 +728,15 @@ function print_help_message {
     echo
     echo "COMMANDS"
     echo
-    echo "    ${green}attach${reset}     ${grey}Attach to running arch tty${reset}"
-    echo "    ${green}init${reset}       ${grey}Initialize arch build system${reset}          ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
-    echo "    ${green}install${reset}    ${grey}Install optional packages${reset}             ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
-    echo "    ${green}ls${reset}         ${grey}List arch images${reset}                      ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
-    echo "    ${green}ps${reset}         ${grey}List arch containers${reset}                  ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
-    echo "    ${green}run${reset}        ${grey}Run extended build${reset}"
-    echo "    ${green}save${reset}       ${grey}Create extended build${reset}"
-    echo "    ${green}stop${reset}       ${grey}Stop running arch containers${reset}"
+    echo "    ${green}init${reset}       ${grey}Initialize arch build system${reset}    ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
+    echo "    ${green}build${reset}      ${grey}Create persistent tty${reset}"
     echo "    ${green}tty${reset}        ${grey}Start ephemeral arch tty${reset}"
+    echo "    ${green}attach${reset}     ${grey}Attach to running arch tty${reset}"
+    echo "    ${green}ls${reset}         ${grey}List arch images${reset}                ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}ps${reset}         ${grey}List arch containers${reset}            ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}run${reset}        ${grey}Run extended build${reset}"
+    echo "    ${green}stop${reset}       ${grey}Stop running arch containers${reset}"
+    echo "    ${green}install${reset}    ${grey}Install optional packages${reset}       ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
     echo "    ${green}update${reset}     ${grey}Update optional packages${reset}"
     echo
     echo "OPTIONS"
@@ -826,7 +826,7 @@ else
         docker run -it -p 8080:8080 -v ~/archuro/stow:/root/archuro/stow archlinux/extended:latest bash
         echo "Run 'archuro ps' to view running archlinux containers. Run 'attach' to attach to tty."
         ;;
-    "save")
+    "build")
         echo "Building and tagging Dockerfile image ..."
         docker build . && docker tag "$(docker image ls -q | head -1)" archlinux/extended:latest
         echo "Dockerfile $(docker image ls -q | head -1) built and tagged. Run 'archuro ls' to view it."

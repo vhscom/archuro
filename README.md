@@ -76,7 +76,7 @@ Repeat steps 2-3 on an [Extended Build](#extended-builds) of Arch Linux to share
 
 ## Usage
 
-To create a throwaway Arch Linux container run `archuro tty` or run `bash` and press `Ctrl+p`. To create a reusable Arch Linux container run `archuro save && archuro run`. See [Extended Builds](#extended-builds) for help.
+To create a throwaway Arch Linux container run `archuro tty` or run `bash` and press `Ctrl+p`. To create a reusable Arch Linux container run `archuro build && archuro run`. See [Extended Builds](#extended-builds) for help.
 
 Most actions in Archuro expect you're using [GNU Stow] to safely symlink your dotfiles from the `stow` directory. If you have an existing "dotfiles" repository and wish to share your shell configuration files inside Arch Linux run `archuro init` with the `-S` flag to your `$HOME` run `archuro init -S` from the project root directory after downloading a copy of Archuro.
 
@@ -117,7 +117,7 @@ Platform-specific [setting locations](https://vscode.readthedocs.io/en/latest/ge
 
 Spinning up a disposable Arch Linux tty is great. But throwing away work doing repetitive tasks isn't. For this reason Archuro provides extended builds for persisting state and heavily caching development dependencies under Arch Linux using Docker. Think of it as your own custom build of the OS and update the `Dockerfile` provided to customize as desired. 
 
-Run `archuro save` to automatically create and tag an `archlinux/extended` build as shown here:
+Run `archuro build` to automatically create and tag an `archlinux/extended` build as shown here:
 
 ```
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
@@ -125,7 +125,7 @@ archlinux/extended   latest              0104776b36cc        2 seconds ago      
 archlinux/base       latest              5323a8f7a7a4        3 weeks ago         461MB
 ```
 
-Rerun `archuro save` to rebuild the `Dockerfile` and update the `IMAGE ID` associated with the extended build.
+Rerun `archuro build` to rebuild the `Dockerfile` and update the `IMAGE ID` associated with the extended build.
 
 ## Package management
 
