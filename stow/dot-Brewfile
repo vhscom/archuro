@@ -51,6 +51,7 @@ tap "mongodb/brew"
 brew "bash-completion@2"     # Programmable completion for bash@4.1+
 cask "font-hack-nerd-font"   # Hack Nerd Font
 cask "font-fira-code"        # Monospaced font with programming ligatures
+cask "font-noto-mono"        # Courier New done right
 cask "hyper"                 # Electron terminal emulator
 cask "kitty"                 # Python terminal emulator
 # ... possibly more commands here
