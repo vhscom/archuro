@@ -728,15 +728,15 @@ function print_help_message {
     echo
     echo "COMMANDS"
     echo
-    echo "    ${green}init${reset}       ${grey}Initialize arch build system${reset}    ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
-    echo "    ${green}build${reset}      ${grey}Create persistent tty${reset}"
-    echo "    ${green}run${reset}        ${grey}Run extended build${reset}"
-    echo "    ${green}tty${reset}        ${grey}Start ephemeral arch tty${reset}"
-    echo "    ${green}attach${reset}     ${grey}Attach to running arch tty${reset}"
-    echo "    ${green}ls${reset}         ${grey}List arch images${reset}                ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
-    echo "    ${green}ps${reset}         ${grey}List arch containers${reset}            ${green}-q, --quiet${reset}    ${grey}Only display numeric IDs${reset}"
+    echo "    ${green}init${reset}       ${grey}Initialize arch build system${reset}     ${green}-S, --stow${reset}     ${grey}Stow dotfiles${reset}"
+    echo "    ${green}tty${reset}        ${grey}Run throwaway arch tty image${reset}"
+    echo "    ${green}build${reset}      ${grey}Create persistent arch build${reset}"
+    echo "    ${green}run${reset}        ${grey}Run persistent build image${reset}"
+    echo "    ${green}attach${reset}     ${grey}Connect to running arch tty${reset}"
+    echo "    ${green}ls${reset}         ${grey}List arch images${reset}                 ${green}-q, --quiet${reset}    ${grey}Show numeric IDs only${reset}"
+    echo "    ${green}ps${reset}         ${grey}List arch containers${reset}             ${green}-q, --quiet${reset}    ${grey}Show numeric IDs only${reset}"
     echo "    ${green}stop${reset}       ${grey}Stop running arch containers${reset}"
-    echo "    ${green}install${reset}    ${grey}Install optional packages${reset}       ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
+    echo "    ${green}install${reset}    ${grey}Install optional packages${reset}        ${green}-f, --force${reset}    ${grey}Ingore conflicts${reset}"
     echo "    ${green}update${reset}     ${grey}Update optional packages${reset}"
     echo
     echo "OPTIONS"
