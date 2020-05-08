@@ -99,6 +99,7 @@ brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh sc
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
 brew "typescript"                 # Language for application scale JavaScript development
 brew "watchman"                   # Watch files and take action when they change
+brew "woff2"                      # Convert TrueType to WOFF2 for web fonts
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
