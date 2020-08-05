@@ -124,6 +124,7 @@ cask "vivaldi"                    # Modern, cross-platform web browser
 # =================================================================== #
 
 brew "ansible"                    # Automate deployment, configuration, and upgrading
+brew "awscli"                     # Official Amazon AWS command-line interface
 # brew "istioctl"                   # Istio configuration command-line utility
 # brew "kubernetes-cli"             # Included with Docker Desktop (archuro init)
 # brew "kubernetes-helm"            # Package manager for Kubernetes applications
