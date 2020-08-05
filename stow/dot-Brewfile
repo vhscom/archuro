@@ -78,23 +78,23 @@ brew "wget"
 
 brew "ack"                        # Search tool like grep, but optimized for programmers
 brew "cmake"                      # Cross-platform make
-brew "elasticsearch"              # Distributed search & analytics engine
+# brew "elasticsearch"              # Distributed search & analytics engine
 brew "emacs"                      # GNU Emacs text editor
 brew "go"                         # Open source programming language
 brew "gradle"                     # Build automation tool based on the Groovy and Kotlin DSL
 brew "hugo"                       # Configurable static site generator
-brew "mongodb-community"          # High-performance, schema-free, document-oriented database
+# brew "mongodb-community"          # High-performance, schema-free, document-oriented database
 brew "mono"                       # Cross platform, open source .NET development framework
 brew "neofetch"                   # Fast, highly customisable system info script
 brew "neovim"                     # Ambitious Vim-fork focused on extensibility and agility
 brew "node"                       # Platform built on V8 to build network applications
 brew "openssl"                    # SSL/TLS cryptography library
-brew "pandoc"                     # Swiss-army knife of markup format conversion
+# brew "pandoc"                     # Swiss-army knife of markup format conversion
 brew "pngquant"                   # PNG image optimizing utility
 brew "postgresql"                 # Object-relational database system
 brew "python"                     # Interpreted, interactive, object-oriented programming language
 brew "qemu"                       # Generic and open source machine emulator and virtualizer
-brew "redis"                      # Persistent key-value database, with built-in net interface
+# brew "redis"                      # Persistent key-value database, with built-in net interface
 brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
 brew "sip"                        # Tool to create Python bindings for C and C++ libraries
