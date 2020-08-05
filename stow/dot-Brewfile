@@ -93,7 +93,7 @@ brew "openssl"                    # SSL/TLS cryptography library
 brew "pngquant"                   # PNG image optimizing utility
 brew "postgresql"                 # Object-relational database system
 brew "python"                     # Interpreted, interactive, object-oriented programming language
-brew "qemu"                       # Generic and open source machine emulator and virtualizer
+# brew "qemu"                       # Generic and open source machine emulator and virtualizer
 # brew "redis"                      # Persistent key-value database, with built-in net interface
 brew "rustup-init"                # The Rust toolchain installer
 brew "shellcheck"                 # Static analysis and lint tool, for (ba)sh scripts
@@ -170,7 +170,7 @@ cask "rectangle"                       # Move and resize windows in macOS
 
 brew "ffmpeg",
     args: ALL_FFMPEG_OPTIONS           # Collection of libraries and tools to process multimedia
-brew "imagemagick"                     # Create, edit, compose, or convert bitmap images
+# brew "imagemagick"                     # Create, edit, compose, or convert bitmap images
 cask "blender"                         # Free and open source 3D creation suite
 # cask "figma"                           # Browser-based UI and UX design application
 # cask "sketch"                          # Design toolkit built to help you create your best work
