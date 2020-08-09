@@ -66,6 +66,7 @@ brew "git"
 brew "jq"
 # brew "lynx" # Installed by Archuro
 brew "mosh"
+brew "nmap"
 # brew "tldr" # Installed by Archuro
 brew "tmux"
 brew "tree"
