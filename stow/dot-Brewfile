@@ -125,12 +125,13 @@ cask "vivaldi"                    # Modern, cross-platform web browser
 
 brew "ansible"                    # Automate deployment, configuration, and upgrading
 brew "awscli"                     # Official Amazon AWS command-line interface
+# brew "drone-cli"                  # Self-service Continuous Delivery platform
 # brew "istioctl"                   # Istio configuration command-line utility
 # brew "kubernetes-cli"             # Included with Docker Desktop (archuro init)
 # brew "kubernetes-helm"            # Package manager for Kubernetes applications
 # brew "kubernetes-service-catalog-client" # Consume Services in k8s using the OSB API
 # brew "kompose"                    # Tool to move from `docker-compose` to Kubernetes
-# brew "drone-cli"                  # Self-service Continuous Delivery platform
+brew "lazydocker"                 # The lazier way to manage everything docker
 # brew "prometheus"                 # Service monitoring system and time series database
 brew "traefik"                    # Modern reverse proxy
 # ... possibly more commands here
@@ -160,7 +161,7 @@ brew "aspell"                          # Free and Open Source spell checker
 cask "boostnote"                         # Intuitive and stylish markdown editor for developers
 cask "rectangle"                       # Move and resize windows in macOS
 # mas "amphetamine", id: 937984704       # Keep your Mac, and optionally its display, awake
-# mas "parcelosx", id: 639968404         # Delivery tracking
+mas "parcelosx", id: 639968404         # Delivery tracking
 # mas "spark", id: 1176895641            # Personal email client
 # ... possibly more commands here
 
