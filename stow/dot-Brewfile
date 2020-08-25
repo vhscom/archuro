@@ -88,7 +88,8 @@ brew "hugo"                       # Configurable static site generator
 brew "mono"                       # Cross platform, open source .NET development framework
 brew "neofetch"                   # Fast, highly customisable system info script
 brew "neovim"                     # Ambitious Vim-fork focused on extensibility and agility
-brew "node"                       # Platform built on V8 to build network applications
+# brew "node"                       # Platform built on V8 to build network applications
+brew "nvm"                        # Manage multiple Node.js versions
 brew "openssl"                    # SSL/TLS cryptography library
 # brew "pandoc"                     # Swiss-army knife of markup format conversion
 brew "pngquant"                   # PNG image optimizing utility
@@ -127,6 +128,7 @@ cask "vivaldi"                    # Modern, cross-platform web browser
 brew "ansible"                    # Automate deployment, configuration, and upgrading
 brew "awscli"                     # Official Amazon AWS command-line interface
 # brew "drone-cli"                  # Self-service Continuous Delivery platform
+# brew "eksctl"                     # The official CLI for Amazon EKS
 # brew "istioctl"                   # Istio configuration command-line utility
 # brew "kubernetes-cli"             # Included with Docker Desktop (archuro init)
 # brew "kubernetes-helm"            # Package manager for Kubernetes applications

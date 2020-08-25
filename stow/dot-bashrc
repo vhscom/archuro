@@ -43,3 +43,6 @@ bind -x '"\C-p":archuro tty'
 
 # Command completions for Kitty
 [[ -x "$(command -v kitty)" ]] && . <(kitty + complete setup bash)
+
+# Command completions for NVM
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
