@@ -179,6 +179,7 @@ cask "blender"                         # Free and open source 3D creation suite
 # cask "figma"                           # Browser-based UI and UX design application
 # cask "sketch"                          # Design toolkit built to help you create your best work
 # cask "wireframe-sketcher"              # Create wireframes, mockups and prototypes
+# max "seahorse", 1448648921             # Easy & Powerful Image Editor
 # ... possibly more commands here
 
 # =========================================================================== #
