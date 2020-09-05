@@ -195,5 +195,6 @@ cask "telegram"                        # Cloud-based mobile and desktop messagin
 # 000 >>- ENTERTAINMENT
 # =================================================================== #
 
-cask "vlc"                             #  Cross-platform multimedia player and framework
+cask "vlc"                             # Cross-platform multimedia player and framework
+cask "iina"                            # Modern media player for macOS
 # ... possibly more commands here
