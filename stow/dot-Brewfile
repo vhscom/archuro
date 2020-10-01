@@ -115,6 +115,7 @@ cask "framer-x"                   # Design toolkit to create code components
 cask "graphql-playground"         # GraphQL IDE for better development workflows
 cask "imageoptim"                 # ImageOptim makes images load faster
 cask "mongodb-compass"            # The GUI for MongoDB
+cask "ngrok"                      # Tunnelling service for exposing localhost to the web
 cask "postman"                    # Collaboration platform for API development
 cask "visual-studio-code"         # VS Code
 cask "vivaldi"                    # Modern, cross-platform web browser
@@ -183,9 +184,10 @@ cask "blender"                         # Free and open source 3D creation suite
 # ... possibly more commands here
 
 # =========================================================================== #
-# 000 >>- SOCIAL
+# 000 >>- COMMS
 # =================================================================== #
 
+brew "asuka"                           # Gemini Project client written in Rust with NCurses
 brew "irssi"                           # Modular IRC client
 cask "riot"                            # Universal secure chat app
 cask "telegram"                        # Cloud-based mobile and desktop messaging app
