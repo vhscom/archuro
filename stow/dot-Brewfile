@@ -130,6 +130,7 @@ brew "ansible"                    # Automate deployment, configuration, and upgr
 brew "awscli"                     # Official Amazon AWS command-line interface
 # brew "drone-cli"                  # Self-service Continuous Delivery platform
 # brew "eksctl"                     # The official CLI for Amazon EKS
+# brew "kind"                       # Kubernetes in Docker
 # brew "istioctl"                   # Istio configuration command-line utility
 # brew "kubernetes-cli"             # Included with Docker Desktop (archuro init)
 # brew "kubernetes-helm"            # Package manager for Kubernetes applications
@@ -137,6 +138,7 @@ brew "awscli"                     # Official Amazon AWS command-line interface
 # brew "kompose"                    # Tool to move from `docker-compose` to Kubernetes
 brew "lazydocker"                 # The lazier way to manage everything docker
 # brew "prometheus"                 # Service monitoring system and time series database
+# brew "rke"                        # Rancher Kubernetes Engine, a Kubernetes installer that works everywhere
 brew "traefik"                    # Modern reverse proxy
 # ... possibly more commands here
 
