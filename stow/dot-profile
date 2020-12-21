@@ -53,7 +53,7 @@ ff () {
 #
 
 alias net="ping vhs.codeberg.page | grep -E --only-match --color=never '[0-9\.]+ ms'"
-alias myip="curl -4s https://ipecho.net/plain; echo" # or use ipinfo.io/ip
+alias myip="curl -4 icanhazip.com"
 
 #
 # Archuro
