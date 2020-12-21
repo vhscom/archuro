@@ -175,7 +175,10 @@ module.exports = {
     "hyper-custom-touchbar",
     "hypercwd",
     "hyper-flat",
-    "verminal"
+    "hyper-hide-title",
+    "hyper-search",
+    "hyper-pane",
+    "hyper-opacity"
   ],
 
   // in development, you can create a directory under
