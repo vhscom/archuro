@@ -127,6 +127,8 @@ cask "vivaldi"                    # Modern, cross-platform web browser
 # 035 >>- DEVOPS
 # =================================================================== #
 
+# tap "caskroom/cask"               # For TunTap
+
 brew "ansible"                    # Automate deployment, configuration, and upgrading
 brew "awscli"                     # Official Amazon AWS command-line interface
 # brew "doctl"                      # Command-line tool for DigitalOcean
@@ -139,13 +141,17 @@ brew k3d                          # K3s in Docker
 brew "k3sup"                      # Utility to create k3s clusters on any local or remote VM
 # brew "kubectl"                  # Included with Docker Desktop (archuro init)
 brew "helm"                       # Package manager for Kubernetes applications
+# brew "hey"                        # HTTP load generator, ApacheBench (ab) replacement
 # brew "kubernetes-service-catalog-client" # Consume Services in k8s using the OSB API
 # brew "kompose"                    # Tool to move from `docker-compose` to Kubernetes
 brew "lazydocker"                 # The lazier way to manage everything docker
 # brew "prometheus"                 # Service monitoring system and time series database
 # brew "rke"                        # Rancher Kubernetes Engine, a Kubernetes inst  aller that works everywhere
 # brew "datawire/blackbird/telepresence"  # Debug your Kubernetes service locally (Uses: osxfuse)
+# brew tuntap                       # Make Docker Desktop behave more like Linux
 brew "traefik"                    # Modern reverse proxy
+brew "vultr"                      # Command-line tool for Vultr
+cask "lens"                       # Kubernetes IDE
 # cask "multipass"                  # Hypervisor framework (or just use k3d)
 # cask "osxfuse"                    # File system integration (Used by: telepresence)
 # ... possibly more commands here
@@ -171,6 +177,7 @@ cask "keepassxc"                       # Community fork of KeePassX
 # =================================================================== #
 
 brew "aspell"                          # Free and Open Source spell checker
+# brew "watch"                         # Executes a program periodically, showing output fullscreen
 # cask "axure-rp"                        # UX Design and Prototyping Tool
 cask "boostnote"                         # Intuitive and stylish markdown editor for developers
 cask "rectangle"                       # Move and resize windows in macOS
