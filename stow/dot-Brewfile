@@ -140,6 +140,7 @@ brew k3d                          # K3s in Docker
 # brew "istioctl"                   # Istio configuration command-line utility
 brew "k3sup"                      # Utility to create k3s clusters on any local or remote VM
 # brew "kubectl"                  # Included with Docker Desktop (archuro init)
+brew kustomize                    # Template-free customization of Kubernetes YAML manifests
 brew "helm"                       # Package manager for Kubernetes applications
 # brew "hey"                        # HTTP load generator, ApacheBench (ab) replacement
 # brew "kubernetes-service-catalog-client" # Consume Services in k8s using the OSB API
