@@ -25,6 +25,16 @@ ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 RUN bash -uexc 'pacman -Sy --noconfirm sudo man openssh'
 
+# HACK: Remove following 3 lines with sudo 1.9 in archlinux/base
+# to resolve the following issue running sudo:
+#
+#   sudo: setrlimit(RLIMIT_CORE): Operation not permitted
+#
+# @see https://unix.stackexchange.com/a/578950
+# RUN bash -uexc 'touch /etc/sudo.conf'
+# RUN bash -uexc 'echo "Set disable_coredump false" >> /etc/sudo.conf'
+# RUN bash -uexc 'pacman -Sy --noconfirm libffi'
+
 # Add Powerlevel10k for zsh
 FROM basebuilder AS p10kbuilder
 ENV LANG=en_US.utf8
@@ -37,22 +47,21 @@ FROM p10kbuilder as archurobuilder
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 ARG USER=archuro
-RUN bash -uexc 'pacman -Sy --noconfirm make zsh which'
-RUN bash -uexc 'chsh -s $(which zsh)'
+RUN bash -uexc 'pacman -Sy --noconfirm make zsh'
 RUN echo "$USER ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/dont-prompt-$USER-for-password
-RUN useradd -Ng wheel -s /bin/zsh --create-home --no-log-init archuro
+RUN useradd -Ng wheel -s /bin/zsh --create-home --no-log-init $USER
 WORKDIR /home/$USER/archuro
 COPY . .
 RUN ["make","install"]
 RUN rm ../.bashrc && rm ../.bash_profile && rm ../.bash_logout
 RUN ["archuro","init","-S"]
 
-# Final
+# Login as Archuro user
 FROM archurobuilder
 ARG USER=archuro
 EXPOSE 8080/tcp
 ENV LANG=en_US.utf8
 ENV TERM=xterm-256color
 RUN bash -uexc 'pacman -Sy --noconfirm neofetch'
-VOLUME ["/home/archuro/archuro"]
+VOLUME ["/home/$USER/archuro"]
 USER $USER
