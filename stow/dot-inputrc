@@ -27,3 +27,9 @@
 # set completion-ignore-case on
 # set visible-stats on
 # set show-all-if-ambiguous on
+
+# History search (NOT WORKING)
+# @see also stow/dot-zshrc
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+

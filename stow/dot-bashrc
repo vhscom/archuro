@@ -22,6 +22,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Do not record commands with a preceding space
+
+export HISTCONTROL=ignorespace
+
 # Colorize output of ls command on GNU/Linux
 [[ "$OSTYPE" == linux-gnu* ]] && alias ls='ls --color=auto'
 
@@ -34,11 +38,11 @@
 
 # Bind Ctrl+p so that it starts an Archruo tty
 # @see https://askubuntu.com/a/749017/401660
-bind -x '"\C-p":archuro tty'
+# bind -x '"\C-p":archuro tty'
 
 # Command completions for Bash 4.1+ (Homebrew compatabile)
-[[ $PS1 && -f "/usr/local/etc/profile.d/bash_completion.sh" ]] && \
-    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d" && \
+[[ $PS1 && -f "/usr/local/etc/profile.d/bash_completion.sh" ]] &&
+    export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d" &&
     . "/usr/local/etc/profile.d/bash_completion.sh"
 
 # Command completions for Kitty

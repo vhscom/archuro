@@ -51,6 +51,16 @@ autoload -Uz compinit; compinit
 zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
+# =========================================================================== #
+# Auto suggestions (Enable manaually)
+# =================================================================== #
+
+# Testing out zsh-autosuggestions
+# Requires manual install
+# https://github.com/zsh-users/zsh-autosuggestions
+[ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
+    source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # Check for color support and set color bit
 # @see https://unix.stackexchange.com/a/198949/111911
 color=0
@@ -59,6 +69,29 @@ if tput Co > /dev/null 2>&1; then
 elif tput colors > /dev/null 2>&1; then
     test "`tput colors`" -gt 2 && color=1
 fi
+
+# =========================================================================== #
+# Do not record commands with a preceding space
+# =================================================================== #
+
+setopt histignorespace
+
+# =========================================================================== #
+# History search (@see also stow/dot-bashrc)
+# =================================================================== #
+
+# NOT WORKING!
+
+# By doing this, only the past commands matching the current line up to the
+# current cursor position will be shown when Up or Down keys are pressed.
+# @see https://wiki.archlinux.org/index.php/Zsh
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+[[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
+[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
 # =========================================================================== #
 # Colorize output of less and more - @see also zshenv
