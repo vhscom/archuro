@@ -82,6 +82,7 @@ brew "ack"                        # Search tool like grep, but optimized for pro
 brew "cmake"                      # Cross-platform make
 # brew "elasticsearch"              # Distributed search & analytics engine
 brew "emacs"                      # GNU Emacs text editor
+# brew "gcc"                      # GNU compiler collection
 brew "go"                         # Open source programming language
 brew "gradle"                     # Build automation tool based on the Groovy and Kotlin DSL
 brew "hugo"                       # Configurable static site generator
@@ -107,6 +108,7 @@ brew "woff2"                      # Convert TrueType to WOFF2 for web fonts
 brew "yamllint"                   # Linter for YAML files
 brew "youtube-dl"                 # Download YouTube videos from the command-line
 brew "yarn"                       # JavaScript package manager
+# brew "wp-cli                    # Command-line interface for WordPress
 # cask "adoptopenjdk8"              # Prebuilt OpenJDK Binaries
 cask "android-studio"             # Official IDE for Google's Android operating system
 cask "cocoapods"                  # dependency manager for Swift and Objective-C projects
