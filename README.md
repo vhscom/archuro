@@ -42,8 +42,8 @@ Archuro is a simple CLI tool for macOS to get a hypervized Linux dev environment
 ## Screens and demo
 
 <p>
-  <img src="./archuro/raw/branch/master/screenshots/hyper-split-cli-fs8.png" title="Archuro Hyper Split CLI" width="48%" alt="cli">
-  <img src="./archuro/raw/branch/master/screenshots/hyper-split-neofetch-fs8.png" width="48%" title="Archuro Hyper Split Neofetch" alt="neofetch">
+  <img src="./screenshots/hyper-split-cli-fs8.png" title="Archuro Hyper Split CLI" width="48%" alt="cli">
+  <img src="./screenshots/hyper-split-neofetch-fs8.png" width="48%" title="Archuro Hyper Split Neofetch" alt="neofetch">
 </p>
 
 Videos? Several in the [`screenshots`](./screenshots) directory.
