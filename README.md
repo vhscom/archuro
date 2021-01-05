@@ -37,7 +37,7 @@ Archuro is a simple CLI tool for macOS to get a hypervized Linux dev environment
 - Provides hotkey access to a Arch tty command via `Ctrl+p` from Bash.
 - Helps install Vivaldi, a modern and developer-friendly browser.
 - Automate [VS Code] setup and [helps keep track](#vs-code) of extensions.
-- Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Verminal](https://github.com/defringe/verminal) and `hyper-flat`.
+- Recommended terminal apps: [Kitty](https://github.com/kovidgoyal/kitty) and [Hyper](https://hyper.is) with [Hyper Flat](https://github.com/Kikobeats/hyper-flat) theme.
   
 ## Screens and demo
 

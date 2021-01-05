@@ -140,13 +140,7 @@ module.exports = {
 
     // for advanced config flags please refer to https://hyper.is/#cfg
 
-    // custom settings for verminal theme
-    // install verminal with `hyper i verminal`
-    verminal: {
-      fontFamily: '"Hack Nerd Font"',
-      fontSize: 13
-    },
-
+    // macOS custom touchbar settings
     hyperCustomTouchbar: [
       // if you just need a single button then don't add options array
       { label: 'clear', command: 'clear', backgroundColor: '#d13232' },
