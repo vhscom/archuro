@@ -23,7 +23,7 @@
 # General settings
 # =================================================================== #
 
-# Miminalist prompt with color, i.e. user@host:~/directory $ 
+# Miminalist prompt with color, i.e. user@host:~/directory $
 export PS1="\[$(tput bold)$(tput setb 4)$(tput setaf 7)\]\u@\h:\w $ \[$(tput sgr0)\]"
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
@@ -44,7 +44,7 @@ alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias vim=nvim
 
-ff () {
+ff() {
   find . -iname "*${1:-}*"
 }
 
@@ -88,12 +88,12 @@ if [[ "$OSTYPE" == darwin* ]]; then
   alias cx='code --list-extensions'
 
   cxinstall() {
-    test -r ~/.vscode/ext-list && < ~/.vscode/ext-list xargs -n1 code --install-extension
+    test -r ~/.vscode/ext-list && xargs <~/.vscode/ext-list -n1 code --install-extension
   }
-  cxsave () {
-    test -r ~/.vscode/ext-list && cx > ~/.vscode/ext-list
+  cxsave() {
+    test -r ~/.vscode/ext-list && cx >~/.vscode/ext-list
   }
-  cxremoveall () {
+  cxremoveall() {
     # WARNING: Use with care. This removes all currently installed extensions.
     code --list-extensions | xargs -n1 code --uninstall-extension
   }
@@ -127,18 +127,18 @@ alias gs='git status --short'
 alias gu='git pull'
 alias gz='npx git-cz'
 
-gcp () {
+gcp() {
   title="$@"
   git commit -am "$title" && git push -u origin
 }
-gc () {
+gc() {
   args="$@"
   git commit -m "$args"
 }
 
-# 
+#
 # NPM
-# 
+#
 
 alias ni="npm install"
 alias nr="npm run"
@@ -147,8 +147,8 @@ alias nrc="npm run clean"
 alias nrd="npm run dev"
 alias nrs="npm run start"
 
-ns () {
-  cat < package.json | jq '.scripts'
+ns() {
+  cat <package.json | jq '.scripts'
 }
 
 #
@@ -186,3 +186,38 @@ alias dps='docker ps -a | less -S'
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+#
+# Kubernetes
+#
+
+alias kc='kubectl'
+# Tail logs to stdout
+alias kclf='kubectl logs --tail=200  -f'
+# Output detailed service info
+alias kcgs='kubectl get service -o wide'
+# Output detailed deployment info
+alias kcgd='kubectl get deployment -o wide'
+# Output detailed pod info
+alias kcgp='kubectl get pod -o wide'
+# Output detailed node info
+alias kcgn='kubectl get node -o wide'
+# Get pod info
+alias kcdp='kubectl describe pod'
+# Get service info
+alias kcds='kubectl describe service'
+# Get deployment info
+alias kcdd='kubectl describe deployment'
+# Delete something
+alias kcdf='kubectl delete -f'
+# Apply something
+alias kcaf='kubectl apply -f'
+# Apply Kustomize
+alias kcaf='kubectl apply -k'
+# Get cluster info
+alias kcci='kubectl cluster-info'
+
+# Helm
+alias hd='helm list --deployed | grep -v "NAME" | awk '\''{print $1}'\'' | sort | uniq -c  | awk '\''{print $1,$2}'\'' | grep -v  "^1 "'
+function hl() { helm list $@; }
+function hh() { helm history $(helm list -q $@); }
