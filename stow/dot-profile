@@ -213,7 +213,7 @@ alias kcdf='kubectl delete -f'
 # Apply something
 alias kcaf='kubectl apply -f'
 # Apply Kustomize
-alias kcaf='kubectl apply -k'
+alias kcak='kubectl apply -k'
 # Get cluster info
 alias kcci='kubectl cluster-info'
 
