@@ -139,6 +139,7 @@ brew "awscli"                     # Official Amazon AWS command-line interface
 brew "helm@3"                       # Kubernetes package manager
 brew k3d                          # K3s in Docker
 # brew "kind"                       # Kubernetes in Docker (alternative to k3s/k3d)
+# brew "krew"                       # Package manager for kubectl plugins
 # brew "istioctl"                   # Istio configuration command-line utility
 brew "k3sup"                      # Utility to create k3s clusters on any local or remote VM
 # brew "kubectl"                  # Included with Docker Desktop (archuro init)
