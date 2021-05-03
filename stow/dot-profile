@@ -162,19 +162,19 @@ alias hd='hugo && hugo deploy'
 # Docker
 #
 
-alias dc='docker-compose'
+alias dc='docker compose'
 # Bring all services down
-alias dcd='docker-compose down'
+alias dcd='docker compose down'
 # Attach to all logs of all services
-alias dcl='docker-compose logs -f'
+alias dcl='docker compose logs -f'
 # Run a comand inside a running container
-alias dcr='docker-compose run --rm'
+alias dcr='docker compose run --rm'
 # "Restart" all services
-alias dcre='docker-compose down && docker-compose up -d && docker-compose logs -f'
+alias dcre='docker compose down && docker compose up -d && docker compose logs -f'
 # Bring all services up in daemon mode
-alias dcu='docker-compose up -d'
+alias dcu='docker compose up -d'
 # Bring all containers up and attach to their logs
-alias dcul='docker-compose up -d && docker-compose logs -f'
+alias dcul='docker compose up -d && docker compose logs -f'
 # Remove exited containers
 alias dprune='docker ps -aq --no-trunc -f status=exited | xargs docker rm'
 # Show all running containers, with horizontal paging
