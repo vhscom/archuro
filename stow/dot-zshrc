@@ -55,7 +55,7 @@ zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 # Auto suggestions (Enable manaually)
 # =================================================================== #
 
-# Testing out zsh-autosuggestions
+# Zsh Augosuggestions
 # Requires manual install
 # https://github.com/zsh-users/zsh-autosuggestions
 [ -f ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh ] && \
@@ -112,18 +112,25 @@ fi
 # Application-specific settings
 # =================================================================== #
 
+# Use GPG-agent for SSH authentication
+# https://gregrs-uk.github.io/2018-08-06/gpg-key-ssh-mac-debian/
+export GPG_TTY=$(tty)
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
+# Enable Starship prompt
+# @see https://starship.rs/
+eval "$(starship init zsh)"
+
+# Enable Fast Node Manager
+# @see https://github.com/Schniz/fnm
+# Changes Node based on project with .node-version file
+eval "$(fnm env --use-on-cd)"
+
 # rupa/z - Jump to any visited directory using the frecency algorithm
 # $ z desk && pwd
 # # => /Users/username/Desktop
 [[ -r /usr/local/bin/z.sh ]] && . /usr/local/bin/z.sh
-
-# Powerlevel10k (p10k) ZSH theme
-# @see https://github.com/romkatv/powerlevel10k
-[[ -r /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme ]] && \
-    . /usr/local/etc/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && . ~/.p10k.zsh
 
 # Run Arch Linux when Hyper is opened given requirements
 # @requires [command] docker
@@ -153,5 +160,6 @@ function colors () {
     fi
 }
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+export PNPM_HOME="/Users/jos/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
