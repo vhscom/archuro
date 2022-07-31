@@ -1,7 +1,7 @@
 # User logout file for zsh(1) shells.
 
 #
-# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+# Copyright (C) 2019, 2022  VHS <vhsdev@tutanota.com>
 #
 # This file is part of Archuro.
 #
@@ -18,3 +18,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
+
+# THIS FILE IS INTENTIONALLY LEFT BLANK AND MAY BE CUSTOZMIZED OR REMOVED

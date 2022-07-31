@@ -1,7 +1,7 @@
 # User input run commands for GNU Readline.
 
 #
-# Copyright (C) 2019  VHS <0xc000007b@tutanota.com>
+# Copyright (C) 2019, 2022  VHS <vhsdev@tutanota.com>
 #
 # This file is part of Archuro.
 #
@@ -32,4 +32,3 @@
 # @see also stow/dot-zshrc
 "\e[A": history-search-backward
 "\e[B": history-search-forward
-
