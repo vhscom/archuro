@@ -42,7 +42,7 @@ alias la='ls -al'
 alias lr='ls -R'
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
-alias vim=nvim
+alias vim=/Users/jos/.local/bin/lvim
 
 ff() {
   find . -iname "*${1:-}*"
@@ -115,8 +115,11 @@ alias gco='git checkout'
 alias gd='git diff'
 alias gds='git diff --staged'
 alias gf='git fetch'
-alias gl='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --decorate --date=short"
+alias gla='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
 alias gls='git log --no-merges --pretty=format:"%ae" | sort | uniq -c | sort --reverse'
+#alias gl='git log --all --graph --pretty=format:"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset" --abbrev-commit --date=relative'
+#alias gls='git log --no-merges --pretty=format:"%ae" | sort | uniq -c | sort --reverse'
 alias gp='git push'
 alias gr='git rebase'
 alias gra='git rebase --abort'
@@ -137,9 +140,15 @@ gc() {
 }
 
 #
-# NPM
+# pNPM
+# Use @antfu/ni for cross-packager package
+# management when using Zsh and consider consolidating.
 #
 
+alias pu="pnpm up"
+alias pb="pnpm build"
+alias pd="pnpm dev"
+alias pt="pnpm test"
 alias ni="npm install"
 alias nr="npm run"
 alias nrb="npm run build"
@@ -162,19 +171,19 @@ alias hd='hugo && hugo deploy'
 # Docker
 #
 
-alias dc='docker compose'
+alias dc='docker-compose'
 # Bring all services down
-alias dcd='docker compose down'
+alias dcd='docker-compose down'
 # Attach to all logs of all services
-alias dcl='docker compose logs -f'
+alias dcl='docker-compose logs -f'
 # Run a comand inside a running container
-alias dcr='docker compose run --rm'
+alias dcr='docker-compose run --rm'
 # "Restart" all services
-alias dcre='docker compose down && docker compose up -d && docker compose logs -f'
+alias dcre='docker-compose down && docker-compose up -d && docker-compose logs -f'
 # Bring all services up in daemon mode
-alias dcu='docker compose up -d'
+alias dcu='docker-compose up -d'
 # Bring all containers up and attach to their logs
-alias dcul='docker compose up -d && docker compose logs -f'
+alias dcul='docker-compose up -d && docker-compose logs -f'
 # Remove exited containers
 alias dprune='docker ps -aq --no-trunc -f status=exited | xargs docker rm'
 # Show all running containers, with horizontal paging
@@ -221,3 +230,4 @@ alias kcci='kubectl cluster-info'
 alias hd='helm list --deployed | grep -v "NAME" | awk '\''{print $1}'\'' | sort | uniq -c  | awk '\''{print $1,$2}'\'' | grep -v  "^1 "'
 function hl() { helm list $@; }
 function hh() { helm history $(helm list -q $@); }
+. "$HOME/.cargo/env"
