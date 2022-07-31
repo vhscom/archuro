@@ -38,3 +38,4 @@ export GREP_COLOR=always
 # ence a color capable terminal however otherwise it is not
 # possible to determine which color sequences to use.
 export CLICOLOR_FORCE=true
+. "$HOME/.cargo/env"
